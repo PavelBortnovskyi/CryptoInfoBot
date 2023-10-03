@@ -1,0 +1,19 @@
+bot:
+ name: crypto_currencies_pet_bot
+ token: 6486827539:AAE9T7PE2VVJvdEctTrtcMj0nCkuDczErl0
+binance:
+ api:
+  tickerPrice:
+   url: https://api.binance.com/api/v3/ticker/price
+  exchangeInfo:
+   url: https://testnet.binance.vision/api/v3/exchangeInfo
+  avgPrice:
+   url: https://testnet.binance.vision/api/v3/avgPrice
+spring:
+ output:
+  ansi:
+   enabled: always
+ profiles:
+  active: local
+server:
+ port: 8080
