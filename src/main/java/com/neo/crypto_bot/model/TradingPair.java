@@ -1,14 +1,12 @@
 package com.neo.crypto_bot.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity(name = "trading_pairs")
+@Entity
+@Table(name = "trading_pairs")
 @NoArgsConstructor
 public class TradingPair {
 

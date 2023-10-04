@@ -1,6 +1,7 @@
 package com.neo.crypto_bot.service;
 
-import com.neo.crypto_bot.client.BinanceClient;
+import com.neo.crypto_bot.client.BinanceExchangeApiClient;
+import com.neo.crypto_bot.client.ExchangeApiClient;
 import com.neo.crypto_bot.config.BotConfig;
 import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
@@ -19,11 +20,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -40,10 +37,10 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
 
     private final TradingPairRepository tradingPairRepository;
 
-    private final BinanceClient binanceClient;
+    private final ExchangeApiClient binanceClient;
 
     public CryptoInfoBot(BotConfig botConfig, BotUserRepository botUserRepository,
-                         TradingPairRepository tradingPairRepository, BinanceClient binanceClient) {
+                         TradingPairRepository tradingPairRepository, BinanceExchangeApiClient binanceClient) {
         super(botConfig.getBotToken());
         this.botConfig = botConfig;
         this.username = getBotUsername();
@@ -109,15 +106,22 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     onGetAllFavoritePairs(chatId);
                     break;
                 }
+                case ("/get_frequently_asked_pairs"): {
+                    onGetFAPairs(chatId);
+                    break;
+                }
                 default:
                     if (receivedMessage.startsWith("/get_currency")) {
-                        Set<String> pairs = getPairsFromCommand(receivedMessage, 13);
-                        pairs.forEach(p -> {addPairIfNoExistToList(p); increasePairRate(p);});
+                        List<String> pairs = getPairsFromCommand(receivedMessage, 13);
+                        pairs.forEach(p -> {
+                            addPairIfNoExistToList(p);
+                            increasePairRate(p);
+                        });
                         sendAnswer(chatId, binanceClient.getCurrency(pairs));
                         log.info("Got currency of pairs: " + pairs);
                     } else if (receivedMessage.startsWith("/add_pair")) {
-                        Set<String> pairs = getPairsFromCommand(receivedMessage, 9);
-                        if (binanceClient.checkPairs(pairs)) {
+                        List<String> pairs = getPairsFromCommand(receivedMessage, 9);
+                        if (binanceClient.checkPair(pairs)) {
                             if (botUserRepository.findById(chatId).isPresent()) {
                                 BotUser currUser = botUserRepository.findById(chatId).get();
                                 pairs.forEach(p -> currUser.getFavorites().add(addPairIfNoExistToList(p)));
@@ -162,12 +166,28 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
 
     private void onGetAllFavoritePairs(long chatId) {
         if (botUserRepository.findById(chatId).isPresent()) {
-            Set<TradingPair> userPairs = tradingPairRepository.getUsersFavoritePairs(chatId);
+            Set<TradingPair> userPairs = botUserRepository.getUsersFavoritePairs(chatId);
             if (!userPairs.isEmpty()) {
-                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(p -> p.name).collect(Collectors.toSet())));
+                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(p -> p.name).collect(Collectors.toList())));
                 userPairs.forEach(p -> increasePairRate(p.getName()));
             } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command");
         } else sendAnswer(chatId, "You need to register by /start command to have possibility to get favorite pairs");
+    }
+
+    private void onGetFAPairs(long chatId) {
+        List<TradingPair> popularPairs = tradingPairRepository.getPopularPairs();
+        if (!popularPairs.isEmpty()) {
+            String prices = binanceClient.getCurrency(popularPairs.stream().map(p -> p.name).collect(Collectors.toList()));
+            String[] pricesRows = prices.split("\n");
+            StringBuilder sb = new StringBuilder(pricesRows[0] + "\n");
+            for (TradingPair p : popularPairs) {
+                for (int i = 1; i < pricesRows.length; i++) {
+                    if (pricesRows[i].contains(p.name))
+                        sb.append(pricesRows[i] += ", asked " + p.requests + " times\n");
+                }
+            }
+            sendAnswer(chatId, sb.toString());
+        } else sendAnswer(chatId, "Sorry, our pair rank list is empty at the moment");
     }
 
     private void sendAnswer(long chatId, String answer) {
@@ -195,8 +215,8 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
         }
     }
 
-    private Set<String> getPairsFromCommand(String command, int commandShift) {
-        Set<String> pairs = new HashSet<>();
+    private List<String> getPairsFromCommand(String command, int commandShift) {
+        List<String> pairs = new ArrayList<>();
         String userInput = command.substring(commandShift).replaceAll(" ", "").toUpperCase();
         if (userInput.contains(",")) {
             pairs.addAll(Arrays.asList(userInput.split(",")));

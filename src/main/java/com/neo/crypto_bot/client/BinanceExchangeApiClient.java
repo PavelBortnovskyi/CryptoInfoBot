@@ -12,12 +12,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
+
 
 @Log4j2
 @Component
 @RequiredArgsConstructor
-public class BinanceClient {
+public class BinanceExchangeApiClient implements ExchangeApiClient {
 
     private final OkHttpClient okHttpClient;
 
@@ -32,7 +33,7 @@ public class BinanceClient {
 
     private final ObjectMapper objectMapper;
 
-    public String getCurrency(Set<String> pairs) {
+    public String getCurrency(List<String> pairs) {
         StringBuilder sb = new StringBuilder(priceUrl);
         sb.append(this.defineSymbolParam(pairs));
 
@@ -41,16 +42,20 @@ public class BinanceClient {
         if (jsonNode.has("msg"))
             sb.append(String.format("Got some error from server response: %s\n Please check your input.", jsonNode.get("msg")));
         else {
+            int[] index = new int[1];
+            index[0] = 1;
             if (jsonNode.isArray()) {
-                jsonNode.forEach(n -> sb.append(String.format("Current price of %s: %s", n.get("symbol"), n.get("price"))).append("\n"));
+                sb.append("Current price(s) for pair(s):\n");
+                jsonNode.forEach(n -> sb.append(String.format("%d) %s: %s", index[0]++, n.get("symbol"), n.get("price"))).append("\n"));
             } else if (jsonNode.isObject()) {
-                sb.append(String.format("Current price of %s: %s", jsonNode.get("symbol"), jsonNode.get("price")));
+                sb.append("Current price(s) for pair(s):\n");
+                sb.append(String.format("%d) %s: %s", index[0]++, jsonNode.get("symbol"), jsonNode.get("price")));
             }
         }
         return sb.toString();
     }
 
-    public boolean checkPairs(Set<String> pairs) {
+    public boolean checkPair(List<String> pairs) {
         StringBuilder sb = new StringBuilder(priceUrl);
         sb.append(this.defineSymbolParam(pairs));
 
@@ -59,7 +64,7 @@ public class BinanceClient {
         else return true;
     }
 
-    private JsonNode makeRequest(String url) {
+    public JsonNode makeRequest(String url) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -73,7 +78,7 @@ public class BinanceClient {
         }
     }
 
-    private String defineSymbolParam(Set<String> pairs) {
+    private String defineSymbolParam(List<String> pairs) {
         StringBuilder sb = new StringBuilder();
         if (pairs.size() > 1) {
             sb.append("?symbols=[");
