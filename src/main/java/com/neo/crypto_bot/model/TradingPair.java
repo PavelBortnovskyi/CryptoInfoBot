@@ -14,7 +14,7 @@ public class TradingPair {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String name;
+    private String name;
 
-    public long requests;
+    private long requests;
 }

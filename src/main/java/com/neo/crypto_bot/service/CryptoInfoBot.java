@@ -56,7 +56,7 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
         botCommands.add(new BotCommand("/add_pair", "add pair to favorites"));
         botCommands.add(new BotCommand("/remove_pair", "removes pair form favorites"));
         botCommands.add(new BotCommand("/get_all_favorite_pairs", "get currencies of pairs from favorites list"));
-        botCommands.add(new BotCommand("/get_frequently_asked_pairs", "get top 25 frequently searched pairs with currencies"));
+        botCommands.add(new BotCommand("/get_popular_pairs", "get top 25 frequently searched pairs with currencies"));
         botCommands.add(new BotCommand("/settings", "set your preferences"));
         try {
             this.execute(new SetMyCommands(this.botCommands, new BotCommandScopeDefault(), null));
@@ -106,8 +106,8 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     onGetAllFavoritePairs(chatId);
                     break;
                 }
-                case ("/get_frequently_asked_pairs"): {
-                    onGetFAPairs(chatId);
+                case ("/get_popular_pairs"): {
+                    onGetPopularPairs(chatId);
                     break;
                 }
                 default:
@@ -168,22 +168,25 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
         if (botUserRepository.findById(chatId).isPresent()) {
             Set<TradingPair> userPairs = botUserRepository.getUsersFavoritePairs(chatId);
             if (!userPairs.isEmpty()) {
-                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(p -> p.name).collect(Collectors.toList())));
+                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())));
                 userPairs.forEach(p -> increasePairRate(p.getName()));
             } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command");
         } else sendAnswer(chatId, "You need to register by /start command to have possibility to get favorite pairs");
     }
 
-    private void onGetFAPairs(long chatId) {
+    private void onGetPopularPairs(long chatId) {
         List<TradingPair> popularPairs = tradingPairRepository.getPopularPairs();
         if (!popularPairs.isEmpty()) {
-            String prices = binanceClient.getCurrency(popularPairs.stream().map(p -> p.name).collect(Collectors.toList()));
+            String prices = binanceClient.getCurrency(popularPairs.stream().map(TradingPair::getName).collect(Collectors.toList()));
             String[] pricesRows = prices.split("\n");
             StringBuilder sb = new StringBuilder(pricesRows[0] + "\n");
+            int index = 1;
             for (TradingPair p : popularPairs) {
                 for (int i = 1; i < pricesRows.length; i++) {
-                    if (pricesRows[i].contains(p.name))
-                        sb.append(pricesRows[i] += ", asked " + p.requests + " times\n");
+                    if (pricesRows[i].contains(p.getName())) {
+                        pricesRows[i] = pricesRows[i].replaceAll("\\b\\d+\\)", index++ + ") ");
+                        sb.append(pricesRows[i] += ", asked " + p.getRequests() + " times\n");
+                    }
                 }
             }
             sendAnswer(chatId, sb.toString());
