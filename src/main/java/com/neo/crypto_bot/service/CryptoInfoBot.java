@@ -8,6 +8,7 @@ import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -172,6 +173,16 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                 userPairs.forEach(p -> increasePairRate(p.getName()));
             } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command");
         } else sendAnswer(chatId, "You need to register by /start command to have possibility to get favorite pairs");
+    }
+
+    /**
+     * Method sends currencies of favorite pairs for each bot user at 8:00 server time
+     */
+    @Scheduled(cron = "0 0 8 * * *")
+    private void sendUserFavoritePairCurrencies() {
+        List<BotUser> botUsers = botUserRepository.findAll().stream().filter(u -> !u.getFavorites().isEmpty()).toList();
+        botUsers.forEach(u -> onGetAllFavoritePairs(u.getId()));
+        log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
 
     private void onGetPopularPairs(long chatId) {
