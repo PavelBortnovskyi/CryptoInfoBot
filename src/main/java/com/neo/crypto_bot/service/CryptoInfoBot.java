@@ -17,6 +17,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDateTime;
@@ -93,14 +95,9 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     onDeleteCommandReceiver(chatId);
                     break;
                 }
-                case ("/get_currency"): {
-                    sendAnswer(chatId, "You should use this command in /get_currency BTCUSDT format \n " +
-                            "or  /get_currency BTCUSDT, LTCUSDT to get few pairs info");
-                    break;
-                }
                 case ("/add_pair"): {
                     sendAnswer(chatId, "You should use this command in /add_pair BTCUSDT format \n " +
-                            "or  /add_pair BTCUSDT, LTCUSDT to add few pairs to favorites");
+                            "or  /add_pair BTCUSDT, LTCUSDT to add few pairs to favorites", null);
                     break;
                 }
                 case ("/get_all_favorite_pairs"): {
@@ -112,28 +109,34 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     break;
                 }
                 default:
-                    if (receivedMessage.startsWith("/get_currency")) {
-                        List<String> pairs = getPairsFromCommand(receivedMessage, 13);
+                    List<String> pairs = getPairsFromCommand(receivedMessage, 0);
+                    String exchangeResponse = binanceClient.getCurrency(pairs);
+                    boolean invalidPairInput = exchangeResponse.contains("error");
+                    if (!invalidPairInput) {
                         pairs.forEach(p -> {
                             addPairIfNoExistToList(p);
                             increasePairRate(p);
                         });
-                        sendAnswer(chatId, binanceClient.getCurrency(pairs));
+                        sendAnswer(chatId, binanceClient.getCurrency(pairs), getKeyboardWithTop25Pairs());
                         log.info("Got currency of pairs: " + pairs);
+                    } else if (invalidPairInput) {
+                        sendAnswer(chatId, exchangeResponse, getKeyboardWithTop25Pairs());
+                        log.error("Wrong user input or exchange no have such pair listing: " + pairs);
                     } else if (receivedMessage.startsWith("/add_pair")) {
-                        List<String> pairs = getPairsFromCommand(receivedMessage, 9);
+                        pairs = getPairsFromCommand(receivedMessage, 9);
                         if (binanceClient.checkPair(pairs)) {
                             if (botUserRepository.findById(chatId).isPresent()) {
                                 BotUser currUser = botUserRepository.findById(chatId).get();
                                 pairs.forEach(p -> currUser.getFavorites().add(addPairIfNoExistToList(p)));
                                 botUserRepository.save(currUser);
-                                sendAnswer(chatId, pairs.toString() + " added to your favorite list");
+                                sendAnswer(chatId, pairs.toString() + " added to your favorite list", null);
                                 log.info(String.format("User with chatId: %s added %s pair(s) to follow", chatId, pairs));
                             } else
-                                sendAnswer(chatId, "You need to register by /start command to have possibility to add favorite pairs");
-                        } else sendAnswer(chatId, "Looks like Binance does not have mentioned pairs, try different");
+                                sendAnswer(chatId, "You need to register by /start command to have possibility to add favorite pairs", null);
+                        } else
+                            sendAnswer(chatId, "Looks like Binance does not have mentioned pairs, try different", null);
                     } else {
-                        sendAnswer(chatId, "Bot is under development, this command is not supported for now");
+                        sendAnswer(chatId, "Bot is under development, this command is not supported for now", null);
                     }
             }
         }
@@ -142,8 +145,9 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
     private void onStartCommandReceived(long chatId, String name) {
         StringBuilder sb = new StringBuilder("Hi, " + name + " , nice to meet you!\n");
         sb.append("This bot is created to get quick info and some statistic about trading pairs on Binance.\n");
+        sb.append("Just write pair symbols to get currency (Example: BTCUSDT)");
         sb.append("You can get more information with /help command");
-        sendAnswer(chatId, sb.toString());
+        sendAnswer(chatId, sb.toString(), getKeyboardWithTop25Pairs());
     }
 
     private void onMyDataCommandReceived(long chatId) {
@@ -154,25 +158,26 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     .append("FirstName: ").append(currUser.getFirstName()).append("\n")
                     .append("LastName: ").append(currUser.getLastName()).append("\n")
                     .append("Registered at: ").append(currUser.getRegisteredAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            sendAnswer(chatId, sb.toString());
-        } else sendAnswer(chatId, "We no have any data about you, press /start to register");
+            sendAnswer(chatId, sb.toString(), null);
+        } else sendAnswer(chatId, "We no have any data about you, press /start to register", null);
     }
 
     private void onDeleteCommandReceiver(long chatId) {
         if (botUserRepository.findById(chatId).isPresent()) {
             botUserRepository.deleteById(chatId);
             log.info("Deleted data about user with chatID: " + chatId);
-        } else sendAnswer(chatId, "We no have any data about you, press /start to register");
+        } else sendAnswer(chatId, "We no have any data about you, press /start to register", null);
     }
 
     private void onGetAllFavoritePairs(long chatId) {
         if (botUserRepository.findById(chatId).isPresent()) {
             Set<TradingPair> userPairs = botUserRepository.getUsersFavoritePairs(chatId);
             if (!userPairs.isEmpty()) {
-                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())));
+                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())), null);
                 userPairs.forEach(p -> increasePairRate(p.getName()));
-            } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command");
-        } else sendAnswer(chatId, "You need to register by /start command to have possibility to get favorite pairs");
+            } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command", null);
+        } else
+            sendAnswer(chatId, "You need to register by /start command to have possibility to get favorite pairs", null);
     }
 
     /**
@@ -200,19 +205,20 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     }
                 }
             }
-            sendAnswer(chatId, sb.toString());
-        } else sendAnswer(chatId, "Sorry, our pair rank list is empty at the moment");
+            sendAnswer(chatId, sb.toString(), null);
+        } else sendAnswer(chatId, "Sorry, our pair rank list is empty at the moment", null);
     }
 
-    private void sendAnswer(long chatId, String answer) {
+    private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(answer);
-
+        if (keyboardMarkup != null)
+            message.setReplyMarkup(keyboardMarkup);
         try {
             execute(message);
         } catch (TelegramApiException e) {
-
+            log.error("Got some TelegramAPI exception: " + e.getMessage());
         }
     }
 
@@ -251,5 +257,23 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
             log.info("New pair added to list: " + tradingPairName);
             return tradingPairRepository.save(tradingPair);
         } else return tradingPairRepository.findByName(tradingPairName).get();
+    }
+
+    private ReplyKeyboardMarkup getKeyboardWithTop25Pairs() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        List<TradingPair> topPairs = tradingPairRepository.getPopularPairs();
+        if (topPairs.size() == 25) {
+            int rowIndex = 0;
+            keyboardRows.add(new KeyboardRow());
+            for (int i = 0; i < 25; i++) {
+                if (keyboardRows.get(rowIndex).size() % 5 == 0) {
+                    keyboardRows.add(new KeyboardRow());
+                    rowIndex++;
+                }
+                keyboardRows.get(rowIndex).add(topPairs.get(i).getName());
+            }
+            return keyboardMarkup;
+        } else return null;
     }
 }
