@@ -1,6 +1,7 @@
 package com.neo.crypto_bot.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.neo.crypto_bot.model.TradingPair;
 
 import java.util.List;
 
@@ -12,4 +13,10 @@ public interface ExchangeApiClient {
     JsonNode makeRequest(String url);
 
     String getCurrency(List<String> pairs);
+
+    public List<TradingPair> getListing();
+
+    public List<TradingPair> getConvertiblePairs(String name);
+
+    public TradingPair getPair(String name);
 }

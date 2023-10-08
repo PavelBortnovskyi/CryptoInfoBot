@@ -25,4 +25,7 @@ public interface TradingPairRepository extends JpaRepository<TradingPair, Long> 
 
     @Query(value = "select * from trading_pairs p order by p.requests DESC limit 25", nativeQuery = true)
     List<TradingPair> getPopularPairs();
+
+    @Query(value = "select p from TradingPair p where p.baseAsset = :assetName")
+    List<TradingPair> getConvertibleAssets(@Param("assetName") String baseAssetName);
 }

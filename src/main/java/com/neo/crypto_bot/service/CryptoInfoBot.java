@@ -40,22 +40,23 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
 
     private final TradingPairRepository tradingPairRepository;
 
-    private final ExchangeApiClient binanceClient;
+    private final ExchangeApiClient exchangeClient;
+
+    private String tempAssetName = "None";
 
     public CryptoInfoBot(BotConfig botConfig, BotUserRepository botUserRepository,
-                         TradingPairRepository tradingPairRepository, BinanceExchangeApiClient binanceClient) {
+                         TradingPairRepository tradingPairRepository, BinanceExchangeApiClient exchangeClient) {
         super(botConfig.getBotToken());
         this.botConfig = botConfig;
         this.username = getBotUsername();
         this.botCommands = new ArrayList<>();
         this.botUserRepository = botUserRepository;
         this.tradingPairRepository = tradingPairRepository;
-        this.binanceClient = binanceClient;
+        this.exchangeClient = exchangeClient;
         botCommands.add(new BotCommand("/start", "get started"));
         botCommands.add(new BotCommand("/my_data", "get info about user"));
         botCommands.add(new BotCommand("/delete_my_data", "remove all info about user"));
         botCommands.add(new BotCommand("/help", "get full commands list"));
-        botCommands.add(new BotCommand("/get_currency", "get pair actual currency"));
         botCommands.add(new BotCommand("/add_pair", "add pair to favorites"));
         botCommands.add(new BotCommand("/remove_pair", "removes pair form favorites"));
         botCommands.add(new BotCommand("/get_all_favorite_pairs", "get currencies of pairs from favorites list"));
@@ -109,35 +110,57 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                     break;
                 }
                 default:
-                    List<String> pairs = getPairsFromCommand(receivedMessage, 0);
-                    String exchangeResponse = binanceClient.getCurrency(pairs);
-                    boolean invalidPairInput = exchangeResponse.contains("error");
-                    if (!invalidPairInput) {
-                        pairs.forEach(p -> {
-                            addPairIfNoExistToList(p);
-                            increasePairRate(p);
-                        });
-                        sendAnswer(chatId, binanceClient.getCurrency(pairs), getKeyboardWithTop25Pairs());
-                        log.info("Got currency of pairs: " + pairs);
-                    } else if (invalidPairInput) {
-                        sendAnswer(chatId, exchangeResponse, getKeyboardWithTop25Pairs());
-                        log.error("Wrong user input or exchange no have such pair listing: " + pairs);
-                    } else if (receivedMessage.startsWith("/add_pair")) {
-                        pairs = getPairsFromCommand(receivedMessage, 9);
-                        if (binanceClient.checkPair(pairs)) {
+                    if (receivedMessage.startsWith("/add_pair")) {
+                        List<String> pairs = getPairsFromCommand(receivedMessage, 9);
+                        if (exchangeClient.checkPair(pairs)) {
                             if (botUserRepository.findById(chatId).isPresent()) {
                                 BotUser currUser = botUserRepository.findById(chatId).get();
-                                pairs.forEach(p -> currUser.getFavorites().add(addPairIfNoExistToList(p)));
+                                pairs.forEach(p -> {
+                                    addPairIfNoExistToList(p);
+                                    currUser.getFavorites().add(exchangeClient.getPair(p));
+                                });
                                 botUserRepository.save(currUser);
-                                sendAnswer(chatId, pairs.toString() + " added to your favorite list", null);
+                                sendAnswer(chatId, pairs + " added to your favorite list", null);
                                 log.info(String.format("User with chatId: %s added %s pair(s) to follow", chatId, pairs));
                             } else
                                 sendAnswer(chatId, "You need to register by /start command to have possibility to add favorite pairs", null);
                         } else
                             sendAnswer(chatId, "Looks like Binance does not have mentioned pairs, try different", null);
-                    } else {
-                        sendAnswer(chatId, "Bot is under development, this command is not supported for now", null);
                     }
+                    processUserInput(chatId, receivedMessage);
+            }
+        }
+    }
+
+
+    private void processUserInput(long chatId, String receivedMessage) {
+        List<String> pairs = getPairsFromCommand(receivedMessage, 0);
+        //Offer second asset to user if he entered only single asset name
+        if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
+            tempAssetName = pairs.get(0);
+            sendAnswer(chatId, "Please choose asset to get pair currency", getKeyboardWithConvertibles2(pairs.get(0)));
+        } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
+            //String pair = tempAssetName.toUpperCase().equals("BTC") ? pairs.get(0) + tempAssetName : tempAssetName + pairs.get(0);
+            String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)));
+            sendAnswer(chatId, answer, getKeyboardWithTop25Pairs());
+            if (!answer.contains("error")) {
+                addPairIfNoExistToList(tempAssetName + pairs.get(0));
+                increasePairRate(tempAssetName + pairs.get(0));
+            }
+            tempAssetName = "None";
+        } else {
+            String exchangeResponse = exchangeClient.getCurrency(pairs); //Try to get currencies of entered pairs from exchange
+            boolean invalidPairInput = exchangeResponse.contains("error");
+            if (!invalidPairInput) {
+                pairs.forEach(p -> {
+                    //addPairIfNoExistToList(p);
+                    increasePairRate(p);
+                });
+                sendAnswer(chatId, exchangeClient.getCurrency(pairs), getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
+                log.info("Got currency of pairs: " + pairs);
+            } else if (invalidPairInput) {
+                sendAnswer(chatId, exchangeResponse, getKeyboardWithTop25Pairs());
+                log.error("Wrong user input or exchange no have such pair listing: " + pairs);
             }
         }
     }
@@ -145,8 +168,10 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
     private void onStartCommandReceived(long chatId, String name) {
         StringBuilder sb = new StringBuilder("Hi, " + name + " , nice to meet you!\n");
         sb.append("This bot is created to get quick info and some statistic about trading pairs on Binance.\n");
-        sb.append("Just write pair symbols to get currency (Example: BTCUSDT)");
+        sb.append("Just write pair symbols to get currency (Example: BTCUSDT or few pairs: BTCUSDT, LTCUSDT).\n");
         sb.append("You can get more information with /help command");
+        List<TradingPair> list = exchangeClient.getListing(); //TODO: remove from here
+        tradingPairRepository.saveAll(list);
         sendAnswer(chatId, sb.toString(), getKeyboardWithTop25Pairs());
     }
 
@@ -173,7 +198,7 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
         if (botUserRepository.findById(chatId).isPresent()) {
             Set<TradingPair> userPairs = botUserRepository.getUsersFavoritePairs(chatId);
             if (!userPairs.isEmpty()) {
-                sendAnswer(chatId, binanceClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())), null);
+                sendAnswer(chatId, exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())), null);
                 userPairs.forEach(p -> increasePairRate(p.getName()));
             } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command", null);
         } else
@@ -193,7 +218,7 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
     private void onGetPopularPairs(long chatId) {
         List<TradingPair> popularPairs = tradingPairRepository.getPopularPairs();
         if (!popularPairs.isEmpty()) {
-            String prices = binanceClient.getCurrency(popularPairs.stream().map(TradingPair::getName).collect(Collectors.toList()));
+            String prices = exchangeClient.getCurrency(popularPairs.stream().map(TradingPair::getName).collect(Collectors.toList()));
             String[] pricesRows = prices.split("\n");
             StringBuilder sb = new StringBuilder(pricesRows[0] + "\n");
             int index = 1;
@@ -251,8 +276,7 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
 
     private TradingPair addPairIfNoExistToList(String tradingPairName) {
         if (tradingPairRepository.findByName(tradingPairName).isEmpty()) {
-            TradingPair tradingPair = new TradingPair();
-            tradingPair.setName(tradingPairName);
+            TradingPair tradingPair = exchangeClient.getPair(tradingPairName);
             tradingPair.setRequests(0);
             log.info("New pair added to list: " + tradingPairName);
             return tradingPairRepository.save(tradingPair);
@@ -273,7 +297,42 @@ public class CryptoInfoBot extends TelegramLongPollingBot {
                 }
                 keyboardRows.get(rowIndex).add(topPairs.get(i).getName());
             }
+            keyboardMarkup.setKeyboard(keyboardRows);
             return keyboardMarkup;
         } else return null;
+    }
+
+    private ReplyKeyboardMarkup getKeyboardWithConvertibles(String baseAssetName) {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        List<TradingPair> convertiblePairs = exchangeClient.getConvertiblePairs(baseAssetName);
+        int rowIndex = 0;
+        keyboardRows.add(new KeyboardRow());
+        for (TradingPair p : convertiblePairs) {
+            if (keyboardRows.get(rowIndex).size() == 5) {
+                keyboardRows.add(new KeyboardRow());
+                rowIndex++;
+            } else
+                keyboardRows.get(rowIndex).add(p.getQuoteAsset());
+        }
+        keyboardMarkup.setKeyboard(keyboardRows);
+        return keyboardMarkup;
+    }
+
+    private ReplyKeyboardMarkup getKeyboardWithConvertibles2(String baseAssetName) {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        List<TradingPair> convertiblePairs = tradingPairRepository.getConvertibleAssets(baseAssetName);
+        int rowIndex = 0;
+        keyboardRows.add(new KeyboardRow());
+        for (TradingPair p : convertiblePairs) {
+            if (keyboardRows.get(rowIndex).size() == 5) {
+                keyboardRows.add(new KeyboardRow());
+                rowIndex++;
+            } else
+                keyboardRows.get(rowIndex).add(p.getQuoteAsset());
+        }
+        keyboardMarkup.setKeyboard(keyboardRows);
+        return keyboardMarkup;
     }
 }

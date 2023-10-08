@@ -16,6 +16,9 @@ public class BinanceClientConfig {
     @Value("${binance.api.avgPrice.url}")
     private String avgPriceUrl;
 
+    @Value("${binance.api.convertible.url}")
+    private String convertibleUrl;
+
     @Bean(name = "priceUrl")
     public String getPriceUrl() {
         return this.priceUrl;
@@ -29,5 +32,10 @@ public class BinanceClientConfig {
     @Bean(name = "avgPriceUrl")
     public String getAvgPriceUrl() {
         return this.avgPriceUrl;
+    }
+
+    @Bean(name = "convertibleUrl")
+    public String getConvertibleUrl() {
+        return this.convertibleUrl;
     }
 }

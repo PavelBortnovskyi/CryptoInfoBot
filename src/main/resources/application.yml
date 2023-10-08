@@ -6,9 +6,11 @@ binance:
   tickerPrice:
    url: https://api.binance.com/api/v3/ticker/price
   exchangeInfo:
-   url: https://testnet.binance.vision/api/v3/exchangeInfo
+   url: https://api.binance.com/api/v3/exchangeInfo
   avgPrice:
-   url: https://testnet.binance.vision/api/v3/avgPrice
+   url: https://api.binance.com/api/v3/avgPrice
+  convertible:
+   url: https://api.binance.com/sapi/v1/convert/exchangeInfo
 spring:
  output:
   ansi:

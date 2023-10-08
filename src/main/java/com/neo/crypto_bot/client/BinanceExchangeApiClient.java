@@ -2,6 +2,7 @@ package com.neo.crypto_bot.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.neo.crypto_bot.model.TradingPair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import okhttp3.OkHttpClient;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +33,8 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
     @Qualifier("exchangeInfoUrl")
     private final String exchangeInfoUrl;
 
+    @Qualifier("convertibleUrl")
+    private final String convertibleUrl;
     private final ObjectMapper objectMapper;
 
     public String getCurrency(List<String> pairs) {
@@ -55,6 +59,36 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         return sb.toString();
     }
 
+    public List<TradingPair> getListing() {
+        List<TradingPair> assetsList = new ArrayList<>();
+        JsonNode jsonNode = makeRequest(exchangeInfoUrl + "?permissions=SPOT");
+        JsonNode rawAssetsList = jsonNode.get("symbols");
+        rawAssetsList.forEach(a -> {
+            TradingPair asset = new TradingPair();
+            asset.setName(a.get("symbol").asText());
+            asset.setBaseAsset(a.get("baseAsset").asText());
+            asset.setQuoteAsset(a.get("quoteAsset").asText());
+            asset.setRequests(0);
+            assetsList.add(asset);
+        });
+        return assetsList;
+    }
+
+    public List<TradingPair> getConvertiblePairs(String name) {
+        List<TradingPair> assetsList = new ArrayList<>();
+        JsonNode jsonNode = makeRequest(convertibleUrl + "?fromAsset=" + name);
+        jsonNode.forEach(a -> {
+            TradingPair asset = new TradingPair();
+            asset.setName(name + a.get("toAsset").asText());
+            asset.setBaseAsset(a.get("fromAsset").asText());
+            asset.setQuoteAsset(a.get("toAsset").asText());
+            asset.setRequests(0);
+            assetsList.add(asset);
+        });
+        return assetsList;
+    }
+
+
     public boolean checkPair(List<String> pairs) {
         StringBuilder sb = new StringBuilder(priceUrl);
         sb.append(this.defineSymbolParam(pairs));
@@ -62,6 +96,18 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         JsonNode jsonNode = makeRequest(sb.toString());
         if (jsonNode.has("msg")) return false;
         else return true;
+    }
+
+    public TradingPair getPair(String name) {
+        StringBuilder sb = new StringBuilder(exchangeInfoUrl);
+        sb.append(this.defineSymbolParam(List.of(name)));
+
+        JsonNode jsonNode = makeRequest(sb.toString());
+        TradingPair pair = new TradingPair();
+        pair.setName(name);
+        pair.setBaseAsset(jsonNode.get("symbols").get("baseAsset").asText());
+        pair.setQuoteAsset(jsonNode.get("symbols").get("quoteAsset").asText());
+        return pair;
     }
 
     public JsonNode makeRequest(String url) {

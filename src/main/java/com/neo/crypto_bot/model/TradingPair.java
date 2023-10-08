@@ -16,5 +16,9 @@ public class TradingPair {
 
     private String name;
 
+    private String baseAsset;
+
+    private String quoteAsset;
+
     private long requests;
 }
