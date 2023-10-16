@@ -88,7 +88,6 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         return assetsList;
     }
 
-
     public boolean checkPair(List<String> pairs) {
         StringBuilder sb = new StringBuilder(priceUrl);
         sb.append(this.defineSymbolParam(pairs));

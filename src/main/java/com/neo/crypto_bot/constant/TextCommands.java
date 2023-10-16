@@ -22,7 +22,7 @@ public interface TextCommands {
 
     String REMOVE_PAIR = "remove_pair";
 
-    String RM_DESCRIPTION = "removes pair form favorites";
+    String RP_DESCRIPTION = "removes pair from favorites";
 
     String GET_ALL_FAVORITE_PAIRS = "get_all_favorite_pairs";
 
