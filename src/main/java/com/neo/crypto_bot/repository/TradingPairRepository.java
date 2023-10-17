@@ -23,6 +23,11 @@ public interface TradingPairRepository extends JpaRepository<TradingPair, Long> 
     @Query(value = "update TradingPair p set p.requests = p.requests + 1 where p.name = :name")
     void increaseRate(@Param("name") String pairName);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update TradingPair p set p.lastCurrency = :price where p.name = :name")
+    void updatePrice(@Param("price") Double price, @Param("name") String pairName);
+
     @Query(value = "select * from trading_pairs p order by p.requests DESC limit 25", nativeQuery = true)
     List<TradingPair> getPopularPairs();
 

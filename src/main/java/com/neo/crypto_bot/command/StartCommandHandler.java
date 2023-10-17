@@ -51,9 +51,10 @@ public class StartCommandHandler extends BotCommand {
         StringBuilder sb = new StringBuilder("Hi, " + chat.getFirstName() + " , nice to meet you!\n");
         sb.append("This bot is created to get quick info and some statistic about trading pairs on Binance.\n");
         sb.append("Just write pair symbols to get currency (Example: BTCUSDT or few pairs: BTCUSDT, LTCUSDT).\n");
+        sb.append("You can also write only 1 asset and you will get possible quote assets to make pair (Example: BTC).\n");
         sb.append("You can get more information with /help command");
         List<TradingPair> list = exchangeClient.getListing(); //TODO: remove from here
-        tradingPairRepository.saveAll(list);
+        if (tradingPairRepository.findAll().isEmpty()) tradingPairRepository.saveAll(list);
         SendMessage messageToSend = SendMessage.builder()
                 .chatId(chat.getId())
                 .text(sb.toString())

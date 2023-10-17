@@ -106,7 +106,15 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         pair.setName(name);
         pair.setBaseAsset(jsonNode.get("symbols").get("baseAsset").asText());
         pair.setQuoteAsset(jsonNode.get("symbols").get("quoteAsset").asText());
+        pair.setLastCurrency(getPrice(name));
         return pair;
+    }
+
+    public Double getPrice(String name) {
+        StringBuilder sb = new StringBuilder(priceUrl);
+        sb.append(this.defineSymbolParam(List.of(name)));
+        JsonNode jsonNode = makeRequest(sb.toString());
+        return jsonNode.get("price").asDouble();
     }
 
     public JsonNode makeRequest(String url) {

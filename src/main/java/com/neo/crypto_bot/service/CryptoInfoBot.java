@@ -2,7 +2,11 @@ package com.neo.crypto_bot.service;
 
 import com.neo.crypto_bot.client.BinanceExchangeApiClient;
 import com.neo.crypto_bot.client.ExchangeApiClient;
+import com.neo.crypto_bot.command.AddPairCommandHandler;
 import com.neo.crypto_bot.config.BotConfig;
+import com.neo.crypto_bot.config.BotStateKeeper;
+import com.neo.crypto_bot.constant.BotState;
+import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
@@ -14,6 +18,7 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -33,8 +38,6 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
     private final BotConfig botConfig;
 
-    private final String username;
-
     private final ReplyKeyboardFactory replyKeyboardFactory;
 
     private final BotUserRepository botUserRepository;
@@ -45,20 +48,22 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
     private final CommandParser commandParser;
 
+    private final BotStateKeeper botStateKeeper;
+
     private String tempAssetName = "None";
 
     public CryptoInfoBot(BotConfig botConfig, BotUserRepository botUserRepository,
                          TradingPairRepository tradingPairRepository, BinanceExchangeApiClient exchangeClient,
-                         ReplyKeyboardFactory replyKeyboardFactory, CommandParser commandParser) {
+                         ReplyKeyboardFactory replyKeyboardFactory, CommandParser commandParser, BotStateKeeper botStateKeeper) {
         super(botConfig.getBotToken());
         this.botConfig = botConfig;
-        this.username = getBotUsername();
         this.botCommands = new ArrayList<>();
         this.botUserRepository = botUserRepository;
         this.tradingPairRepository = tradingPairRepository;
         this.exchangeClient = exchangeClient;
         this.replyKeyboardFactory = replyKeyboardFactory;
         this.commandParser = commandParser;
+        this.botStateKeeper = botStateKeeper;
         botCommands.add(new BotCommand("/start", "get started"));
         botCommands.add(new BotCommand("/my_data", "get info about user"));
         botCommands.add(new BotCommand("/delete_my_data", "remove all info about user"));
@@ -77,7 +82,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
     @Override
     public String getBotUsername() {
-        return "${bot.name}";
+        return botConfig.getBotName();
     }
 
     @Override
@@ -89,54 +94,55 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             if (Objects.nonNull(command)) {
                 command.processMessage(this, message, new String[]{});
             } else {
-                processUserInput(update.getMessage().getChatId(), text);
+                processUserInput(update.getMessage().getChat(), text);
             }
         }
     }
 
-    private void processUserInput(long chatId, String receivedMessage) {
+    private void processUserInput(Chat chat, String receivedMessage) {
         List<String> pairs = commandParser.getPairsFromCommand(receivedMessage);
+        long chatId = chat.getId();
         //Offer second asset to user if he entered only single asset name
-        if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
-            tempAssetName = pairs.get(0);
-            sendAnswer(chatId, "Please choose asset to get pair currency", replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
-        } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
-            //String pair = tempAssetName.toUpperCase().equals("BTC") ? pairs.get(0) + tempAssetName : tempAssetName + pairs.get(0);
-            String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)));
-            sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
-            if (!answer.contains("error")) {
-                addPairIfNoExistToList(tempAssetName + pairs.get(0));
-                increasePairRate(tempAssetName + pairs.get(0));
+        switch (botStateKeeper.getBotState()) {
+            case INPUT_FOR_CURRENCY -> {
+                if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
+                    tempAssetName = pairs.get(0);
+                    sendAnswer(chatId, "Please choose asset to get pair currency", replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
+                    //String pair = tempAssetName.toUpperCase().equals("BTC") ? pairs.get(0) + tempAssetName : tempAssetName + pairs.get(0);
+                    String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)));
+                    sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
+                    if (!answer.contains("error")) {
+                        addPairIfNoExistToList(tempAssetName + pairs.get(0));
+                        increasePairRate(tempAssetName + pairs.get(0));
+                    }
+                    tempAssetName = "None";
+                } else {
+                    String exchangeResponse = exchangeClient.getCurrency(pairs); //Try to get currencies of entered pairs from exchange
+                    boolean invalidPairInput = exchangeResponse.contains("error");
+                    if (!invalidPairInput) {
+                        pairs.forEach(p -> {
+                            //addPairIfNoExistToList(p);
+                            increasePairRate(p);
+                        });
+                        sendAnswer(chatId, exchangeClient.getCurrency(pairs), replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
+                        log.info("Got currency of pairs: " + pairs);
+                    } else if (invalidPairInput) {
+                        sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs());
+                        log.error("Wrong user input or exchange no have such pair listing: " + pairs);
+                    }
+                }
             }
-            tempAssetName = "None";
-        } else {
-            String exchangeResponse = exchangeClient.getCurrency(pairs); //Try to get currencies of entered pairs from exchange
-            boolean invalidPairInput = exchangeResponse.contains("error");
-            if (!invalidPairInput) {
-                pairs.forEach(p -> {
-                    //addPairIfNoExistToList(p);
-                    increasePairRate(p);
-                });
-                sendAnswer(chatId, exchangeClient.getCurrency(pairs), replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
-                log.info("Got currency of pairs: " + pairs);
-            } else if (invalidPairInput) {
-                sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs());
-                log.error("Wrong user input or exchange no have such pair listing: " + pairs);
+            case INPUT_FOR_ADD -> {
+                this.executeCommand(TextCommands.ADD_PAIR, receivedMessage, chat);
+                botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
+            }
+            case INPUT_FOR_REMOVE -> {
+                this.executeCommand(TextCommands.REMOVE_PAIR, receivedMessage, chat);
+                botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
             }
         }
     }
-
-    private void onGetAllFavoritePairs(long chatId) {
-        if (botUserRepository.findById(chatId).isPresent()) {
-            Set<TradingPair> userPairs = botUserRepository.getUsersFavoritePairs(chatId);
-            if (!userPairs.isEmpty()) {
-                sendAnswer(chatId, exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())), null);
-                userPairs.forEach(p -> increasePairRate(p.getName()));
-            } else sendAnswer(chatId, "You no have favorite pair, please add them using /add command", null);
-        } else
-            sendAnswer(chatId, "You need to register by /start command to have possibility to get favorite pairs", null);
-    }
-
 
     /**
      * Method sends currencies of favorite pairs for each bot user at 8:00 server time
@@ -144,7 +150,11 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     @Scheduled(cron = "0 0 8 * * *")
     private void sendUserFavoritePairCurrencies() {
         List<BotUser> botUsers = botUserRepository.findAll().stream().filter(u -> !u.getFavorites().isEmpty()).toList();
-        botUsers.forEach(u -> onGetAllFavoritePairs(u.getId()));
+        botUsers.forEach(u -> {
+            List<String> userFavorites = u.getFavorites().stream().map(TradingPair::getName).toList();
+            sendAnswer(u.getId(), exchangeClient.getCurrency(userFavorites), null);
+            userFavorites.forEach(this::increasePairRate);
+        });
         log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
 
@@ -159,6 +169,16 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         } catch (TelegramApiException e) {
             log.error("Got some TelegramAPI exception: " + e.getMessage());
         }
+    }
+
+    private void executeCommand(String commandName, String argument, Chat chat) {
+        IBotCommand command = getRegisteredCommand(commandName);
+        Message message = new Message();
+        message.setText("/" + TextCommands.REMOVE_PAIR + " " + argument);
+        message.setChat(chat);
+        String[] arg = new String[1];
+        arg[0] = argument;
+        command.processMessage(this, message, arg);
     }
 
     private void increasePairRate(String tradingPairName) {

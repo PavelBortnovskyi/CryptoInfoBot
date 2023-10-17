@@ -25,7 +25,7 @@ public class HelpCommandHandler extends BotCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {;
         StringBuilder sb = new StringBuilder();
         sb.append("/start - the command is necessary to get full functionality of bot.").append("\n\n");
-        sb.append("It performs user registration and generates inline keyboard with top 25 trading pairs to choose from.").append("\n\n");
+        sb.append("It performs user registration and generates reply keyboard with top 25 trading pairs to choose from.").append("\n\n");
         sb.append("/my_data - shows all private info gathered by bot about you and stored in DB.").append("\n\n");
         sb.append("/delete_my_data - removes all private info gathered by bot about you from DB.").append("\n\n");
         sb.append("/add_pair - adds pair to favorites, makes subscription for every day info about pairs in favorite list and notification in case more than 5% price changes").append("\n\n");

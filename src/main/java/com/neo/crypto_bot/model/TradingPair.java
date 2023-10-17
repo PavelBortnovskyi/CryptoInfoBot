@@ -20,7 +20,7 @@ public class TradingPair {
 
     private String quoteAsset;
 
-    //private String lastCurrency; for scheduled notification sed in case more than 5% change
+    private Double lastCurrency; //for scheduled notification send in case more than 5% change
 
     private long requests;
 }

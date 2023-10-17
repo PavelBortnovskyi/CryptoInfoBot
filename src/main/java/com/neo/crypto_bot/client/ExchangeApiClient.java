@@ -19,4 +19,6 @@ public interface ExchangeApiClient {
     public List<TradingPair> getConvertiblePairs(String name);
 
     public TradingPair getPair(String name);
+
+    public Double getPrice(String name);
 }

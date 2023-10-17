@@ -1,6 +1,8 @@
 package com.neo.crypto_bot.command;
 
 import com.neo.crypto_bot.client.ExchangeApiClient;
+import com.neo.crypto_bot.config.BotStateKeeper;
+import com.neo.crypto_bot.constant.BotState;
 import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -41,19 +44,23 @@ public class AddPairCommandHandler extends BotCommand {
 
     private final CommandParser commandParser;
 
+    private final BotStateKeeper botStateKeeper;
+
     public AddPairCommandHandler(@Value(TextCommands.ADD_PAIR) String commandIdentifier,
                                  @Value(TextCommands.AP_DESCRIPTION) String description,
                                  ExchangeApiClient exchangeClient,
                                  TradingPairRepository tradingPairRepository,
                                  BotUserRepository botUserRepository,
                                  ReplyKeyboardFactory replyKeyboardFactory,
-                                 CommandParser commandParser) {
+                                 CommandParser commandParser,
+                                 BotStateKeeper botStateKeeper) {
         super(commandIdentifier, description);
         this.exchangeClient = exchangeClient;
         this.tradingPairRepository = tradingPairRepository;
         this.botUserRepository = botUserRepository;
         this.replyKeyboardFactory = replyKeyboardFactory;
         this.commandParser = commandParser;
+        this.botStateKeeper = botStateKeeper;
     }
 
     @Override
@@ -69,26 +76,32 @@ public class AddPairCommandHandler extends BotCommand {
                 List<String> pairsToAdd = new ArrayList<>();
                 Arrays.stream(strings).forEach(s -> pairsToAdd.addAll(commandParser.getPairsFromCommand(s)));
                 if (exchangeClient.checkPair(pairsToAdd)) {
+                    List<String> duplicates = new ArrayList<>();
                     pairsToAdd.forEach(p -> {
-                        if (tradingPairRepository.findByName(p).isPresent())
-                            currUser.getFavorites().add(tradingPairRepository.findByName(p).get());
-                        else {
-                            TradingPair pairToAdd = exchangeClient.getPair(p);
-                            tradingPairRepository.save(pairToAdd);
-                            currUser.getFavorites().add(pairToAdd);
-                        }
+                        if (currUser.getFavorites().stream().filter(fp -> fp.getName().equals(p)).collect(Collectors.toList()).isEmpty()) {
+                            if (tradingPairRepository.findByName(p).isPresent()) {
+                                tradingPairRepository.updatePrice(exchangeClient.getPrice(p), p);
+                                currUser.getFavorites().add(tradingPairRepository.findByName(p).get());
+                            } else {
+                                TradingPair pairToAdd = exchangeClient.getPair(p);
+                                tradingPairRepository.save(pairToAdd);
+                                currUser.getFavorites().add(pairToAdd);
+                            }
+                        } else duplicates.add(p);
                     });
                     botUserRepository.save(currUser);
-                    messageToSend.setText(pairsToAdd + " was added to your favorites!");
+                    if (duplicates.isEmpty()) messageToSend.setText(pairsToAdd + " was added to your favorites!");
+                    else messageToSend.setText(duplicates + " is already in your favorites!");
                 } else messageToSend.setText("Wrong pairs symbol input. Please check and try again");
             } else {
                 StringBuilder sb = new StringBuilder("You should use this command in /add_pair BTCUSDT format\n");
-                sb.append("or /add_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n");
+                sb.append("or /add_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n").append("\n");
+                sb.append("Also you can choose pair to add in reply keyboard below from top 25 pairs\n");
+                botStateKeeper.changeState(BotState.INPUT_FOR_ADD);
                 messageToSend.setText(sb.toString());
             }
         } else
             messageToSend.setText("You are not registered user and can`t add pairs to favorites. Click /start to register.");
-
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {

@@ -1,6 +1,8 @@
 package com.neo.crypto_bot.command;
 
 import com.neo.crypto_bot.client.ExchangeApiClient;
+import com.neo.crypto_bot.config.BotStateKeeper;
+import com.neo.crypto_bot.constant.BotState;
 import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.repository.BotUserRepository;
@@ -38,19 +40,23 @@ public class RemovePairCommandHandler extends BotCommand {
 
     private final CommandParser commandParser;
 
+    private final BotStateKeeper botStateKeeper;
+
     public RemovePairCommandHandler(@Value(TextCommands.REMOVE_PAIR) String commandIdentifier,
                                     @Value(TextCommands.RP_DESCRIPTION) String description,
                                     ExchangeApiClient exchangeClient,
                                     TradingPairRepository tradingPairRepository,
                                     BotUserRepository botUserRepository,
                                     ReplyKeyboardFactory replyKeyboardFactory,
-                                    CommandParser commandParser) {
+                                    CommandParser commandParser,
+                                    BotStateKeeper botStateKeeper) {
         super(commandIdentifier, description);
         this.exchangeClient = exchangeClient;
         this.tradingPairRepository = tradingPairRepository;
         this.botUserRepository = botUserRepository;
         this.replyKeyboardFactory = replyKeyboardFactory;
         this.commandParser = commandParser;
+        this.botStateKeeper = botStateKeeper;
     }
 
     @Override
@@ -58,7 +64,7 @@ public class RemovePairCommandHandler extends BotCommand {
         SendMessage messageToSend = SendMessage.builder()
                 .chatId(chat.getId())
                 .text("")
-                .replyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs()).build();
+                .build();
         Optional<BotUser> maybeCurrUser = botUserRepository.findById(chat.getId());
         if (maybeCurrUser.isPresent()) {
             BotUser currUser = maybeCurrUser.get();
@@ -87,15 +93,17 @@ public class RemovePairCommandHandler extends BotCommand {
             } else {
                 StringBuilder sb = new StringBuilder("You should use this command in /remove_pair BTCUSDT format\n");
                 sb.append("or /remove_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n");
+                if (!botUserRepository.findById(chat.getId()).get().getFavorites().isEmpty())
+                    messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
                 messageToSend.setText(sb.toString());
+                botStateKeeper.changeState(BotState.INPUT_FOR_REMOVE);
             }
         } else
             messageToSend.setText("You are not registered user and can`t add pairs to favorites. Click /start to register.");
-
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some exception in start block: " + e.getMessage());
+            log.error("Got some exception in remove pair block: " + e.getMessage());
         }
     }
 }
