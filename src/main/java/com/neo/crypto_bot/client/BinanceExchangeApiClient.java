@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 @Log4j2
@@ -117,6 +115,19 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         return jsonNode.get("price").asDouble();
     }
 
+    public HashMap<String, Double> getPrices(List<String> pairs){
+        HashMap<String, Double> priceList = new HashMap<>();
+        StringBuilder sb = new StringBuilder(priceUrl);
+        sb.append(this.defineSymbolParam(pairs));
+        JsonNode jsonNode = makeRequest(sb.toString());
+        if (jsonNode.isArray()) {
+            jsonNode.forEach(n -> priceList.put(n.get("symbol").asText(), n.get("price").asDouble()));
+        } else if (jsonNode.isObject()) {
+            priceList.put(jsonNode.get("symbol").asText(), jsonNode.get("price").asDouble());
+        }
+        return priceList;
+    }
+
     public JsonNode makeRequest(String url) {
         Request request = new Request.Builder()
                 .url(url)
@@ -138,7 +149,7 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
             pairs.forEach(s -> sb.append("\"" + s + "\","));
             sb.append("]");
             sb.replace(sb.lastIndexOf(","), sb.lastIndexOf(",") + 1, "");
-        } else {
+        } else if (pairs.size() == 1) {
             sb.append("?symbol=").append(Arrays.stream(pairs.toArray()).findFirst().get());
         }
         return sb.toString();

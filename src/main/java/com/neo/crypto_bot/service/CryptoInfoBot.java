@@ -11,6 +11,7 @@ import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
+import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -158,6 +159,37 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
 
+    /**
+     * Method sends notification to users if case price from favorites changes more than 5% (each 15 mins check)
+     */
+    @Scheduled(cron = "0 0/15 * * * *")
+    private void sendUserFavoritesPriceUpdates() {
+        List<BotUser> botUsers = botUserRepository.findAll().stream().filter(u -> !u.getFavorites().isEmpty()).toList();
+        Set<TradingPair> usersFavorites = new HashSet<>();
+        botUsers.forEach(bu -> usersFavorites.addAll(bu.getFavorites()));
+        List<String> favoritesNames = usersFavorites.stream().map(TradingPair::getName).collect(Collectors.toList());
+        HashMap<String, Double> priceList = exchangeClient.getPrices(favoritesNames);
+        StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
+        int[] index = new int[1];
+        index[0] = 1;
+        botUsers.forEach(bu -> {
+            bu.getFavorites().forEach(p -> {
+                double freshPrice = priceList.get(p.getName());
+                log.info("Last price: " + p.getLastCurrency());
+                log.info("New price: " + freshPrice);
+                double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
+                log.info("Price deviation: " + deviation);
+                if (Math.abs(deviation) > 0.05) {
+                    sb.append(index[0]++).append(String.format(") %s: %.2f -> %.2f (%.2f%%)\n", p.getName(), p.getLastCurrency(), freshPrice, deviation * 100));
+                    log.info(sb.toString());
+                }
+            });
+            if (sb.toString().length() > 47) sendAnswer(bu.getId(), sb.toString(), null);
+            sb.replace(0, sb.toString().length(),"");
+        });
+        priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
+    }
+
     private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
@@ -193,5 +225,9 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             log.info("New pair added to list: " + tradingPairName);
             return tradingPairRepository.save(tradingPair);
         } else return tradingPairRepository.findByName(tradingPairName).get();
+    }
+
+    private Double calculateDeviation(Double oldPrice, Double newPrice) {
+        return (newPrice - oldPrice) / oldPrice;
     }
 }

@@ -92,7 +92,8 @@ public class RemovePairCommandHandler extends BotCommand {
                 } else messageToSend.setText("Wrong pairs symbol input. Please check and try again");
             } else {
                 StringBuilder sb = new StringBuilder("You should use this command in /remove_pair BTCUSDT format\n");
-                sb.append("or /remove_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n");
+                sb.append("or /remove_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n").append("\n");
+                sb.append("Also you can choose pair to remove in reply keyboard below if you have favorites\n");
                 if (!botUserRepository.findById(chat.getId()).get().getFavorites().isEmpty())
                     messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
                 messageToSend.setText(sb.toString());

@@ -3,6 +3,7 @@ package com.neo.crypto_bot.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.neo.crypto_bot.model.TradingPair;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -21,4 +22,6 @@ public interface ExchangeApiClient {
     public TradingPair getPair(String name);
 
     public Double getPrice(String name);
+
+    public HashMap<String, Double> getPrices(List<String> pairSet);
 }
