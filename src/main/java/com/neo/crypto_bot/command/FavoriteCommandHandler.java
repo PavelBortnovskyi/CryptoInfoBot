@@ -50,7 +50,7 @@ public class FavoriteCommandHandler extends BotCommand {
         long chatId = chat.getId();
         SendMessage messageToSend = SendMessage.builder().chatId(chatId).text("").build();
         if (botUserRepository.findById(chatId).isPresent()) {
-            Set<TradingPair> userPairs = botUserRepository.getUsersFavoritePairs(chatId);
+            Set<TradingPair> userPairs = tradingPairRepository.getUsersFavoritePairs(chatId);
             if (!userPairs.isEmpty()) {
                 messageToSend.setText(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())));
                 userPairs.forEach(p -> increasePairRate(p.getName()));

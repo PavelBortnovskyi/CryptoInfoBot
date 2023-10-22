@@ -1,12 +1,13 @@
 package com.neo.crypto_bot.command;
 
 import com.neo.crypto_bot.client.ExchangeApiClient;
+import com.neo.crypto_bot.config.BotStateKeeper;
+import com.neo.crypto_bot.constant.BotState;
 import com.neo.crypto_bot.constant.TextCommands;
-import com.neo.crypto_bot.constant.TextCommands2;
 import com.neo.crypto_bot.model.BotUser;
-import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
+import com.neo.crypto_bot.service.ListInitializer;
 import com.neo.crypto_bot.service.ReplyKeyboardFactory;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Log4j2
 @Component
@@ -33,17 +33,25 @@ public class StartCommandHandler extends BotCommand {
 
     private final ReplyKeyboardFactory replyKeyboardFactory;
 
+    private final BotStateKeeper botStateKeeper;
+
+    private final ListInitializer listInitializer;
+
     public StartCommandHandler(@Value(TextCommands.START) String commandIdentifier,
                                @Value(TextCommands.START_DESCRIPTION) String description,
                                ExchangeApiClient exchangeClient,
                                TradingPairRepository tradingPairRepository,
                                BotUserRepository botUserRepository,
-                               ReplyKeyboardFactory replyKeyboardFactory) {
+                               ReplyKeyboardFactory replyKeyboardFactory,
+                               BotStateKeeper botStateKeeper,
+                               ListInitializer listInitializer) {
         super(commandIdentifier, description);
         this.exchangeClient = exchangeClient;
         this.tradingPairRepository = tradingPairRepository;
         this.botUserRepository = botUserRepository;
         this.replyKeyboardFactory = replyKeyboardFactory;
+        this.botStateKeeper = botStateKeeper;
+        this.listInitializer = listInitializer;
     }
 
     @Override
@@ -53,8 +61,9 @@ public class StartCommandHandler extends BotCommand {
         sb.append("Just write pair symbols to get currency (Example: BTCUSDT or few pairs: BTCUSDT, LTCUSDT).\n");
         sb.append("You can also write only 1 asset and you will get possible quote assets to make pair (Example: BTC).\n");
         sb.append("You can get more information with /help command");
-        List<TradingPair> list = exchangeClient.getListing(); //TODO: remove from here
-        if (tradingPairRepository.findAll().isEmpty()) tradingPairRepository.saveAll(list);
+        if (botStateKeeper.getBotState().equals(BotState.INITIALIZATION) && tradingPairRepository.count() == 0)
+            listInitializer.saveEntitiesInBatch(exchangeClient.getListing());
+        botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
         SendMessage messageToSend = SendMessage.builder()
                 .chatId(chat.getId())
                 .text(sb.toString())

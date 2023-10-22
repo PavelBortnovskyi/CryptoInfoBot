@@ -15,7 +15,9 @@ spring:
  output:
   ansi:
    enabled: always
+ jpa:
+  open-in-view: true
  profiles:
-  active: local
+  active: remote
 server:
  port: 8080

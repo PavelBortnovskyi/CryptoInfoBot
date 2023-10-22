@@ -123,7 +123,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                     boolean invalidPairInput = exchangeResponse.contains("error");
                     if (!invalidPairInput) {
                         pairs.forEach(p -> {
-                            //addPairIfNoExistToList(p);
+                            addPairIfNoExistToList(p);
                             increasePairRate(p);
                         });
                         sendAnswer(chatId, exchangeClient.getCurrency(pairs), replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
@@ -142,6 +142,9 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 this.executeCommand(TextCommands.REMOVE_PAIR, receivedMessage, chat);
                 botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
             }
+            case INITIALIZATION -> {
+                sendAnswer(chatId, "Please press /start command", null);
+            }
         }
     }
 
@@ -150,7 +153,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
      */
     @Scheduled(cron = "0 0 8 * * *")
     private void sendUserFavoritePairCurrencies() {
-        List<BotUser> botUsers = botUserRepository.findAll().stream().filter(u -> !u.getFavorites().isEmpty()).toList();
+        List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
         botUsers.forEach(u -> {
             List<String> userFavorites = u.getFavorites().stream().map(TradingPair::getName).toList();
             sendAnswer(u.getId(), exchangeClient.getCurrency(userFavorites), null);
@@ -164,30 +167,29 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
      */
     @Scheduled(cron = "0 0/15 * * * *")
     private void sendUserFavoritesPriceUpdates() {
-        List<BotUser> botUsers = botUserRepository.findAll().stream().filter(u -> !u.getFavorites().isEmpty()).toList();
+        List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
         Set<TradingPair> usersFavorites = new HashSet<>();
-        botUsers.forEach(bu -> usersFavorites.addAll(bu.getFavorites()));
+        botUsers.forEach(bu ->
+            usersFavorites.addAll(bu.getFavorites()));
         List<String> favoritesNames = usersFavorites.stream().map(TradingPair::getName).collect(Collectors.toList());
-        HashMap<String, Double> priceList = exchangeClient.getPrices(favoritesNames);
-        StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
-        int[] index = new int[1];
-        index[0] = 1;
-        botUsers.forEach(bu -> {
-            bu.getFavorites().forEach(p -> {
-                double freshPrice = priceList.get(p.getName());
-                log.info("Last price: " + p.getLastCurrency());
-                log.info("New price: " + freshPrice);
-                double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
-                log.info("Price deviation: " + deviation);
-                if (Math.abs(deviation) > 0.05) {
-                    sb.append(index[0]++).append(String.format(") %s: %.2f -> %.2f (%.2f%%)\n", p.getName(), p.getLastCurrency(), freshPrice, deviation * 100));
-                    log.info(sb.toString());
-                }
+        if (!favoritesNames.isEmpty()) {
+            HashMap<String, Double> priceList = exchangeClient.getPrices(favoritesNames);
+            StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
+            int[] index = new int[1];
+            index[0] = 1;
+            botUsers.forEach(bu -> {
+                bu.getFavorites().forEach(p -> {
+                    double freshPrice = priceList.get(p.getName());
+                    double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
+                    if (Math.abs(deviation) > 0.05) {
+                        sb.append(index[0]++).append(String.format(") %s: %.2f -> %.2f (%.2f%%)\n", p.getName(), p.getLastCurrency(), freshPrice, deviation * 100));
+                    }
+                });
+                if (sb.toString().length() > 47) sendAnswer(bu.getId(), sb.toString(), null);
+                sb.replace(0, sb.toString().length(), "");
             });
-            if (sb.toString().length() > 47) sendAnswer(bu.getId(), sb.toString(), null);
-            sb.replace(0, sb.toString().length(),"");
-        });
-        priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
+            priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
+        }
     }
 
     private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {

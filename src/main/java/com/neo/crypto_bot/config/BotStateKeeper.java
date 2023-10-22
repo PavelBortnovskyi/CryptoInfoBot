@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Getter
 public class BotStateKeeper {
 
-    private BotState botState = BotState.INPUT_FOR_CURRENCY;
+    private BotState botState = BotState.INITIALIZATION;
 
     public void changeState(BotState botState) {
         this.botState = botState;
