@@ -1,16 +1,22 @@
 package com.neo.crypto_bot.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "trading_pairs")
 @NoArgsConstructor
 public class TradingPair {
 
     @Id
+    @Column(name = "pair_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -20,5 +26,10 @@ public class TradingPair {
 
     private String quoteAsset;
 
+    private Double lastCurrency;
+
     private long requests;
+
+    @ManyToMany(mappedBy = "favorites", fetch = FetchType.EAGER)
+    private Set<BotUser> users = new HashSet<>();
 }
