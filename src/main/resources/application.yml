@@ -12,6 +12,8 @@ spring:
  output:
   ansi:
    enabled: always
+ jpa:
+  open-in-view: true
  profiles:
   active: deploy
 server:
