@@ -46,7 +46,7 @@ public class BotConfig {
 
     @Bean
     public OkHttpClient okHttpClient() {
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("153.19.91.77", 80));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("193.150.21.138", 8088));
         return new OkHttpClient().newBuilder().proxy(proxy).build();
     }
 
