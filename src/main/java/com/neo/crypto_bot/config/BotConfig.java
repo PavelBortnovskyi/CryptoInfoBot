@@ -7,13 +7,16 @@ import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.CommandRegistry;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.ICommandRegistry;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
 
 @Getter
 @Configuration
@@ -44,7 +47,8 @@ public class BotConfig {
 
     @Bean
     public OkHttpClient okHttpClient() {
-        return new OkHttpClient();
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("178.212.196.177", 9999));
+        return new OkHttpClient().newBuilder().proxy(proxy).build();
     }
 
 
