@@ -1,7 +1,6 @@
 package com.neo.crypto_bot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neo.crypto_bot.service.CryptoInfoBot;
 import lombok.Getter;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +46,7 @@ public class BotConfig {
 
     @Bean
     public OkHttpClient okHttpClient() {
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("157.25.92.74", 3128));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("91.150.189.122", 30389));
         return new OkHttpClient().newBuilder().proxy(proxy).build();
     }
 
