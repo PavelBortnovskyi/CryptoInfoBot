@@ -1,6 +1,3 @@
-bot:
- name: crypto_currencies_pet_bot
- token: 6486827539:AAE9T7PE2VVJvdEctTrtcMj0nCkuDczErl0
 binance:
  api:
   tickerPrice:
@@ -16,6 +13,6 @@ spring:
   ansi:
    enabled: always
  profiles:
-  active: local
+  active: deploy
 server:
  port: 8080
