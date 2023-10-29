@@ -2,7 +2,6 @@ package com.neo.crypto_bot.service;
 
 import com.neo.crypto_bot.client.BinanceExchangeApiClient;
 import com.neo.crypto_bot.client.ExchangeApiClient;
-import com.neo.crypto_bot.command.AddPairCommandHandler;
 import com.neo.crypto_bot.config.BotConfig;
 import com.neo.crypto_bot.config.BotStateKeeper;
 import com.neo.crypto_bot.constant.BotState;
@@ -13,6 +12,7 @@ import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -27,11 +27,10 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Log4j2
+//@Log4j2
 @Component
 public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
@@ -77,7 +76,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         try {
             this.execute(new SetMyCommands(this.botCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
-            log.error("Error while set bot`s command list: " + e.getMessage());
+            //log.error("Error while set bot`s command list: " + e.getMessage());
         }
     }
 
@@ -127,10 +126,10 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                             increasePairRate(p);
                         });
                         sendAnswer(chatId, exchangeClient.getCurrency(pairs), replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
-                        log.info("Got currency of pairs: " + pairs);
+                        //log.info("Got currency of pairs: " + pairs);
                     } else if (invalidPairInput) {
                         sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs());
-                        log.error("Wrong user input or exchange no have such pair listing: " + pairs);
+                        //log.error("Wrong user input or exchange no have such pair listing: " + pairs);
                     }
                 }
             }
@@ -159,7 +158,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             sendAnswer(u.getId(), exchangeClient.getCurrency(userFavorites), null);
             userFavorites.forEach(this::increasePairRate);
         });
-        log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
+        //log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
 
     /**
@@ -201,7 +200,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            log.error("Got some TelegramAPI exception: " + e.getMessage());
+            //log.error("Got some TelegramAPI exception: " + e.getMessage());
         }
     }
 
@@ -224,7 +223,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         if (tradingPairRepository.findByName(tradingPairName).isEmpty()) {
             TradingPair tradingPair = exchangeClient.getPair(tradingPairName);
             tradingPair.setRequests(0);
-            log.info("New pair added to list: " + tradingPairName);
+            //log.info("New pair added to list: " + tradingPairName);
             return tradingPairRepository.save(tradingPair);
         } else return tradingPairRepository.findByName(tradingPairName).get();
     }

@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@Log4j2
+//@Log4j2
 @Component
 public class HelpCommandHandler extends BotCommand {
 
@@ -41,7 +41,7 @@ public class HelpCommandHandler extends BotCommand {
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some error in help block: " + e.getMessage());
+            //log.error("Got some error in help block: " + e.getMessage());
         }
     }
 }

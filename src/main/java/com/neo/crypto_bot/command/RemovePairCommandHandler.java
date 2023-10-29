@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-@Log4j2
+//@Log4j2
 @Component
 public class RemovePairCommandHandler extends BotCommand {
 
@@ -104,7 +104,7 @@ public class RemovePairCommandHandler extends BotCommand {
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some exception in remove pair block: " + e.getMessage());
+            //log.error("Got some exception in remove pair block: " + e.getMessage());
         }
     }
 }

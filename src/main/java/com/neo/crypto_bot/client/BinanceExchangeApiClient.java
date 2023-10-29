@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-@Log4j2
+//@Log4j2
 @Component
 @RequiredArgsConstructor
 public class BinanceExchangeApiClient implements ExchangeApiClient {
@@ -136,7 +136,7 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
             String rawResponse = response.body() == null ? null : response.body().string();
             return objectMapper.readTree(rawResponse);
         } catch (IOException e) {
-            log.error("Currencies receive error: " + e.getMessage());
+            //log.error("Currencies receive error: " + e.getMessage());
             //throw new ServiceException("Currencies receive error: ", e);
             return null;
         }

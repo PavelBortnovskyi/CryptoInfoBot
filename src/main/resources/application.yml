@@ -1,16 +1,9 @@
-bot:
- name: crypto_currencies_pet_bot
- token: 6486827539:AAE9T7PE2VVJvdEctTrtcMj0nCkuDczErl0
-binance:
- api:
-  tickerPrice:
-   url: https://api.binance.com/api/v3/ticker/price
-  exchangeInfo:
-   url: https://api.binance.com/api/v3/exchangeInfo
-  avgPrice:
-   url: https://api.binance.com/api/v3/avgPrice
-  convertible:
-   url: https://api.binance.com/sapi/v1/convert/exchangeInfo
+bot_name: crypto_currencies_pet_bot
+bot_token: 6486827539:AAE9T7PE2VVJvdEctTrtcMj0nCkuDczErl0
+binance_api_tickerPrice_url: https://api.binance.com/api/v3/ticker/price
+binance_api_exchangeInfo_url: https://api.binance.com/api/v3/exchangeInfo
+binance_api_avgPrice_url: https://api.binance.com/api/v3/avgPrice
+binance_api_convertible_url: https://api.binance.com/sapi/v1/convert/exchangeInfo
 spring:
  output:
   ansi:
@@ -18,6 +11,6 @@ spring:
  jpa:
   open-in-view: true
  profiles:
-  active: remote
+  active: container
 server:
  port: 8080

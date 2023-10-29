@@ -1,0 +1,169 @@
+[
+  {
+    "name": "org.telegram.telegrambots.meta.api.objects.ApiResponse",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true,
+    "queryAllDeclaredConstructors": true,
+    "queryAllPublicConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "allMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "ApiResponse",
+        "parameterTypes": []
+      },
+      {
+        "name": "getOk",
+        "parameterTypes": []
+      },
+      {
+        "name": "getErrorCode",
+        "parameterTypes": []
+      },
+      {
+        "name": "getErrorDescription()",
+        "parameterTypes": []
+      },
+      {
+        "name": "getResult()",
+        "parameterTypes": []
+      },
+      {
+        "name": "getParameters",
+        "parameterTypes": []
+      },
+      {
+        "name": "toString()",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.fasterxml.jackson.databind.DeserializationContext",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true,
+    "queryAllDeclaredConstructors": true,
+    "queryAllPublicConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "allMethods": true
+  },
+  {
+    "name": "com.fasterxml.jackson.databind.JsonNode",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true,
+    "queryAllDeclaredConstructors": true,
+    "queryAllPublicConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "allMethods": true
+  },
+  {
+    "name": "com.neo.crypto_bot.service.CryptoInfoBot",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true,
+    "queryAllDeclaredConstructors": true,
+    "queryAllPublicConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "allMethods": true
+  },
+  {
+    "name": "java.lang.Class",
+    "queryAllDeclaredConstructors": true,
+    "queryAllPublicConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "java.lang.String",
+    "fields": [
+      {
+        "name": "value"
+      },
+      {
+        "name": "hash"
+      }
+    ],
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "char[]"
+        ]
+      },
+      {
+        "name": "charAt"
+      },
+      {
+        "name": "format",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.Object[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "java.lang.String$CaseInsensitiveComparator",
+    "queriedMethods": [
+      {
+        "name": "compare"
+      }
+    ]
+  },
+  {
+    "name": "org.apache.logging.log4j.message.DefaultFlowMessageFactory",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "org.apache.logging.log4j.message.ParameterizedMessageFactory",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "org.apache.poi.ss.formula.udf.IndexedUDFFinder",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  }
+]

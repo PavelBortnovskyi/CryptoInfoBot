@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Log4j2
+//@Log4j2
 @Component
 public class AddPairCommandHandler extends BotCommand {
 
@@ -105,7 +105,7 @@ public class AddPairCommandHandler extends BotCommand {
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some exception in start block: " + e.getMessage());
+            //log.error("Got some exception in start block: " + e.getMessage());
         }
     }
 }

@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@Log4j2
+//@Log4j2
 @Component
 public class DeleteMyDataCommandHandler extends BotCommand {
 
@@ -32,13 +32,13 @@ public class DeleteMyDataCommandHandler extends BotCommand {
         if (botUserRepository.findById(chatId).isPresent()) {
             botUserRepository.deleteById(chatId);
             messageToSend.setText("Info about you was successfully deleted, you can check it by /my_data command");
-            log.info("Deleted data about user with chatID: " + chatId);
+            //log.info("Deleted data about user with chatID: " + chatId);
         } else
             messageToSend.setText("We no have any data about you, press /start to register");
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some error in delete my data block: " + e.getMessage());
+            //log.error("Got some error in delete my data block: " + e.getMessage());
         }
     }
 }

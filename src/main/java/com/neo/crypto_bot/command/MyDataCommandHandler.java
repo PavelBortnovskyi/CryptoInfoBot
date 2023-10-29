@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.format.DateTimeFormatter;
 
-@Log4j2
+//@Log4j2
 @Component
 public class MyDataCommandHandler extends BotCommand {
 
@@ -44,7 +44,7 @@ public class MyDataCommandHandler extends BotCommand {
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some error in my data block: " + e.getMessage());
+            //log.error("Got some error in my data block: " + e.getMessage());
         }
     }
 }

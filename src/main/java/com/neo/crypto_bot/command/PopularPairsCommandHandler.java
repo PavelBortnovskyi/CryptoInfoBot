@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Log4j2
+//@Log4j2
 @Component
 public class PopularPairsCommandHandler extends BotCommand {
 
@@ -63,7 +63,7 @@ public class PopularPairsCommandHandler extends BotCommand {
             absSender.execute(messageToSend);
         } catch (
                 TelegramApiException e) {
-            log.error("Got some exception in favorite pairs block: " + e.getMessage());
+            //log.error("Got some exception in favorite pairs block: " + e.getMessage());
         }
     }
 }

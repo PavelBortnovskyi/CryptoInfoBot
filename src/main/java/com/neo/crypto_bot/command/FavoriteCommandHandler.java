@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Log4j2
+//@Log4j2
 @Component
 public class FavoriteCommandHandler extends BotCommand {
 
@@ -61,7 +61,7 @@ public class FavoriteCommandHandler extends BotCommand {
             absSender.execute(messageToSend);
         } catch (
                 TelegramApiException e) {
-            log.error("Got some exception in favorite pairs block: " + e.getMessage());
+            //log.error("Got some exception in favorite pairs block: " + e.getMessage());
         }
     }
 

@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDateTime;
 
-@Log4j2
+//@Log4j2
 @Component
 public class StartCommandHandler extends BotCommand {
 
@@ -72,7 +72,7 @@ public class StartCommandHandler extends BotCommand {
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
-            log.error("Got some exception in start block: " + e.getMessage());
+            //log.error("Got some exception in start block: " + e.getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ public class StartCommandHandler extends BotCommand {
             freshUser.setLastName(user.getLastName());
             freshUser.setRegisteredAt(LocalDateTime.now());
             this.botUserRepository.save(freshUser);
-            log.info(String.format("New User with chatId: %d registered", freshUser.getId()));
+            //log.info(String.format("New User with chatId: %d registered", freshUser.getId()));
         }
     }
 }
