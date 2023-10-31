@@ -56,10 +56,12 @@ public class StartCommandHandler extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-        StringBuilder sb = new StringBuilder("Hi, " + chat.getFirstName() + " , nice to meet you!\n");
-        sb.append("This bot is created to get quick info and some statistic about trading pairs on Binance.\n");
-        sb.append("Just write pair symbols to get currency (Example: BTCUSDT or few pairs: BTCUSDT, LTCUSDT).\n");
-        sb.append("You can also write only 1 asset and you will get possible quote assets to make pair (Example: BTC).\n");
+        StringBuilder sb = new StringBuilder("Hi, " + chat.getFirstName() + " , nice to meet you!\n\n");
+        sb.append("This bot is created to get quick info and some statistic about trading pairs on Binance.\n\n");
+        sb.append("Just write pair symbols to get currency (Example: BTCUSDT or few pairs: BTCUSDT, LTCUSDT).\n\n");
+        sb.append("--OR--\n\n");
+        sb.append("You can also write only 1 asset and you will get possible quote assets to make pair (Example: BTC).\n\n");
+        sb.append("--OR--\n\n");
         sb.append("You can get more information with /help command");
         if (botStateKeeper.getBotState().equals(BotState.INITIALIZATION) && tradingPairRepository.count() == 0)
             listInitializer.saveEntitiesInBatch(exchangeClient.getListing());

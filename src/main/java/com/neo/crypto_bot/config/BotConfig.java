@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
+
 @Getter
 @Configuration
 @EnableScheduling
@@ -37,7 +41,8 @@ public class BotConfig {
 
     @Bean
     public OkHttpClient okHttpClient() {
-        return new OkHttpClient();
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.231.178.249", 9797));
+        return new OkHttpClient().newBuilder().proxy(proxy).build();
     }
 
 
