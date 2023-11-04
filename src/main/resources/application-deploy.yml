@@ -1,6 +1,6 @@
 spring:
   datasource:
-    password: ${ELEPHANT_DB_PASSWORD}
+    password: ${elephant_db_password}
     url: jdbc:postgresql://hattie.db.elephantsql.com:5432/
     username: ucivlcsx
     driver-classname: org.postgresql.Driver
@@ -22,5 +22,5 @@ spring:
     activate:
       on-profile: deploy
 bot:
-  name: crypto_currencies_pet_bot
-  token: ${BOT_NAME}
+  name: ${bot_name}
+  token: ${bot_token}
