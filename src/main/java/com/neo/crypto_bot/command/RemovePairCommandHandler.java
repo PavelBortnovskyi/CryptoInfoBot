@@ -5,6 +5,7 @@ import com.neo.crypto_bot.config.BotStateKeeper;
 import com.neo.crypto_bot.constant.BotState;
 import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.BotUser;
+import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import com.neo.crypto_bot.service.CommandParser;
@@ -74,8 +75,9 @@ public class RemovePairCommandHandler extends BotCommand {
                 List<String> errors = new ArrayList<>();
                 if (exchangeClient.checkPair(pairsToRemove)) {
                     pairsToRemove.forEach(p -> {
-                        if (currUser.getFavorites().contains(tradingPairRepository.findByName(p).get())) {
-                            currUser.getFavorites().remove(tradingPairRepository.findByName(p).get());
+                        TradingPair pairToRemove = tradingPairRepository.findByName(p).orElse(new TradingPair());
+                        if (currUser.getFavorites().contains(pairToRemove)) {
+                            currUser.getFavorites().remove(pairToRemove);
                             botUserRepository.save(currUser);
                         } else {
                             errors.add(p);
