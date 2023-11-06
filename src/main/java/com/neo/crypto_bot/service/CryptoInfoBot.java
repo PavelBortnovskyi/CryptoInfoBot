@@ -27,6 +27,7 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -181,7 +182,8 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                     double freshPrice = priceList.get(p.getName());
                     double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
                     if (Math.abs(deviation) > 0.05) {
-                        sb.append(index[0]++).append(String.format(") %s: %.2f -> %.2f (%.2f%%)\n", p.getName(), p.getLastCurrency(), freshPrice, deviation * 100));
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%)\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100));
                     }
                 });
                 if (sb.toString().length() > 47) sendAnswer(bu.getId(), sb.toString(), null);
@@ -207,7 +209,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     private void executeCommand(String commandName, String argument, Chat chat) {
         IBotCommand command = getRegisteredCommand(commandName);
         Message message = new Message();
-        message.setText("/" + TextCommands.REMOVE_PAIR + " " + argument);
+        message.setText("/" + commandName + " " + argument);
         message.setChat(chat);
         String[] arg = new String[1];
         arg[0] = argument;

@@ -39,9 +39,11 @@ public class MyDataCommandHandler extends BotCommand {
             sb.append("Nickname: ").append(currUser.getNickName()).append("\n")
                     .append("FirstName: ").append(currUser.getFirstName()).append("\n")
                     .append("LastName: ").append(currUser.getLastName()).append("\n")
-                    .append("Registered at: ").append(currUser.getRegisteredAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    .append("Registered at: ").append(currUser.getRegisteredAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .append("\n\n")
+                    .append("To delete your data press -> /delete_my_data (You will not be able to use favorites)"); //TODO: add inline button for delete my data command
             System.out.println(sb.toString() + ":Thread" + Thread.currentThread());
-            messageToSend.setText(sb.toString()); //TODO: add inline button for delete my data command
+            messageToSend.setText(sb.toString());
         } else {
             System.out.println("No have user" + ":Thread" + Thread.currentThread());
             messageToSend.setText("We no have any data about you, press /start to register");

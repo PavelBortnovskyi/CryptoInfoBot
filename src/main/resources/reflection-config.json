@@ -541,10 +541,24 @@
   },
   {
     "name":"com.neo.crypto_bot.service.ReplyKeyboardFactory",
-    "allDeclaredFields":true,
-    "queryAllDeclaredMethods":true,
-    "queryAllDeclaredConstructors":true,
-    "methods":[{"name":"<init>","parameterTypes":["com.neo.crypto_bot.repository.TradingPairRepository","com.neo.crypto_bot.repository.BotUserRepository"] }]
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true,
+    "queryAllDeclaredConstructors": true,
+    "queryAllPublicConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "allMethods": true,
+    "methods":[
+      {"name":"<init>","parameterTypes":["com.neo.crypto_bot.repository.TradingPairRepository","com.neo.crypto_bot.repository.BotUserRepository"] },
+      {"name":"getKeyboardWithTop25Pairs","parameterTypes":[] },
+      {"name":"getKeyboardWithConvertibles","parameterTypes":["java.lang.String"] },
+      {"name":"getKeyboardWithFavorites","parameterTypes":["long"] },
+      {"name":"fillKeyboard","parameterTypes":["java.util.Collection","int","com.neo.crypto_bot.constant.Fields"] }
+    ]
   },
   {
     "name":"com.querydsl.core.types$Predicate"
@@ -5723,7 +5737,46 @@
     "name":"org.telegram.telegrambots.bots.DefaultAbsSender",
     "allDeclaredFields":true,
     "queryAllDeclaredMethods":true,
-    "methods":[{"name":"downloadFile","parameterTypes":["java.lang.String"] }, {"name":"downloadFile","parameterTypes":["java.lang.String","java.io.File"] }, {"name":"downloadFile","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File"] }, {"name":"downloadFile","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File","java.io.File"] }, {"name":"downloadFileAsStream","parameterTypes":["java.lang.String"] }, {"name":"downloadFileAsStream","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File"] }, {"name":"downloadFileAsync","parameterTypes":["java.lang.String","org.telegram.telegrambots.meta.updateshandlers.DownloadFileCallback"] }, {"name":"downloadFileAsync","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File","org.telegram.telegrambots.meta.updateshandlers.DownloadFileCallback"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.groupadministration.SetChatPhoto"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAnimation"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAudio"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendDocument"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendPhoto"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendSticker"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideo"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideoNote"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVoice"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.AddStickerToSet"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.CreateNewStickerSet"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.SetStickerSetThumb"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.UploadStickerFile"] }, {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.groupadministration.SetChatPhoto"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAnimation"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAudio"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendDocument"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendPhoto"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendSticker"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideo"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideoNote"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVoice"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.AddStickerToSet"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.CreateNewStickerSet"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.SetStickerSetThumb"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.UploadStickerFile"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia"] }, {"name":"getBaseUrl","parameterTypes":[] }, {"name":"getBotToken","parameterTypes":[] }]
+    "methods":[
+      {"name":"downloadFile","parameterTypes":["java.lang.String"] },
+      {"name":"downloadFile","parameterTypes":["java.lang.String","java.io.File"] },
+      {"name":"downloadFile","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File"] },
+      {"name":"downloadFile","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File","java.io.File"] },
+      {"name":"downloadFileAsStream","parameterTypes":["java.lang.String"] },
+      {"name":"downloadFileAsStream","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File"] },
+      {"name":"downloadFileAsync","parameterTypes":["java.lang.String","org.telegram.telegrambots.meta.updateshandlers.DownloadFileCallback"] },
+      {"name":"downloadFileAsync","parameterTypes":["org.telegram.telegrambots.meta.api.objects.File","org.telegram.telegrambots.meta.updateshandlers.DownloadFileCallback"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.groupadministration.SetChatPhoto"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAnimation"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAudio"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendDocument"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendPhoto"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendSticker"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideo"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideoNote"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVoice"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.AddStickerToSet"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.CreateNewStickerSet"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.SetStickerSetThumb"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.UploadStickerFile"] },
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.groupadministration.SetChatPhoto"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAnimation"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendAudio"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendDocument"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendPhoto"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendSticker"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideo"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVideoNote"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.send.SendVoice"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.AddStickerToSet"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.CreateNewStickerSet"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.SetStickerSetThumb"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.stickers.UploadStickerFile"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia"] },
+      {"name":"getBaseUrl","parameterTypes":[] }, {"name":"getBotToken","parameterTypes":[] }]
   },
   {
     "name":"org.telegram.telegrambots.bots.TelegramLongPollingBot",
@@ -5845,7 +5898,15 @@
     "name":"org.telegram.telegrambots.meta.bots.AbsSender",
     "allDeclaredFields":true,
     "queryAllDeclaredMethods":true,
-    "methods":[{"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.BotApiMethod"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.BotApiMethod"] }, {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.BotApiMethod","org.telegram.telegrambots.meta.updateshandlers.SentCallback"] }, {"name":"getMe","parameterTypes":[] }, {"name":"getMeAsync","parameterTypes":[] }, {"name":"getMeAsync","parameterTypes":["org.telegram.telegrambots.meta.updateshandlers.SentCallback"] }, {"name":"getWebhookInfo","parameterTypes":[] }, {"name":"getWebhookInfoAsync","parameterTypes":[] }, {"name":"getWebhookInfoAsync","parameterTypes":["org.telegram.telegrambots.meta.updateshandlers.SentCallback"] }]
+    "methods":[
+      {"name":"execute","parameterTypes":["org.telegram.telegrambots.meta.api.methods.BotApiMethod"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.BotApiMethod"] },
+      {"name":"executeAsync","parameterTypes":["org.telegram.telegrambots.meta.api.methods.BotApiMethod","org.telegram.telegrambots.meta.updateshandlers.SentCallback"] },
+      {"name":"getMe","parameterTypes":[] },
+      {"name":"getMeAsync","parameterTypes":[] },
+      {"name":"getMeAsync","parameterTypes":["org.telegram.telegrambots.meta.updateshandlers.SentCallback"] },
+      {"name":"getWebhookInfo","parameterTypes":[] }, {"name":"getWebhookInfoAsync","parameterTypes":[] },
+      {"name":"getWebhookInfoAsync","parameterTypes":["org.telegram.telegrambots.meta.updateshandlers.SentCallback"] }]
   },
   {
     "name":"org.telegram.telegrambots.meta.generics.LongPollingBot",
@@ -6210,98 +6271,70 @@
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
   },
   {
     "name":"org.telegram.telegrambots.meta.api.objects.Message",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
   },
   {
     "name":"org.telegram.telegrambots.meta.api.objects.User",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
   },
   {
     "name":"org.telegram.telegrambots.meta.api.objects.Chat",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
   },
   {
     "name":"org.telegram.telegrambots.meta.api.objects.MessageEntity",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
   },
   {
     "name":"org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
   },
   {
     "name":"org.telegram.telegrambots.meta.api.methods.send.SendMessage",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
-    "allPublicMethods": true,
-    "allDeclaredClasses": true,
-    "allPublicClasses": true,
-    "queryAllDeclaredConstructors": true,
-    "queryAllPublicConstructors": true,
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "allMethods": true
+    "allPublicMethods": true
+  },
+  {
+    "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
   },
   {
     "name": "org.springframework.data.repository.CrudRepository",

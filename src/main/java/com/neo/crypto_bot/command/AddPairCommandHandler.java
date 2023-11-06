@@ -94,9 +94,9 @@ public class AddPairCommandHandler extends BotCommand {
                     else messageToSend.setText(duplicates + " is already in your favorites!");
                 } else messageToSend.setText("Wrong pairs symbol input. Please check and try again");
             } else {
-                StringBuilder sb = new StringBuilder("You should use this command in /add_pair BTCUSDT format\n");
-                sb.append("or /add_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n").append("\n");
-                sb.append("Also you can choose pair to add in reply keyboard below from top 25 pairs\n");
+                StringBuilder sb = new StringBuilder("You should use this command in \"/add_pair BTCUSDT\" format\n");
+                sb.append("or \"/add_pair BTCUSDT, LTCUSDT\" to add few pairs to favorites\n").append("\n");
+                sb.append("Also you can choose pair to add in reply keyboard below from top 25 pairs\n\n");
                 botStateKeeper.changeState(BotState.INPUT_FOR_ADD);
                 messageToSend.setText(sb.toString());
             }

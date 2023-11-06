@@ -11,6 +11,6 @@ spring:
  jpa:
   open-in-view: true
  profiles:
-  active: container
+  active: remote
 server:
  port: 8080

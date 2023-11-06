@@ -91,21 +91,27 @@ public class RemovePairCommandHandler extends BotCommand {
                     }
                     if (!errors.isEmpty()) sb.append("NOTE: pairs that is not in your favorites: ").append(errors);
                     messageToSend.setText(sb.toString());
-                } else messageToSend.setText("Wrong pairs symbol input. Please check and try again");
+                } else {
+                    messageToSend.setText("Wrong pairs symbol input. Please check and try again");
+                }
             } else {
-                StringBuilder sb = new StringBuilder("You should use this command in /remove_pair BTCUSDT format\n");
-                sb.append("or /remove_pair BTCUSDT, LTCUSDT to add few pairs to favorites\n").append("\n");
+                StringBuilder sb = new StringBuilder("You can use this command in \"/remove_pair BTCUSDT\" format\n");
+                sb.append("or \"/remove_pair BTCUSDT, LTCUSDT\" to remove few pairs from favorites\n\n");
                 sb.append("Also you can choose pair to remove in reply keyboard below if you have favorites\n");
+                sb.append("or you can print it manually\n");
                 if (!botUserRepository.findById(chat.getId()).get().getFavorites().isEmpty())
                     messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
+                else messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
                 messageToSend.setText(sb.toString());
                 botStateKeeper.changeState(BotState.INPUT_FOR_REMOVE);
             }
         } else
             messageToSend.setText("You are not registered user and can`t add pairs to favorites. Click /start to register.");
         try {
+            System.out.println(messageToSend.getReplyMarkup().toString());
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
+            System.out.println("Got some exception in remove pair block: " + e.getMessage());
             //log.error("Got some exception in remove pair block: " + e.getMessage());
         }
     }
