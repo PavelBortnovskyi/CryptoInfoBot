@@ -80,7 +80,7 @@ public class AddPairCommandHandler extends BotCommand {
                     pairsToAdd.forEach(p -> {
                         if (currUser.getFavorites().stream().filter(fp -> fp.getName().equals(p)).collect(Collectors.toList()).isEmpty()) {
                             if (tradingPairRepository.findByName(p).isPresent()) {
-                                tradingPairRepository.updatePrice(exchangeClient.getPrice(p), p);
+                                tradingPairRepository.updatePrice(p, exchangeClient.getPrice(p));
                                 currUser.getFavorites().add(tradingPairRepository.findByName(p).get());
                             } else {
                                 TradingPair pairToAdd = exchangeClient.getPair(p);

@@ -22,6 +22,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,8 +55,9 @@ public class FavoriteCommandHandler extends BotCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         long chatId = chat.getId();
         SendMessage messageToSend = SendMessage.builder().chatId(chatId).text("").build();
-        if (botUserRepository.findById(chatId).isPresent()) {
-            Set<TradingPair> userPairs = botUserRepository.getUserWithFavoritePairs(chatId).getFavorites();
+        Optional<BotUser> currUser = botUserRepository.getUserWithFavoritePairs(chatId);
+        if (currUser.isPresent()) {
+            Set<TradingPair> userPairs = currUser.get().getFavorites();
             if (!userPairs.isEmpty()) {
                 messageToSend.setText(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())));
                 userPairs.forEach(p -> increasePairRate(p.getName()));

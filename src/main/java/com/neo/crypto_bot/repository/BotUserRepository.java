@@ -9,15 +9,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface BotUserRepository extends JpaRepository<BotUser, Long> {
 
     @Transactional
-    @Query("select u from BotUser u where u.favorites IS NOT EMPTY")
+    @Query("select u from BotUser u LEFT JOIN FETCH u.favorites where u.favorites IS NOT EMPTY") //FETCH for request optimization!
     List<BotUser> getUsersWithFavorites();
 
-    @Query("SELECT u FROM BotUser u LEFT JOIN FETCH u.favorites WHERE u.id = :userId")
-    BotUser getUserWithFavoritePairs(@Param("userId") Long userId);
+    @Query("SELECT u FROM BotUser u LEFT JOIN FETCH u.favorites WHERE u.id = :userId") //FETCH for request optimization!
+    Optional<BotUser> getUserWithFavoritePairs(@Param("userId") Long userId);
 }

@@ -12,6 +12,9 @@ public class BinanceClientConfig {
     //@Value("${BINANCE_TICKER_PRICE_URL}")
     private String priceUrl;
 
+    @Value("${binance_api_24h_tickerPrice_url}")
+    private String dayTickerPriceUrl;
+
     @Value("${binance_api_exchangeInfo_url}")
     //@Value("${BINANCE_EXCHANGE_INFO_URL}")
     private String exchangeInfoUrl;
@@ -27,6 +30,11 @@ public class BinanceClientConfig {
     @Bean(name = "priceUrl")
     public String getPriceUrl() {
         return this.priceUrl;
+    }
+
+    @Bean(name = "dayTickerPriceUrl")
+    public String getDayTickerPriceUrl() {
+        return this.dayTickerPriceUrl;
     }
 
     @Bean(name = "exchangeInfoUrl")

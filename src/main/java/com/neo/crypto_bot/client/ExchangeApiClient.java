@@ -23,5 +23,9 @@ public interface ExchangeApiClient {
 
     public Double getPrice(String name);
 
+    public Double getDayDeviation(String name);
+
     public HashMap<String, Double> getPrices(List<String> pairSet);
+
+    public HashMap<String, Double> getPricesDayDeviation(List<String> pairs);
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 
@@ -24,6 +25,9 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
 
     @Qualifier("priceUrl")
     private final String priceUrl;
+
+    @Qualifier("dayTickerPriceUrl")
+    private final String dayTickerPriceUrl;
 
     @Qualifier("avgPriceUrl")
     private final String avgPriceUrl;
@@ -46,12 +50,19 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         else {
             int[] index = new int[1];
             index[0] = 1;
+            DecimalFormat df = new DecimalFormat("#.########");
             if (jsonNode.isArray()) {
                 sb.append("Current price(s) for pair(s):\n");
-                jsonNode.forEach(n -> sb.append(String.format("%d) %s: %s", index[0]++, n.get("symbol"), n.get("price"))).append("\n"));
+                jsonNode.forEach(n -> {
+                    String symbol = n.get("symbol").asText().replace("\"", "");
+                    String price = df.format(n.get("price").asDouble());
+                    sb.append(String.format("%d) %s  :  %s", index[0]++, symbol, price)).append("\n");
+                });
             } else if (jsonNode.isObject()) {
+                String symbol = jsonNode.get("symbol").asText().replace("\"", "");
+                String price = df.format(jsonNode.get("price").asDouble());
                 sb.append("Current price(s) for pair(s):\n");
-                sb.append(String.format("%d) %s: %s", index[0]++, jsonNode.get("symbol"), jsonNode.get("price")));
+                sb.append(String.format("%d) %s  :  %s", index[0]++, symbol, price));
             }
         }
         return sb.toString();
@@ -115,7 +126,14 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         return jsonNode.get("price").asDouble();
     }
 
-    public HashMap<String, Double> getPrices(List<String> pairs){
+    public Double getDayDeviation(String name) {
+        StringBuilder sb = new StringBuilder(dayTickerPriceUrl);
+        sb.append(this.defineSymbolParam(List.of(name)));
+        JsonNode jsonNode = makeRequest(sb.toString());
+        return jsonNode.get("priceChangePercent").asDouble();
+    }
+
+    public HashMap<String, Double> getPrices(List<String> pairs) {
         HashMap<String, Double> priceList = new HashMap<>();
         StringBuilder sb = new StringBuilder(priceUrl);
         sb.append(this.defineSymbolParam(pairs));
@@ -124,6 +142,19 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
             jsonNode.forEach(n -> priceList.put(n.get("symbol").asText(), n.get("price").asDouble()));
         } else if (jsonNode.isObject()) {
             priceList.put(jsonNode.get("symbol").asText(), jsonNode.get("price").asDouble());
+        }
+        return priceList;
+    }
+
+    public HashMap<String, Double> getPricesDayDeviation(List<String> pairs) {
+        HashMap<String, Double> priceList = new HashMap<>();
+        StringBuilder sb = new StringBuilder(dayTickerPriceUrl);
+        sb.append(this.defineSymbolParam(pairs));
+        JsonNode jsonNode = makeRequest(sb.toString());
+        if (jsonNode.isArray()) {
+            jsonNode.forEach(n -> priceList.put(n.get("symbol").asText(), n.get("priceChangePercent").asDouble()));
+        } else if (jsonNode.isObject()) {
+            priceList.put(jsonNode.get("symbol").asText(), jsonNode.get("priceChangePercent").asDouble());
         }
         return priceList;
     }

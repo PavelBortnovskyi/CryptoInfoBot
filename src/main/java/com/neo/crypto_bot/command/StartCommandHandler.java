@@ -62,6 +62,8 @@ public class StartCommandHandler extends BotCommand {
         sb.append("--OR--\n\n");
         sb.append("You can also write only 1 asset and you will get possible quote assets to make pair (Example: BTC).\n\n");
         sb.append("--OR--\n\n");
+        sb.append("You can choose from top 25 pairs from reply keyboard below\n\n");
+        sb.append("--OR--\n\n");
         sb.append("You can get more information with /help command");
         if (botStateKeeper.getBotState().equals(BotState.INITIALIZATION) && tradingPairRepository.count() == 0)
             listInitializer.saveEntitiesInBatch(exchangeClient.getListing());

@@ -10,6 +10,7 @@ import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
+import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
@@ -153,14 +154,34 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     /**
      * Method sends currencies of favorite pairs for each bot user at 8:01 server time
      */
-    @Scheduled(cron = "0 1 8 * * *")
+    @Scheduled(cron = "0 1 6 * * *")
     private void sendUserFavoritePairCurrencies() {
         List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
+        HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
+        HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
+        HashMap<String, Double> priceDeviationList = this.exchangeClient.getPricesDayDeviation(priceList.keySet().stream().toList());
+
+        StringBuilder sb = new StringBuilder("Hi! Lets see daily update for your favorites:\n");
+        DecimalFormat df = new DecimalFormat("#.########");
+        int[] index = new int[1];
+        index[0] = 1;
+
         botUsers.forEach(u -> {
-            List<String> userFavorites = u.getFavorites().stream().map(TradingPair::getName).toList();
-            sendAnswer(u.getId(), exchangeClient.getCurrency(userFavorites), null);
-            userFavorites.forEach(this::increasePairRate);
+            u.getFavorites().forEach(p -> {
+                String symbol = p.getName();
+                String lastPrice = df.format(priceList.get(symbol));
+                Double deviation = priceDeviationList.get(symbol);
+                String direction = deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:";
+                sb.append(index[0]++).append(String.format(") %s   :   %s (%.2f%%) ", symbol, lastPrice, deviation))
+                        .append(direction)
+                        .append("\n");
+                increasePairRate(symbol);
+            });
+            sendAnswer(u.getId(), EmojiParser.parseToUnicode(sb.toString()), null);
+            index[0] = 1;
+            sb.replace(46, sb.toString().length(), "");
         });
+
         System.out.println("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
         //log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
@@ -187,11 +208,13 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                     sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%)\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100));
                 }
             });
-            if (sb.toString().length() > 47) sendAnswer(entry.getKey(), sb.toString(), null);
-            sb.replace(47, sb.toString().length(), "");
+            if (sb.toString().length() > 47) {
+                sendAnswer(entry.getKey(), sb.toString(), null);
+                sb.replace(46, sb.toString().length(), "");
+            }
             index[0] = 1;
         }
-        priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
+        priceList.forEach(tradingPairRepository::updatePrice);
     }
 
     private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
