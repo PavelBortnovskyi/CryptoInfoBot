@@ -6,6 +6,7 @@ import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
+import com.neo.crypto_bot.service.ReplyKeyboardFactory;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,15 +35,19 @@ public class FavoriteCommandHandler extends BotCommand {
 
     private final BotUserRepository botUserRepository;
 
+    private final ReplyKeyboardFactory replyKeyboardFactory;
+
     public FavoriteCommandHandler(@Value(TextCommands.GET_ALL_FAVORITE_PAIRS) String commandIdentifier,
                                   @Value(TextCommands.GAFP_DESCRIPTION) String description,
                                   ExchangeApiClient exchangeClient,
                                   TradingPairRepository tradingPairRepository,
-                                  BotUserRepository botUserRepository) {
+                                  BotUserRepository botUserRepository,
+                                  ReplyKeyboardFactory replyKeyboardFactory) {
         super(commandIdentifier, description);
         this.exchangeClient = exchangeClient;
         this.tradingPairRepository = tradingPairRepository;
         this.botUserRepository = botUserRepository;
+        this.replyKeyboardFactory = replyKeyboardFactory;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class FavoriteCommandHandler extends BotCommand {
         long chatId = chat.getId();
         SendMessage messageToSend = SendMessage.builder().chatId(chatId).text("").build();
         if (botUserRepository.findById(chatId).isPresent()) {
-            Set<TradingPair> userPairs = tradingPairRepository.getUsersFavoritePairs(chatId);
+            Set<TradingPair> userPairs = botUserRepository.findById(chatId).get().getFavorites();
             if (!userPairs.isEmpty()) {
                 messageToSend.setText(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())));
                 userPairs.forEach(p -> increasePairRate(p.getName()));
@@ -58,6 +63,7 @@ public class FavoriteCommandHandler extends BotCommand {
         } else
             messageToSend.setText("You need to register by /start command to have possibility to get favorite pairs");
         try {
+            messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
             absSender.execute(messageToSend);
         } catch (
                 TelegramApiException e) {

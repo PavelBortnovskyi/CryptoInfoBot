@@ -72,7 +72,6 @@ public class StartCommandHandler extends BotCommand {
                 .replyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs()).build();
         registerUser(user, chat.getId());
         try {
-            System.out.println(messageToSend.getReplyMarkup().toString());
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
             System.out.println("Got some exception in start block: " + e.getMessage());

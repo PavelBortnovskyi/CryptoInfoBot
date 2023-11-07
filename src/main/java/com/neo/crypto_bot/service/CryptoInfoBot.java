@@ -27,7 +27,9 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -149,9 +151,9 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     }
 
     /**
-     * Method sends currencies of favorite pairs for each bot user at 8:00 server time
+     * Method sends currencies of favorite pairs for each bot user at 8:01 server time
      */
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 1 8 * * *")
     private void sendUserFavoritePairCurrencies() {
         List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
         botUsers.forEach(u -> {
@@ -159,6 +161,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             sendAnswer(u.getId(), exchangeClient.getCurrency(userFavorites), null);
             userFavorites.forEach(this::increasePairRate);
         });
+        System.out.println("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
         //log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
 
@@ -168,29 +171,27 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     @Scheduled(cron = "0 0/15 * * * *")
     private void sendUserFavoritesPriceUpdates() {
         List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
-        Set<TradingPair> usersFavorites = new HashSet<>();
-        botUsers.forEach(bu ->
-            usersFavorites.addAll(bu.getFavorites()));
-        List<String> favoritesNames = usersFavorites.stream().map(TradingPair::getName).collect(Collectors.toList());
-        if (!favoritesNames.isEmpty()) {
-            HashMap<String, Double> priceList = exchangeClient.getPrices(favoritesNames);
-            StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
-            int[] index = new int[1];
-            index[0] = 1;
-            botUsers.forEach(bu -> {
-                bu.getFavorites().forEach(p -> {
-                    double freshPrice = priceList.get(p.getName());
-                    double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
-                    if (Math.abs(deviation) > 0.05) {
-                        DecimalFormat df = new DecimalFormat("#.##");
-                        sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%)\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100));
-                    }
-                });
-                if (sb.toString().length() > 47) sendAnswer(bu.getId(), sb.toString(), null);
-                sb.replace(0, sb.toString().length(), "");
+        HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
+        HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
+
+        StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
+        int[] index = new int[1];
+        index[0] = 1;
+
+        for (Map.Entry<Long, Set<TradingPair>> entry : favoritesCache.entrySet()) {
+            entry.getValue().forEach(p -> {
+                double freshPrice = priceList.get(p.getName());
+                double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
+                if (Math.abs(deviation) > 0.05) {
+                    DecimalFormat df = new DecimalFormat("#.##############");
+                    sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%)\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100));
+                }
             });
-            priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
+            if (sb.toString().length() > 47) sendAnswer(entry.getKey(), sb.toString(), null);
+            sb.replace(47, sb.toString().length(), "");
+            index[0] = 1;
         }
+        priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
     }
 
     private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
@@ -228,6 +229,25 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             //log.info("New pair added to list: " + tradingPairName);
             return tradingPairRepository.save(tradingPair);
         } else return tradingPairRepository.findByName(tradingPairName).get();
+    }
+
+    private HashMap<String, Double> getPriceListForAllUsersFavorites(HashMap<Long, Set<TradingPair>> favoritesCache) {
+
+        Set<TradingPair> usersFavorites = favoritesCache.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+
+        List<String> favoritesNames = usersFavorites.stream().map(TradingPair::getName).collect(Collectors.toList());
+        if (!favoritesNames.isEmpty()) {
+            return exchangeClient.getPrices(favoritesNames);
+        } else return new HashMap<>();
+    }
+
+    private HashMap<Long, Set<TradingPair>> getFavoritesCache(List<BotUser> botUsers) {
+        HashMap<Long, Set<TradingPair>> usersIdsWithFavorites = new HashMap<>();
+        botUsers.forEach(bu -> usersIdsWithFavorites.put(bu.getId(), bu.getFavorites()));
+        return usersIdsWithFavorites;
     }
 
     private Double calculateDeviation(Double oldPrice, Double newPrice) {

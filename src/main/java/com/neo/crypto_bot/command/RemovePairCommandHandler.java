@@ -94,21 +94,23 @@ public class RemovePairCommandHandler extends BotCommand {
                 } else {
                     messageToSend.setText("Wrong pairs symbol input. Please check and try again");
                 }
+                messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
+                botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
             } else {
                 StringBuilder sb = new StringBuilder("You can use this command in \"/remove_pair BTCUSDT\" format\n");
                 sb.append("or \"/remove_pair BTCUSDT, LTCUSDT\" to remove few pairs from favorites\n\n");
                 sb.append("Also you can choose pair to remove in reply keyboard below if you have favorites\n");
                 sb.append("or you can print it manually\n");
-                if (!botUserRepository.findById(chat.getId()).get().getFavorites().isEmpty())
-                    messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
-                else messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
+                messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
                 messageToSend.setText(sb.toString());
                 botStateKeeper.changeState(BotState.INPUT_FOR_REMOVE);
             }
-        } else
+        } else {
+            messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
             messageToSend.setText("You are not registered user and can`t add pairs to favorites. Click /start to register.");
+            botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
+        }
         try {
-            System.out.println(messageToSend.getReplyMarkup().toString());
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {
             System.out.println("Got some exception in remove pair block: " + e.getMessage());
