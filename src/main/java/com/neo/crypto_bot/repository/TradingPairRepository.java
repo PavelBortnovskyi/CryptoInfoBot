@@ -34,7 +34,4 @@ public interface TradingPairRepository extends JpaRepository<TradingPair, Long> 
 
     @Query(value = "select p from TradingPair p where p.baseAsset = :assetName")
     List<TradingPair> getConvertibleAssets(@Param("assetName") String baseAssetName);
-
-    @Query(value = "select u.favorites from BotUser u where u.id = :userId")
-    Set<TradingPair> getUsersFavoritePairs(@Param("userId") long chatId);
 }

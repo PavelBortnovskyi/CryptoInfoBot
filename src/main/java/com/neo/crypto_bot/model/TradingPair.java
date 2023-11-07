@@ -31,7 +31,7 @@ public class TradingPair {
 
     private long requests;
 
-    @ManyToMany(mappedBy = "favorites", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
     private Set<BotUser> users = new HashSet<>();
 
     @Override
