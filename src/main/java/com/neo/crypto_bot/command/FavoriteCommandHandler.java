@@ -7,6 +7,7 @@ import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import com.neo.crypto_bot.service.ReplyKeyboardFactory;
+import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -59,7 +60,7 @@ public class FavoriteCommandHandler extends BotCommand {
         if (currUser.isPresent()) {
             Set<TradingPair> userPairs = currUser.get().getFavorites();
             if (!userPairs.isEmpty()) {
-                messageToSend.setText(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList())));
+                messageToSend.setText(EmojiParser.parseToUnicode(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList()))));
                 userPairs.forEach(p -> increasePairRate(p.getName()));
             } else messageToSend.setText("You no have favorite pair, please add them using /add_pair \"pair_name\" command");
         } else

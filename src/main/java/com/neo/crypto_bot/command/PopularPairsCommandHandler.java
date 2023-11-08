@@ -5,6 +5,7 @@ import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
+import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -57,7 +58,7 @@ public class PopularPairsCommandHandler extends BotCommand {
                     }
                 }
             }
-            messageToSend.setText(sb.toString());
+            messageToSend.setText(EmojiParser.parseToUnicode(sb.toString()));
         } else messageToSend.setText("Sorry, our pair rank list is empty at the moment");
         try {
             absSender.execute(messageToSend);

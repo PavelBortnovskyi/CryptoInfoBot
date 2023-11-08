@@ -129,12 +129,11 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                             addPairIfNoExistToList(p);
                             increasePairRate(p);
                         });
-                        sendAnswer(chatId, exchangeClient.getCurrency(pairs), replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
+
                         //log.info("Got currency of pairs: " + pairs);
-                    } else if (invalidPairInput) {
-                        sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs());
-                        //log.error("Wrong user input or exchange no have such pair listing: " + pairs);
                     }
+                    sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
+                    //log.error("Wrong user input or exchange no have such pair listing: " + pairs);
                 }
             }
             case INPUT_FOR_ADD -> {
@@ -152,7 +151,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     }
 
     /**
-     * Method sends currencies of favorite pairs for each bot user at 8:01 server time
+     * Method sends currencies of favorite pairs for each bot user at 6:01 server time
      */
     @Scheduled(cron = "0 1 6 * * *")
     private void sendUserFavoritePairCurrencies() {
@@ -171,13 +170,13 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 String symbol = p.getName();
                 String lastPrice = df.format(priceList.get(symbol));
                 Double deviation = priceDeviationList.get(symbol);
-                String direction = deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:";
+                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
                 sb.append(index[0]++).append(String.format(") %s   :   %s (%.2f%%) ", symbol, lastPrice, deviation))
                         .append(direction)
                         .append("\n");
                 increasePairRate(symbol);
             });
-            sendAnswer(u.getId(), EmojiParser.parseToUnicode(sb.toString()), null);
+            sendAnswer(u.getId(), sb.toString(), null);
             index[0] = 1;
             sb.replace(46, sb.toString().length(), "");
         });
@@ -195,7 +194,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
         HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
 
-        StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
+        StringBuilder sb = new StringBuilder(":warning: Assets from your favorites has changed price in last 15 minutes more than 5%:\n");
         int[] index = new int[1];
         index[0] = 1;
 
@@ -203,9 +202,11 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             entry.getValue().forEach(p -> {
                 double freshPrice = priceList.get(p.getName());
                 double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
+                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
+                if (deviation > 20) direction = ":rocket:";
                 if (Math.abs(deviation) > 0.05) {
                     DecimalFormat df = new DecimalFormat("#.##############");
-                    sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%)\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100));
+                    sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%) %s\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100, direction));
                 }
             });
             if (sb.toString().length() > 47) {
@@ -220,7 +221,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText(answer);
+        message.setText(EmojiParser.parseToUnicode(answer));
         if (keyboardMarkup != null)
             message.setReplyMarkup(keyboardMarkup);
         try {

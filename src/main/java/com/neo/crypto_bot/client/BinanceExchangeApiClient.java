@@ -2,6 +2,7 @@ package com.neo.crypto_bot.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.neo.crypto_bot.model.TradingPair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -40,7 +41,7 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
     private final ObjectMapper objectMapper;
 
     public String getCurrency(List<String> pairs) {
-        StringBuilder sb = new StringBuilder(priceUrl);
+        StringBuilder sb = new StringBuilder(dayTickerPriceUrl);
         sb.append(this.defineSymbolParam(pairs));
 
         JsonNode jsonNode = makeRequest(sb.toString());
@@ -51,19 +52,21 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
             int[] index = new int[1];
             index[0] = 1;
             DecimalFormat df = new DecimalFormat("#.########");
+            ArrayNode arrayNode = objectMapper.createArrayNode();
             if (jsonNode.isArray()) {
+                arrayNode = (ArrayNode) jsonNode;
                 sb.append("Current price(s) for pair(s):\n");
-                jsonNode.forEach(n -> {
-                    String symbol = n.get("symbol").asText().replace("\"", "");
-                    String price = df.format(n.get("price").asDouble());
-                    sb.append(String.format("%d) %s  :  %s", index[0]++, symbol, price)).append("\n");
-                });
             } else if (jsonNode.isObject()) {
-                String symbol = jsonNode.get("symbol").asText().replace("\"", "");
-                String price = df.format(jsonNode.get("price").asDouble());
-                sb.append("Current price(s) for pair(s):\n");
-                sb.append(String.format("%d) %s  :  %s", index[0]++, symbol, price));
+                arrayNode.add(jsonNode);
+                sb.append("Current price for pair:\n");
             }
+            arrayNode.forEach(node -> {
+                String symbol = node.get("symbol").asText().replace("\"", "");
+                String price = df.format(node.get("lastPrice").asDouble());
+                Double delta = node.get("priceChangePercent").asDouble();
+                String direction = delta > 20 ? ":rocket:" : (delta > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
+                sb.append(String.format("%d) %s  :  %s (%.2f%%) %s", index[0]++, symbol, price, delta, direction)).append("\n");
+            });
         }
         return sb.toString();
     }
