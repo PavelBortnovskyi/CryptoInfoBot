@@ -69,7 +69,7 @@ public class AddPairCommandHandler extends BotCommand {
                 .chatId(chat.getId())
                 .text("")
                 .replyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs()).build();
-        Optional<BotUser> maybeCurrUser = botUserRepository.findById(chat.getId());
+        Optional<BotUser> maybeCurrUser = botUserRepository.getUserWithFavoritePairs(chat.getId());
         if (maybeCurrUser.isPresent()) {
             BotUser currUser = maybeCurrUser.get();
             if (strings.length >= 1) {

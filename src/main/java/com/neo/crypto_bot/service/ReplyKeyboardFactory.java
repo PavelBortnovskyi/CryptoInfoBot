@@ -33,7 +33,7 @@ public class ReplyKeyboardFactory {
     }
 
     public ReplyKeyboardMarkup getKeyboardWithFavorites(long chatId) {
-        Optional<BotUser> maybeUser = botUserRepository.findById(chatId);
+        Optional<BotUser> maybeUser = botUserRepository.getUserWithFavoritePairs(chatId);
         Set<TradingPair> favorites = maybeUser.isEmpty() ? new HashSet<>() : maybeUser.get().getFavorites();
         System.out.println("Generating keyBoard with favorites");
         return fillKeyboard(favorites, 4, Fields.NAME);
