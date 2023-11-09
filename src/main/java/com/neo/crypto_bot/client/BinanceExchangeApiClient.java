@@ -52,7 +52,7 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         else {
             int[] index = new int[1];
             index[0] = 1;
-            DecimalFormat df = new DecimalFormat("#.########");
+            DecimalFormat df = new DecimalFormat("#.#########");
             ArrayNode arrayNode = objectMapper.createArrayNode();
             if (jsonNode.isArray()) {
                 arrayNode = (ArrayNode) jsonNode;

@@ -48,12 +48,12 @@ public class PopularPairsCommandHandler extends BotCommand {
         if (!popularPairs.isEmpty()) {
             String prices = exchangeClient.getCurrency(popularPairs.stream().map(TradingPair::getName).collect(Collectors.toList()));
             String[] pricesRows = prices.split("\n");
-            StringBuilder sb = new StringBuilder(pricesRows[0] + "\n");
+            StringBuilder sb = new StringBuilder("Top 25 pairs actual currencies:\n");
             int index = 1;
             for (TradingPair p : popularPairs) {
                 for (int i = 1; i < pricesRows.length; i++) {
                     if (pricesRows[i].contains(p.getName())) {
-                        pricesRows[i] = pricesRows[i].replaceAll("\\b\\d+\\)", index++ + ") ");
+                        pricesRows[i] = pricesRows[i].replaceAll("\\b\\d+\\)", String.format("%02d) ", index++));
                         sb.append(pricesRows[i] += ", asked " + p.getRequests() + " times\n");
                     }
                 }
