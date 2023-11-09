@@ -194,24 +194,25 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
         HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
 
-        StringBuilder sb = new StringBuilder(":warning: Assets from your favorites has changed price in last 15 minutes more than 5%:\n");
+        String headMessage = ":warning: Assets from your favorites has changed price in last 15 minutes more than 5%:\n";
+        StringBuilder sb = new StringBuilder(headMessage);
         int[] index = new int[1];
         index[0] = 1;
 
         for (Map.Entry<Long, Set<TradingPair>> entry : favoritesCache.entrySet()) {
             entry.getValue().forEach(p -> {
                 double freshPrice = priceList.get(p.getName());
-                double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
+                double deviation = calculateDeviation(p.getLastCurrency(), freshPrice) * 100;
                 String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
                 if (deviation > 20) direction = ":rocket:";
-                if (Math.abs(deviation) > 0.05) {
+                if (Math.abs(deviation) > 5) {
                     DecimalFormat df = new DecimalFormat("#.##############");
-                    sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%) %s\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation * 100, direction));
+                    sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%) %s\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation, direction));
                 }
             });
-            if (sb.toString().length() > 47) {
+            if (sb.toString().length() > headMessage.length()) {
                 sendAnswer(entry.getKey(), sb.toString(), null);
-                sb.replace(46, sb.toString().length(), "");
+                sb.replace(headMessage.length() - 1, sb.toString().length(), "");
             }
             index[0] = 1;
         }
