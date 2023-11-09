@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.List;
 
 
 //@Log4j2
@@ -65,7 +66,7 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
                 String price = df.format(node.get("lastPrice").asDouble());
                 Double delta = node.get("priceChangePercent").asDouble();
                 String direction = delta > 20 ? ":rocket:" : (delta > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
-                sb.append(String.format("%d) %s  :  %s (%.2f%%) %s", index[0]++, symbol, price, delta, direction)).append("\n");
+                sb.append(String.format("%02d) %-10s:   %-10s  (%.2f%%) %s%n", index[0]++, symbol, price, delta, direction));
             });
         }
         return sb.toString();
@@ -189,3 +190,5 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         return sb.toString();
     }
 }
+
+

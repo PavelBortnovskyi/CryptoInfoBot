@@ -13,7 +13,6 @@ import com.neo.crypto_bot.repository.TradingPairRepository;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -28,7 +27,6 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -203,11 +201,10 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             entry.getValue().forEach(p -> {
                 double freshPrice = priceList.get(p.getName());
                 double deviation = calculateDeviation(p.getLastCurrency(), freshPrice) * 100;
-                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
-                if (deviation > 20) direction = ":rocket:";
+                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");;
                 if (Math.abs(deviation) > 5) {
                     DecimalFormat df = new DecimalFormat("#.##############");
-                    sb.append(index[0]++).append(String.format(") %s: %s -> %s (%.2f%%) %s\n", p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation, direction));
+                    sb.append(String.format("%02d) %-10s: %-9s -> %-9s (%.2f%%) %s\n", index[0]++, p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation, direction));
                 }
             });
             if (sb.toString().length() > headMessage.length()) {
