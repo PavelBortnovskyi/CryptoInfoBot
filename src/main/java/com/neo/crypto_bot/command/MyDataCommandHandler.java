@@ -38,7 +38,8 @@ public class MyDataCommandHandler extends BotCommand {
             sb.append("Nickname: ").append(currUser.getNickName()).append("\n")
                     .append("FirstName: ").append(currUser.getFirstName()).append("\n")
                     .append("LastName: ").append(currUser.getLastName()).append("\n")
-                    .append("Registered at: ").append(currUser.getRegisteredAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .append("Registered at: ").append(currUser.getRegisteredAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).append("\n")
+                    .append("Language: ").append(currUser.getLanguage())
                     .append("\n\n")
                     .append("To delete your data press -> /delete_my_data (You will not be able to use favorites)"); //TODO: add inline button for delete my data command
             messageToSend.setText(sb.toString());

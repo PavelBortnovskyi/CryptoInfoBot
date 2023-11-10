@@ -4,7 +4,9 @@ import com.neo.crypto_bot.client.BinanceExchangeApiClient;
 import com.neo.crypto_bot.client.ExchangeApiClient;
 import com.neo.crypto_bot.config.BotConfig;
 import com.neo.crypto_bot.config.BotStateKeeper;
+import com.neo.crypto_bot.constant.Actions;
 import com.neo.crypto_bot.constant.BotState;
+import com.neo.crypto_bot.constant.Language;
 import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
@@ -17,8 +19,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -97,6 +101,30 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 command.processMessage(this, message, new String[]{});
             } else {
                 processUserInput(update.getMessage().getChat(), text);
+            }
+        }
+        if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            BotUser currUser = botUserRepository.findById(callbackQuery.getMessage().getChatId()).get();
+            String answer = "";
+            switch (callbackQuery.getData()) {
+                case Actions.ENG_LANGUAGE -> {
+                    currUser.setLanguage(Language.ENG.toString());
+                    answer = "Great! Lets continue on english!";
+                }
+                case Actions.UA_LANGUAGE -> {
+                    currUser.setLanguage(Language.UA.toString());
+                    answer = "Чудово! Продовжимо на солов'їній!";
+                }
+            }
+            botUserRepository.save(currUser);
+            try {
+                sendApiMethod(AnswerCallbackQuery.builder()
+                        .callbackQueryId(callbackQuery.getId())
+                        .text(answer)
+                        .build());
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -201,7 +229,8 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             entry.getValue().forEach(p -> {
                 double freshPrice = priceList.get(p.getName());
                 double deviation = calculateDeviation(p.getLastCurrency(), freshPrice) * 100;
-                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");;
+                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
+                ;
                 if (Math.abs(deviation) > 5) {
                     DecimalFormat df = new DecimalFormat("#.##############");
                     sb.append(String.format("%02d) %-10s: %-9s -> %-9s (%.2f%%) %s\n", index[0]++, p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation, direction));
