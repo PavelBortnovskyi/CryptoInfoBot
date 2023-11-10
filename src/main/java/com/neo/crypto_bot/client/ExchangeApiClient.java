@@ -13,7 +13,7 @@ public interface ExchangeApiClient {
 
     JsonNode makeRequest(String url);
 
-    String getCurrency(List<String> pairs);
+    String getCurrency(List<String> pairs, long userId);
 
     public List<TradingPair> getListing();
 
@@ -23,5 +23,9 @@ public interface ExchangeApiClient {
 
     public Double getPrice(String name);
 
+    public Double getDayDeviation(String name);
+
     public HashMap<String, Double> getPrices(List<String> pairSet);
+
+    public HashMap<String, Double> getPricesDayDeviation(List<String> pairs);
 }

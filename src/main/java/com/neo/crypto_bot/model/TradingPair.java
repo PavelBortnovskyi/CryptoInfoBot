@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -30,6 +31,19 @@ public class TradingPair {
 
     private long requests;
 
-    @ManyToMany(mappedBy = "favorites", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
     private Set<BotUser> users = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TradingPair that = (TradingPair) o;
+        return id.equals(that.id) && name.equals(that.name) && baseAsset.equals(that.baseAsset) && quoteAsset.equals(that.quoteAsset);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, baseAsset, quoteAsset);
+    }
 }

@@ -7,11 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.telegram.telegrambots.extensions.bots.commandbot.commands.CommandRegistry;
-import org.telegram.telegrambots.extensions.bots.commandbot.commands.ICommandRegistry;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -23,10 +18,10 @@ import java.net.Proxy;
 public class BotConfig {
 
 
-    @Value("${bot.token}")
+    @Value("${bot_token}")
     private String botToken;
 
-    @Value("${bot.name}")
+    @Value("${bot_name}")
     private String botName;
 
     /**
@@ -46,8 +41,9 @@ public class BotConfig {
 
     @Bean
     public OkHttpClient okHttpClient() {
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.231.178.249", 9797));
-        return new OkHttpClient().newBuilder().proxy(proxy).build();
+        //Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.231.178.249", 9797));
+        //return new OkHttpClient().newBuilder().proxy(proxy).build();
+        return new OkHttpClient();
     }
 
 

@@ -10,7 +10,7 @@ public class BotCommandInitializer implements InitializingBean {
     private final ICommandRegistry iCommandRegistry;
     private final IBotCommand[] iBotCommands;
 
-    public BotCommandInitializer(ICommandRegistry iCommandRegistry, IBotCommand... iBotCommands) {
+    public BotCommandInitializer(ICommandRegistry iCommandRegistry, IBotCommand[] iBotCommands) {
         this.iCommandRegistry = iCommandRegistry;
         this.iBotCommands = iBotCommands;
     }

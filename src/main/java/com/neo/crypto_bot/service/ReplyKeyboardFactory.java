@@ -22,21 +22,24 @@ public class ReplyKeyboardFactory {
 
     public ReplyKeyboardMarkup getKeyboardWithTop25Pairs() {
         List<TradingPair> topPairs = tradingPairRepository.getPopularPairs();
-        return fillKeyBoard(topPairs, 4, Fields.NAME);
+        System.out.println("Generating keyBoard with top 25 pairs");
+        return fillKeyboard(topPairs, 4, Fields.NAME);
     }
 
     public ReplyKeyboardMarkup getKeyboardWithConvertibles(String baseAssetName) {
         List<TradingPair> convertiblePairs = tradingPairRepository.getConvertibleAssets(baseAssetName);
-        return fillKeyBoard(convertiblePairs, 4, Fields.QUOTE_ASSET);
+        System.out.println("Generating keyBoard with convertibles");
+        return fillKeyboard(convertiblePairs, 4, Fields.QUOTE_ASSET);
     }
 
     public ReplyKeyboardMarkup getKeyboardWithFavorites(long chatId) {
-        Optional<BotUser> maybeUser = botUserRepository.findById(chatId);
+        Optional<BotUser> maybeUser = botUserRepository.getUserWithFavoritePairs(chatId);
         Set<TradingPair> favorites = maybeUser.isEmpty() ? new HashSet<>() : maybeUser.get().getFavorites();
-        return fillKeyBoard(favorites, 4, Fields.NAME);
+        System.out.println("Generating keyBoard with favorites");
+        return fillKeyboard(favorites, 4, Fields.NAME);
     }
 
-    private ReplyKeyboardMarkup fillKeyBoard(Collection<TradingPair> collection, int columnsCount, Fields fields) {
+    private ReplyKeyboardMarkup fillKeyboard(Collection<TradingPair> collection, int columnsCount, Fields fields) {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         int rowIndex = 0;
@@ -57,7 +60,9 @@ public class ReplyKeyboardFactory {
                 keyboardRows.get(rowIndex).add(buttonLabel);
             }
             keyboardMarkup.setKeyboard(keyboardRows);
+            System.out.println("ReplyKeyboard set");
             return keyboardMarkup;
-        } else return new ReplyKeyboardMarkup();
+        } else {
+            System.out.println("empty Keyboard"); return new ReplyKeyboardMarkup();}
     }
 }

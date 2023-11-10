@@ -2,23 +2,25 @@ package com.neo.crypto_bot.service;
 
 import com.neo.crypto_bot.client.BinanceExchangeApiClient;
 import com.neo.crypto_bot.client.ExchangeApiClient;
-import com.neo.crypto_bot.command.AddPairCommandHandler;
 import com.neo.crypto_bot.config.BotConfig;
 import com.neo.crypto_bot.config.BotStateKeeper;
+import com.neo.crypto_bot.constant.Actions;
 import com.neo.crypto_bot.constant.BotState;
+import com.neo.crypto_bot.constant.Language;
 import com.neo.crypto_bot.constant.TextCommands;
 import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j2;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -27,11 +29,13 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Log4j2
+//@Log4j2
 @Component
 public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
@@ -65,6 +69,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         this.replyKeyboardFactory = replyKeyboardFactory;
         this.commandParser = commandParser;
         this.botStateKeeper = botStateKeeper;
+        Locale.setDefault(new Locale("en"));
         botCommands.add(new BotCommand("/start", "get started"));
         botCommands.add(new BotCommand("/my_data", "get info about user"));
         botCommands.add(new BotCommand("/delete_my_data", "remove all info about user"));
@@ -77,7 +82,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         try {
             this.execute(new SetMyCommands(this.botCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
-            log.error("Error while set bot`s command list: " + e.getMessage());
+            //log.error("Error while set bot`s command list: " + e.getMessage());
         }
     }
 
@@ -95,23 +100,60 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             if (Objects.nonNull(command)) {
                 command.processMessage(this, message, new String[]{});
             } else {
-                processUserInput(update.getMessage().getChat(), text);
+                processUserTextInput(update.getMessage().getChat(), text);
+            }
+        }
+        if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            BotUser currUser = botUserRepository.findById(callbackQuery.getMessage().getChatId()).get();
+            String answer = "";
+            switch (callbackQuery.getData()) {
+                case Actions.ENG_LANGUAGE -> {
+                    currUser.setLanguage(Language.EN.toString());
+                    answer = "Great! Lets continue on english!";
+                }
+                case Actions.UA_LANGUAGE -> {
+                    currUser.setLanguage(Language.UA.toString());
+                    answer = "Чудово! Продовжимо на солов'їній!";
+                }
+            }
+            botUserRepository.save(currUser);
+
+            try {
+                sendApiMethod(AnswerCallbackQuery.builder()
+                        .callbackQueryId(callbackQuery.getId())
+                        .text(answer)
+                        .build());
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+
+            Locale userLocale = new Locale(currUser.getLanguage().toLowerCase());
+            LocalizationManager.setLocale(userLocale);
+            try {
+                sendApiMethod(SendMessage.builder()
+                        .chatId(callbackQuery.getMessage().getChatId())
+                        .text(MessageFormat.format(LocalizationManager.getString("start_message"), currUser.getFirstName()))
+                        .replyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs())
+                        .build());
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    private void processUserInput(Chat chat, String receivedMessage) {
+    private void processUserTextInput(Chat chat, String receivedMessage) {
         List<String> pairs = commandParser.getPairsFromCommand(receivedMessage);
         long chatId = chat.getId();
+        botUserRepository.findById(chatId).ifPresent(botUser -> LocalizationManager.setLocale(new Locale(botUser.getLanguage().toLowerCase())));
         //Offer second asset to user if he entered only single asset name
         switch (botStateKeeper.getBotState()) {
             case INPUT_FOR_CURRENCY -> {
                 if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
                     tempAssetName = pairs.get(0);
-                    sendAnswer(chatId, "Please choose asset to get pair currency", replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
                 } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
-                    //String pair = tempAssetName.toUpperCase().equals("BTC") ? pairs.get(0) + tempAssetName : tempAssetName + pairs.get(0);
-                    String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)));
+                    String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)), chatId);
                     sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
                     if (!answer.contains("error")) {
                         addPairIfNoExistToList(tempAssetName + pairs.get(0));
@@ -119,19 +161,18 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                     }
                     tempAssetName = "None";
                 } else {
-                    String exchangeResponse = exchangeClient.getCurrency(pairs); //Try to get currencies of entered pairs from exchange
+                    String exchangeResponse = exchangeClient.getCurrency(pairs, chatId); //Try to get currencies of entered pairs from exchange
                     boolean invalidPairInput = exchangeResponse.contains("error");
                     if (!invalidPairInput) {
                         pairs.forEach(p -> {
                             addPairIfNoExistToList(p);
                             increasePairRate(p);
                         });
-                        sendAnswer(chatId, exchangeClient.getCurrency(pairs), replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
-                        log.info("Got currency of pairs: " + pairs);
-                    } else if (invalidPairInput) {
-                        sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs());
-                        log.error("Wrong user input or exchange no have such pair listing: " + pairs);
+
+                        //log.info("Got currency of pairs: " + pairs);
                     }
+                    sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
+                    //log.error("Wrong user input or exchange no have such pair listing: " + pairs);
                 }
             }
             case INPUT_FOR_ADD -> {
@@ -149,17 +190,40 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     }
 
     /**
-     * Method sends currencies of favorite pairs for each bot user at 8:00 server time
+     * Method sends currencies of favorite pairs for each bot user at 6:01 server time
      */
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 1 6 * * *")
     private void sendUserFavoritePairCurrencies() {
         List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
+        HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
+        HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
+        HashMap<String, Double> priceDeviationList = this.exchangeClient.getPricesDayDeviation(priceList.keySet().stream().toList());
+
+        StringBuilder sb = new StringBuilder();
+        DecimalFormat df = new DecimalFormat("#.########");
+        int[] index = new int[1];
+        index[0] = 1;
+
         botUsers.forEach(u -> {
-            List<String> userFavorites = u.getFavorites().stream().map(TradingPair::getName).toList();
-            sendAnswer(u.getId(), exchangeClient.getCurrency(userFavorites), null);
-            userFavorites.forEach(this::increasePairRate);
+            LocalizationManager.setLocale(new Locale(u.getLanguage().toLowerCase()));
+            sb.append(MessageFormat.format(LocalizationManager.getString("daily_message"), u.getFirstName())).append("\n");
+            u.getFavorites().forEach(p -> {
+                String symbol = p.getName();
+                String lastPrice = df.format(priceList.get(symbol));
+                Double deviation = priceDeviationList.get(symbol);
+                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
+                sb.append(index[0]++).append(String.format(") %s   :   %s (%.2f%%) ", symbol, lastPrice, deviation))
+                        .append(direction)
+                        .append("\n");
+                increasePairRate(symbol);
+            });
+            sendAnswer(u.getId(), sb.toString(), null);
+            index[0] = 1;
+            sb.replace(46, sb.toString().length(), "");
         });
-        log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
+
+        System.out.println("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
+        //log.info("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
     }
 
     /**
@@ -168,47 +232,52 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     @Scheduled(cron = "0 0/15 * * * *")
     private void sendUserFavoritesPriceUpdates() {
         List<BotUser> botUsers = botUserRepository.getUsersWithFavorites();
-        Set<TradingPair> usersFavorites = new HashSet<>();
-        botUsers.forEach(bu ->
-            usersFavorites.addAll(bu.getFavorites()));
-        List<String> favoritesNames = usersFavorites.stream().map(TradingPair::getName).collect(Collectors.toList());
-        if (!favoritesNames.isEmpty()) {
-            HashMap<String, Double> priceList = exchangeClient.getPrices(favoritesNames);
-            StringBuilder sb = new StringBuilder("Assets from your favorites has change prices:\n");
-            int[] index = new int[1];
-            index[0] = 1;
-            botUsers.forEach(bu -> {
-                bu.getFavorites().forEach(p -> {
-                    double freshPrice = priceList.get(p.getName());
-                    double deviation = calculateDeviation(p.getLastCurrency(), freshPrice);
-                    if (Math.abs(deviation) > 0.05) {
-                        sb.append(index[0]++).append(String.format(") %s: %.2f -> %.2f (%.2f%%)\n", p.getName(), p.getLastCurrency(), freshPrice, deviation * 100));
-                    }
-                });
-                if (sb.toString().length() > 47) sendAnswer(bu.getId(), sb.toString(), null);
-                sb.replace(0, sb.toString().length(), "");
+        HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
+        HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
+
+        StringBuilder sb = new StringBuilder();
+        int[] index = new int[1];
+        index[0] = 1;
+
+        for (Map.Entry<Long, Set<TradingPair>> entry : favoritesCache.entrySet()) {
+            LocalizationManager.setLocale(new Locale(botUserRepository.findById(entry.getKey()).get().getLanguage().toLowerCase()));
+            String headMessage = LocalizationManager.getString("warning_message") + "\n";
+            sb.append(headMessage);
+            entry.getValue().forEach(p -> {
+                double freshPrice = priceList.get(p.getName());
+                double deviation = calculateDeviation(p.getLastCurrency(), freshPrice) * 100;
+                String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
+                if (Math.abs(deviation) > 5) {
+                    DecimalFormat df = new DecimalFormat("#.##############");
+                    sb.append(String.format("%02d) %-10s: %-9s -> %-9s (%.2f%%) %s\n", index[0]++, p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation, direction));
+                }
             });
-            priceList.forEach((key, value) -> tradingPairRepository.updatePrice(value, key));
+            if (sb.toString().length() > headMessage.length()) {
+                sendAnswer(entry.getKey(), sb.toString(), null);
+                sb.replace(headMessage.length() - 1, sb.toString().length(), "");
+            }
+            index[0] = 1;
         }
+        priceList.forEach(tradingPairRepository::updatePrice);
     }
 
     private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText(answer);
+        message.setText(EmojiParser.parseToUnicode(answer));
         if (keyboardMarkup != null)
             message.setReplyMarkup(keyboardMarkup);
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            log.error("Got some TelegramAPI exception: " + e.getMessage());
+            //log.error("Got some TelegramAPI exception: " + e.getMessage());
         }
     }
 
     private void executeCommand(String commandName, String argument, Chat chat) {
         IBotCommand command = getRegisteredCommand(commandName);
         Message message = new Message();
-        message.setText("/" + TextCommands.REMOVE_PAIR + " " + argument);
+        message.setText("/" + commandName + " " + argument);
         message.setChat(chat);
         String[] arg = new String[1];
         arg[0] = argument;
@@ -224,9 +293,28 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         if (tradingPairRepository.findByName(tradingPairName).isEmpty()) {
             TradingPair tradingPair = exchangeClient.getPair(tradingPairName);
             tradingPair.setRequests(0);
-            log.info("New pair added to list: " + tradingPairName);
+            //log.info("New pair added to list: " + tradingPairName);
             return tradingPairRepository.save(tradingPair);
         } else return tradingPairRepository.findByName(tradingPairName).get();
+    }
+
+    private HashMap<String, Double> getPriceListForAllUsersFavorites(HashMap<Long, Set<TradingPair>> favoritesCache) {
+
+        Set<TradingPair> usersFavorites = favoritesCache.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+
+        List<String> favoritesNames = usersFavorites.stream().map(TradingPair::getName).collect(Collectors.toList());
+        if (!favoritesNames.isEmpty()) {
+            return exchangeClient.getPrices(favoritesNames);
+        } else return new HashMap<>();
+    }
+
+    private HashMap<Long, Set<TradingPair>> getFavoritesCache(List<BotUser> botUsers) {
+        HashMap<Long, Set<TradingPair>> usersIdsWithFavorites = new HashMap<>();
+        botUsers.forEach(bu -> usersIdsWithFavorites.put(bu.getId(), bu.getFavorites()));
+        return usersIdsWithFavorites;
     }
 
     private Double calculateDeviation(Double oldPrice, Double newPrice) {
