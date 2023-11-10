@@ -9,6 +9,7 @@ import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import com.neo.crypto_bot.service.CommandParser;
+import com.neo.crypto_bot.service.LocalizationManager;
 import com.neo.crypto_bot.service.ReplyKeyboardFactory;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +21,8 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.text.MessageFormat;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -69,10 +68,13 @@ public class RemovePairCommandHandler extends BotCommand {
         Optional<BotUser> maybeCurrUser = botUserRepository.getUserWithFavoritePairs(chat.getId());
         if (maybeCurrUser.isPresent()) {
             BotUser currUser = maybeCurrUser.get();
+            LocalizationManager.setLocale(new Locale(currUser.getLanguage().toLowerCase()));
+
             if (strings.length >= 1) {
                 List<String> pairsToRemove = new ArrayList<>();
                 Arrays.stream(strings).forEach(s -> pairsToRemove.addAll(commandParser.getPairsFromCommand(s)));
                 List<String> errors = new ArrayList<>();
+
                 if (exchangeClient.checkPair(pairsToRemove)) {
                     pairsToRemove.forEach(p -> {
                         TradingPair pairToRemove = tradingPairRepository.findByName(p).orElse(new TradingPair());
@@ -85,29 +87,25 @@ public class RemovePairCommandHandler extends BotCommand {
                     });
                     StringBuilder sb = new StringBuilder();
                     if (!pairsToRemove.stream().filter(p -> !errors.contains(p)).toList().isEmpty()) {
-                        sb.append(pairsToRemove.stream().filter(p -> !errors.contains(p)).toList()).append(" was removed from your favorites!\n");
+                        sb.append(MessageFormat.format(LocalizationManager.getString("favorites_remove_message"), pairsToRemove.stream().filter(p -> !errors.contains(p)).toList()));
                     } else {
-                        sb.append("Nothing to remove!\n");
+                        sb.append(LocalizationManager.getString("favorites_remove_empty_error_message"));
                     }
-                    if (!errors.isEmpty()) sb.append("NOTE: pairs that is not in your favorites: ").append(errors);
-                    messageToSend.setText(sb.toString());
+                    if (!errors.isEmpty()) sb.append(MessageFormat.format(LocalizationManager.getString("favorites_remove_error_message"),errors));
+                    messageToSend.setText(sb.toString().replaceAll("[\\[\\]]", ""));
                 } else {
-                    messageToSend.setText("Wrong pairs symbol input. Please check and try again");
+                    messageToSend.setText(LocalizationManager.getString("input_error_message"));
                 }
                 messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
                 botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
             } else {
-                StringBuilder sb = new StringBuilder("You can use this command in \"/remove_pair BTCUSDT\" format\n");
-                sb.append("or \"/remove_pair BTCUSDT, LTCUSDT\" to remove few pairs from favorites\n\n");
-                sb.append("Also you can choose pair to remove in reply keyboard below if you have favorites\n");
-                sb.append("or you can print it manually\n");
                 messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
-                messageToSend.setText(sb.toString());
+                messageToSend.setText(LocalizationManager.getString("remove_command_description"));
                 botStateKeeper.changeState(BotState.INPUT_FOR_REMOVE);
             }
         } else {
             messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
-            messageToSend.setText("You are not registered user and can`t add pairs to favorites. Click /start to register.");
+            messageToSend.setText(LocalizationManager.getString("not_registered_message"));
             botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
         }
         try {

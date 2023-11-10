@@ -13,7 +13,7 @@ public interface ExchangeApiClient {
 
     JsonNode makeRequest(String url);
 
-    String getCurrency(List<String> pairs);
+    String getCurrency(List<String> pairs, long userId);
 
     public List<TradingPair> getListing();
 

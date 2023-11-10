@@ -3,7 +3,10 @@ package com.neo.crypto_bot.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
+import com.neo.crypto_bot.repository.BotUserRepository;
+import com.neo.crypto_bot.service.LocalizationManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import okhttp3.OkHttpClient;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.List;
 
@@ -24,6 +28,8 @@ import java.util.List;
 public class BinanceExchangeApiClient implements ExchangeApiClient {
 
     private final OkHttpClient okHttpClient;
+
+    private final BotUserRepository botUserRepository;
 
     @Qualifier("priceUrl")
     private final String priceUrl;
@@ -41,14 +47,15 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
     private final String convertibleUrl;
     private final ObjectMapper objectMapper;
 
-    public String getCurrency(List<String> pairs) {
+    public String getCurrency(List<String> pairs, long userId) {
         StringBuilder sb = new StringBuilder(dayTickerPriceUrl);
         sb.append(this.defineSymbolParam(pairs));
+        botUserRepository.findById(userId).ifPresent(botUser -> LocalizationManager.setLocale(new Locale(botUser.getLanguage().toLowerCase())));
 
         JsonNode jsonNode = makeRequest(sb.toString());
         sb.replace(0, sb.toString().length(), "");
         if (jsonNode.has("msg"))
-            sb.append(String.format("Got some error from server response: %s\n Please check your input.", jsonNode.get("msg")));
+            sb.append(MessageFormat.format(LocalizationManager.getString("binance_get_currency_error"), jsonNode.get("msg")));
         else {
             int[] index = new int[1];
             index[0] = 1;
@@ -56,10 +63,10 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
             ArrayNode arrayNode = objectMapper.createArrayNode();
             if (jsonNode.isArray()) {
                 arrayNode = (ArrayNode) jsonNode;
-                sb.append("Current price(s) for pair(s):\n");
+                sb.append(LocalizationManager.getString("current_prices_head_message")).append("\n");
             } else if (jsonNode.isObject()) {
                 arrayNode.add(jsonNode);
-                sb.append("Current price for pair:\n");
+                sb.append("current_price_head_message").append("\n");
             }
             arrayNode.forEach(node -> {
                 String symbol = node.get("symbol").asText().replace("\"", "");

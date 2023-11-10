@@ -13,8 +13,6 @@ import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import com.vdurmont.emoji.EmojiParser;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -32,6 +30,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,6 +69,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         this.replyKeyboardFactory = replyKeyboardFactory;
         this.commandParser = commandParser;
         this.botStateKeeper = botStateKeeper;
+        Locale.setDefault(new Locale("en"));
         botCommands.add(new BotCommand("/start", "get started"));
         botCommands.add(new BotCommand("/my_data", "get info about user"));
         botCommands.add(new BotCommand("/delete_my_data", "remove all info about user"));
@@ -100,7 +100,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             if (Objects.nonNull(command)) {
                 command.processMessage(this, message, new String[]{});
             } else {
-                processUserInput(update.getMessage().getChat(), text);
+                processUserTextInput(update.getMessage().getChat(), text);
             }
         }
         if (update.hasCallbackQuery()) {
@@ -109,7 +109,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             String answer = "";
             switch (callbackQuery.getData()) {
                 case Actions.ENG_LANGUAGE -> {
-                    currUser.setLanguage(Language.ENG.toString());
+                    currUser.setLanguage(Language.EN.toString());
                     answer = "Great! Lets continue on english!";
                 }
                 case Actions.UA_LANGUAGE -> {
@@ -118,6 +118,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 }
             }
             botUserRepository.save(currUser);
+
             try {
                 sendApiMethod(AnswerCallbackQuery.builder()
                         .callbackQueryId(callbackQuery.getId())
@@ -126,21 +127,33 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
+
+            Locale userLocale = new Locale(currUser.getLanguage().toLowerCase());
+            LocalizationManager.setLocale(userLocale);
+            try {
+                sendApiMethod(SendMessage.builder()
+                        .chatId(callbackQuery.getMessage().getChatId())
+                        .text(MessageFormat.format(LocalizationManager.getString("start_message"), currUser.getFirstName()))
+                        .replyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs())
+                        .build());
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void processUserInput(Chat chat, String receivedMessage) {
+    private void processUserTextInput(Chat chat, String receivedMessage) {
         List<String> pairs = commandParser.getPairsFromCommand(receivedMessage);
         long chatId = chat.getId();
+        botUserRepository.findById(chatId).ifPresent(botUser -> LocalizationManager.setLocale(new Locale(botUser.getLanguage().toLowerCase())));
         //Offer second asset to user if he entered only single asset name
         switch (botStateKeeper.getBotState()) {
             case INPUT_FOR_CURRENCY -> {
                 if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
                     tempAssetName = pairs.get(0);
-                    sendAnswer(chatId, "Please choose asset to get pair currency", replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
                 } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
-                    //String pair = tempAssetName.toUpperCase().equals("BTC") ? pairs.get(0) + tempAssetName : tempAssetName + pairs.get(0);
-                    String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)));
+                    String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)), chatId);
                     sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
                     if (!answer.contains("error")) {
                         addPairIfNoExistToList(tempAssetName + pairs.get(0));
@@ -148,7 +161,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                     }
                     tempAssetName = "None";
                 } else {
-                    String exchangeResponse = exchangeClient.getCurrency(pairs); //Try to get currencies of entered pairs from exchange
+                    String exchangeResponse = exchangeClient.getCurrency(pairs, chatId); //Try to get currencies of entered pairs from exchange
                     boolean invalidPairInput = exchangeResponse.contains("error");
                     if (!invalidPairInput) {
                         pairs.forEach(p -> {
@@ -186,12 +199,14 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
         HashMap<String, Double> priceDeviationList = this.exchangeClient.getPricesDayDeviation(priceList.keySet().stream().toList());
 
-        StringBuilder sb = new StringBuilder("Hi! Lets see daily update for your favorites:\n");
+        StringBuilder sb = new StringBuilder();
         DecimalFormat df = new DecimalFormat("#.########");
         int[] index = new int[1];
         index[0] = 1;
 
         botUsers.forEach(u -> {
+            LocalizationManager.setLocale(new Locale(u.getLanguage().toLowerCase()));
+            sb.append(MessageFormat.format(LocalizationManager.getString("daily_message"), u.getFirstName())).append("\n");
             u.getFavorites().forEach(p -> {
                 String symbol = p.getName();
                 String lastPrice = df.format(priceList.get(symbol));
@@ -220,17 +235,18 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         HashMap<Long, Set<TradingPair>> favoritesCache = this.getFavoritesCache(botUsers);
         HashMap<String, Double> priceList = this.getPriceListForAllUsersFavorites(favoritesCache);
 
-        String headMessage = ":warning: Assets from your favorites has changed price in last 15 minutes more than 5%:\n";
-        StringBuilder sb = new StringBuilder(headMessage);
+        StringBuilder sb = new StringBuilder();
         int[] index = new int[1];
         index[0] = 1;
 
         for (Map.Entry<Long, Set<TradingPair>> entry : favoritesCache.entrySet()) {
+            LocalizationManager.setLocale(new Locale(botUserRepository.findById(entry.getKey()).get().getLanguage().toLowerCase()));
+            String headMessage = LocalizationManager.getString("warning_message") + "\n";
+            sb.append(headMessage);
             entry.getValue().forEach(p -> {
                 double freshPrice = priceList.get(p.getName());
                 double deviation = calculateDeviation(p.getLastCurrency(), freshPrice) * 100;
                 String direction = deviation > 20 ? ":rocket:" : (deviation > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
-                ;
                 if (Math.abs(deviation) > 5) {
                     DecimalFormat df = new DecimalFormat("#.##############");
                     sb.append(String.format("%02d) %-10s: %-9s -> %-9s (%.2f%%) %s\n", index[0]++, p.getName(), df.format(p.getLastCurrency()), df.format(freshPrice), deviation, direction));

@@ -9,6 +9,7 @@ import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
 import com.neo.crypto_bot.service.ListInitializer;
+import com.neo.crypto_bot.service.LocalizationManager;
 import com.neo.crypto_bot.service.ReplyKeyboardFactory;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
@@ -24,8 +25,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 //@Log4j2
 @Component
@@ -62,33 +66,25 @@ public class StartCommandHandler extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-        StringBuilder sb = new StringBuilder("Hi, " + chat.getFirstName() + " , nice to meet you!\n\n");
-        sb.append("This bot is created to get quick info and some statistic about trading pairs on Binance.\n\n");
-        sb.append("Just write pair symbols to get currency (Example: BTCUSDT or few pairs: BTCUSDT, LTCUSDT).\n\n");
-        sb.append("--OR--\n\n");
-        sb.append("You can also write only 1 asset and you will get possible quote assets to make pair (Example: BTC).\n\n");
-        sb.append("--OR--\n\n");
-        sb.append("You can choose from top 25 pairs from reply keyboard below\n\n");
-        sb.append("--OR--\n\n");
-        sb.append("You can get more information with /help command");
+        String greeting = MessageFormat.format(LocalizationManager.getString("choose_language_message"), chat.getFirstName());
         if (botStateKeeper.getBotState().equals(BotState.INITIALIZATION) && tradingPairRepository.count() == 0)
             listInitializer.saveEntitiesInBatch(exchangeClient.getListing());
         botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
         InlineKeyboardMarkup langOptions = InlineKeyboardMarkup.builder()
                 .keyboardRow(List.of(
                         InlineKeyboardButton.builder()
-                                .text(EmojiParser.parseToUnicode("English \uD83C\uDDEC\uD83C\uDDE7/\uD83C\uDDFA\uD83C\uDDF8"))
+                                .text(EmojiParser.parseToUnicode("English (EN) \uD83C\uDDEC\uD83C\uDDE7/\uD83C\uDDFA\uD83C\uDDF8"))
                                 .callbackData(Actions.ENG_LANGUAGE)
                                 .build(),
                         InlineKeyboardButton.builder()
-                                .text(EmojiParser.parseToUnicode("Ukrainian \uD83C\uDDFA\uD83C\uDDE6"))
+                                .text(EmojiParser.parseToUnicode("Українська (UA) \uD83C\uDDFA\uD83C\uDDE6"))
                                 .callbackData(Actions.UA_LANGUAGE)
                                 .build()
                 ))
                 .build();
         SendMessage messageToSend = SendMessage.builder()
                 .chatId(chat.getId())
-                .text(sb.toString())
+                .text(greeting)
                 .replyMarkup(langOptions)
                 .build();
         registerUser(user, chat.getId());

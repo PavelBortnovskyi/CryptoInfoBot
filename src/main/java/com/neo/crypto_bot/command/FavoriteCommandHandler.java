@@ -6,6 +6,7 @@ import com.neo.crypto_bot.model.BotUser;
 import com.neo.crypto_bot.model.TradingPair;
 import com.neo.crypto_bot.repository.BotUserRepository;
 import com.neo.crypto_bot.repository.TradingPairRepository;
+import com.neo.crypto_bot.service.LocalizationManager;
 import com.neo.crypto_bot.service.ReplyKeyboardFactory;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
@@ -21,10 +22,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //@Log4j2
@@ -58,13 +56,14 @@ public class FavoriteCommandHandler extends BotCommand {
         SendMessage messageToSend = SendMessage.builder().chatId(chatId).text("").build();
         Optional<BotUser> currUser = botUserRepository.getUserWithFavoritePairs(chatId);
         if (currUser.isPresent()) {
+            LocalizationManager.setLocale(new Locale(currUser.get().getLanguage().toLowerCase()));
             Set<TradingPair> userPairs = currUser.get().getFavorites();
             if (!userPairs.isEmpty()) {
-                messageToSend.setText(EmojiParser.parseToUnicode(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList()))));
+                messageToSend.setText(EmojiParser.parseToUnicode(exchangeClient.getCurrency(userPairs.stream().map(TradingPair::getName).collect(Collectors.toList()), chatId)));
                 userPairs.forEach(p -> increasePairRate(p.getName()));
-            } else messageToSend.setText("You no have favorite pair, please add them using /add_pair \"pair_name\" command");
+            } else messageToSend.setText(LocalizationManager.getString("empty_favorites_list_message"));
         } else
-            messageToSend.setText("You need to register by /start command to have possibility to get favorite pairs");
+            messageToSend.setText(LocalizationManager.getString("not_registered_message_3"));
         try {
             messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
             absSender.execute(messageToSend);
