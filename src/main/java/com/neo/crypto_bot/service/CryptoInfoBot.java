@@ -150,7 +150,10 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             case INPUT_FOR_CURRENCY -> {
                 if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
                     tempAssetName = pairs.get(0);
-                    sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    ReplyKeyboardMarkup convertibles = replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0));
+                    if (!convertibles.getKeyboard().isEmpty())
+                        sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    else sendAnswer(chatId, LocalizationManager.getString("convertibles_empty_error"), replyKeyboardFactory.getKeyboardWithTop25Pairs());
                 } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
                     String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)), chatId);
                     sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
