@@ -132,6 +132,11 @@
                         <arg>--initialize-at-build-time=org.apache.commons.logging.LogFactory</arg>
                         <arg>-H:ReflectionConfigurationFiles=${project.basedir}/src/main/resources/reflection-config.json</arg>
                         <arg>-H:DynamicProxyConfigurationFiles=${project.basedir}/src/main/resources/proxy-config.json</arg>
+                        <arg>-H:ResourceConfigurationFiles=${project.basedir}/src/main/resources/resource-config.json</arg>
+<!--                        <arg>-H:IncludeResourceBundles=java.util.ResourceBundle</arg>-->
+<!--                        <arg>-H:-LocalizationOptimizedMode</arg>>-->
+<!--                        <arg>-H:IncludeResources=".*properties$"</arg>-->
+<!--                        <arg>-H:IncludeLocales=ua,en</arg>-->
                         <arg>-R:MaxHeapSize=200m</arg>
                         <arg>--enable-all-security-services</arg>
                         <arg>--no-fallback</arg>
@@ -140,7 +145,7 @@
                     </buildArgs>
                     <environment>
                         <bot_name>crypto_currencies_pet_bot</bot_name>
-						<bot_token>6486827539:AAE9T7PE2VVJvdEctTrtcMj0nCkuDczErl0</bot_token>
+						<bot_token>6486827539:AAGvD6L6p8eadnUW2dx-NMMMbc_INbvRyQU</bot_token>
 						<binance_api_tickerPrice_url>https://api.binance.com/api/v3/ticker/price</binance_api_tickerPrice_url>
 						<binance_api_exchangeInfo_url>https://api.binance.com/api/v3/exchangeInfo</binance_api_exchangeInfo_url>
 						<binance_api_avgPrice_url>https://api.binance.com/api/v3/avgPrice"</binance_api_avgPrice_url>

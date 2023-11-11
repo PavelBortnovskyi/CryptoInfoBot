@@ -128,8 +128,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 throw new RuntimeException(e);
             }
 
-            Locale userLocale = new Locale(currUser.getLanguage().toLowerCase());
-            LocalizationManager.setLocale(userLocale);
+            LocalizationManager.setLocale(new Locale(currUser.getLanguage().toLowerCase()));
             try {
                 sendApiMethod(SendMessage.builder()
                         .chatId(callbackQuery.getMessage().getChatId())

@@ -1,0 +1,13 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": ".*\\.properties$",
+        "isBundle": true
+      }
+    ]
+  },
+  "bundles": [
+    {"name": "com.neo.crypto_bot.service"}
+  ]
+}
