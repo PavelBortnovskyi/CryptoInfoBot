@@ -66,7 +66,7 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
                 sb.append(LocalizationManager.getString("current_prices_head_message")).append("\n");
             } else if (jsonNode.isObject()) {
                 arrayNode.add(jsonNode);
-                sb.append("current_price_head_message").append("\n");
+                sb.append(LocalizationManager.getString("current_price_head_message")).append("\n");
             }
             arrayNode.forEach(node -> {
                 String symbol = node.get("symbol").asText().replace("\"", "");
