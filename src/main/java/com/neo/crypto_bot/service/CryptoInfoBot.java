@@ -256,8 +256,8 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             });
             if (sb.toString().length() > headMessage.length()) {
                 sendAnswer(entry.getKey(), sb.toString(), null);
-                sb.replace(0, sb.toString().length(), "");
             }
+            sb.replace(0, sb.toString().length(), "");
             index[0] = 1;
         }
         priceList.forEach(tradingPairRepository::updatePrice);
