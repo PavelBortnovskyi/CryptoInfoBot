@@ -202,7 +202,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         HashMap<String, Double> priceDeviationList = this.exchangeClient.getPricesDayDeviation(priceList.keySet().stream().toList());
 
         StringBuilder sb = new StringBuilder();
-        DecimalFormat df = new DecimalFormat("#.########");
+        DecimalFormat df = new DecimalFormat("#.##############");
         int[] index = new int[1];
         index[0] = 1;
 
@@ -256,7 +256,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             });
             if (sb.toString().length() > headMessage.length()) {
                 sendAnswer(entry.getKey(), sb.toString(), null);
-                sb.replace(headMessage.length() - 1, sb.toString().length(), "");
+                sb.replace(0, sb.toString().length(), "");
             }
             index[0] = 1;
         }
