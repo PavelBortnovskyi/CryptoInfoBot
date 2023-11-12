@@ -128,8 +128,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 throw new RuntimeException(e);
             }
 
-            Locale userLocale = new Locale(currUser.getLanguage().toLowerCase());
-            LocalizationManager.setLocale(userLocale);
+            LocalizationManager.setLocale(new Locale(currUser.getLanguage().toLowerCase()));
             try {
                 sendApiMethod(SendMessage.builder()
                         .chatId(callbackQuery.getMessage().getChatId())
@@ -151,7 +150,10 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             case INPUT_FOR_CURRENCY -> {
                 if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
                     tempAssetName = pairs.get(0);
-                    sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    ReplyKeyboardMarkup convertibles = replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0));
+                    if (!convertibles.getKeyboard().isEmpty())
+                        sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    else sendAnswer(chatId, LocalizationManager.getString("convertibles_empty_error"), replyKeyboardFactory.getKeyboardWithTop25Pairs());
                 } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
                     String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)), chatId);
                     sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
@@ -200,7 +202,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         HashMap<String, Double> priceDeviationList = this.exchangeClient.getPricesDayDeviation(priceList.keySet().stream().toList());
 
         StringBuilder sb = new StringBuilder();
-        DecimalFormat df = new DecimalFormat("#.########");
+        DecimalFormat df = new DecimalFormat("#.##############");
         int[] index = new int[1];
         index[0] = 1;
 
@@ -254,7 +256,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
             });
             if (sb.toString().length() > headMessage.length()) {
                 sendAnswer(entry.getKey(), sb.toString(), null);
-                sb.replace(headMessage.length() - 1, sb.toString().length(), "");
+                sb.replace(0, sb.toString().length(), "");
             }
             index[0] = 1;
         }

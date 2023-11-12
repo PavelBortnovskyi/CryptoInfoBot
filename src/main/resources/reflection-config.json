@@ -6316,6 +6316,20 @@
     "allPublicMethods": true
   },
   {
+    "name":"org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name":"org.telegram.telegrambots.meta.api.objects.CallbackQuery",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
@@ -6323,7 +6337,21 @@
     "allPublicMethods": true
   },
   {
+    "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name":"org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
@@ -6338,6 +6366,27 @@
   },
   {
     "name":"com.vdurmont.emoji.EmojiParser",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.neo.crypto_bot.service.LocalizationManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.util.ResourceBundle",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.util.Locale",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,

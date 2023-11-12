@@ -12,6 +12,7 @@ public class LocalizationManager {
     }
 
     public static void setLocale(Locale locale) {
+        System.out.println("Set locale: " + locale);
         resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 

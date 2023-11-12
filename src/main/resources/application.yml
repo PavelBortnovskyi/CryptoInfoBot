@@ -1,5 +1,3 @@
-bot_name: crypto_currencies_pet_bot
-bot_token: 6486827539:AAE9T7PE2VVJvdEctTrtcMj0nCkuDczErl0
 binance_api_tickerPrice_url: https://api.binance.com/api/v3/ticker/price
 binance_api_24h_tickerPrice_url: https://api.binance.com/api/v3/ticker/24hr
 binance_api_exchangeInfo_url: https://api.binance.com/api/v3/exchangeInfo
