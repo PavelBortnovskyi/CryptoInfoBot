@@ -18,17 +18,17 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -55,11 +55,14 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
     private final BotStateKeeper botStateKeeper;
 
+    private final ImageFactory imageFactory;
+
     private String tempAssetName = "None";
 
     public CryptoInfoBot(BotConfig botConfig, BotUserRepository botUserRepository,
                          TradingPairRepository tradingPairRepository, BinanceExchangeApiClient exchangeClient,
-                         ReplyKeyboardFactory replyKeyboardFactory, CommandParser commandParser, BotStateKeeper botStateKeeper) {
+                         ReplyKeyboardFactory replyKeyboardFactory, CommandParser commandParser, BotStateKeeper botStateKeeper,
+                         ImageFactory imageFactory) {
         super(botConfig.getBotToken());
         this.botConfig = botConfig;
         this.botCommands = new ArrayList<>();
@@ -69,6 +72,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         this.replyKeyboardFactory = replyKeyboardFactory;
         this.commandParser = commandParser;
         this.botStateKeeper = botStateKeeper;
+        this.imageFactory = imageFactory;
         Locale.setDefault(new Locale("en"));
         botCommands.add(new BotCommand("/start", "get started"));
         botCommands.add(new BotCommand("/my_data", "get info about user"));
@@ -145,6 +149,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         List<String> pairs = commandParser.getPairsFromCommand(receivedMessage);
         long chatId = chat.getId();
         botUserRepository.findById(chatId).ifPresent(botUser -> LocalizationManager.setLocale(new Locale(botUser.getLanguage().toLowerCase())));
+
         //Offer second asset to user if he entered only single asset name
         switch (botStateKeeper.getBotState()) {
             case INPUT_FOR_CURRENCY -> {
@@ -152,11 +157,12 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                     tempAssetName = pairs.get(0);
                     ReplyKeyboardMarkup convertibles = replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0));
                     if (!convertibles.getKeyboard().isEmpty())
-                        sendAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
-                    else sendAnswer(chatId, LocalizationManager.getString("convertibles_empty_error"), replyKeyboardFactory.getKeyboardWithTop25Pairs());
+                        sendTextAnswer(chatId, LocalizationManager.getString("choose_asset_message"), replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0)));
+                    else
+                        sendTextAnswer(chatId, LocalizationManager.getString("convertibles_empty_error"), replyKeyboardFactory.getKeyboardWithTop25Pairs());
                 } else if (pairs.size() == 1 && pairs.get(0).length() <= 4 && !tempAssetName.equals("None")) {
                     String answer = exchangeClient.getCurrency(List.of(tempAssetName + pairs.get(0)), chatId);
-                    sendAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
+                    sendTextAnswer(chatId, answer, replyKeyboardFactory.getKeyboardWithTop25Pairs());
                     if (!answer.contains("error")) {
                         addPairIfNoExistToList(tempAssetName + pairs.get(0));
                         increasePairRate(tempAssetName + pairs.get(0));
@@ -173,8 +179,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
                         //log.info("Got currency of pairs: " + pairs);
                     }
-                    sendAnswer(chatId, exchangeResponse, replyKeyboardFactory.getKeyboardWithTop25Pairs()); //Offer top 25 pairs for user to choose
-                    //log.error("Wrong user input or exchange no have such pair listing: " + pairs);
+                   this.sendAnswer(exchangeResponse, chatId);
                 }
             }
             case INPUT_FOR_ADD -> {
@@ -186,7 +191,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
             }
             case INITIALIZATION -> {
-                sendAnswer(chatId, "Please press /start command", null);
+                sendTextAnswer(chatId, "Please press /start command", null);
             }
         }
     }
@@ -219,9 +224,9 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                         .append("\n");
                 increasePairRate(symbol);
             });
-            sendAnswer(u.getId(), sb.toString(), null);
+            this.sendAnswer(sb.toString(), u.getId());
             index[0] = 1;
-            sb.replace(46, sb.toString().length(), "");
+            sb.replace(0, sb.toString().length(), "");
         });
 
         System.out.println("Currencies of users favorite pairs sent to subscribers at: " + LocalDateTime.now());
@@ -255,25 +260,12 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
                 }
             });
             if (sb.toString().length() > headMessage.length()) {
-                sendAnswer(entry.getKey(), sb.toString(), null);
+                this.sendAnswer(sb.toString(), entry.getKey());
             }
             sb.replace(0, sb.toString().length(), "");
             index[0] = 1;
         }
         priceList.forEach(tradingPairRepository::updatePrice);
-    }
-
-    private void sendAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
-        SendMessage message = new SendMessage();
-        message.setChatId(chatId);
-        message.setText(EmojiParser.parseToUnicode(answer));
-        if (keyboardMarkup != null)
-            message.setReplyMarkup(keyboardMarkup);
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            //log.error("Got some TelegramAPI exception: " + e.getMessage());
-        }
     }
 
     private void executeCommand(String commandName, String argument, Chat chat) {
@@ -300,7 +292,8 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         } else return tradingPairRepository.findByName(tradingPairName).get();
     }
 
-    private HashMap<String, Double> getPriceListForAllUsersFavorites(HashMap<Long, Set<TradingPair>> favoritesCache) {
+    private HashMap<String, Double> getPriceListForAllUsersFavorites
+            (HashMap<Long, Set<TradingPair>> favoritesCache) {
 
         Set<TradingPair> usersFavorites = favoritesCache.values()
                 .stream()
@@ -321,5 +314,53 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
     private Double calculateDeviation(Double oldPrice, Double newPrice) {
         return (newPrice - oldPrice) / oldPrice;
+    }
+
+    private void sendAnswer(String answer, long chatId) {
+        try {
+            String[] lines = answer.split("\n");
+            answer = EmojiParser.parseToUnicode(answer);
+            ReplyKeyboardMarkup keyboardTop25 = replyKeyboardFactory.getKeyboardWithTop25Pairs(); //Offer top 25 pairs for user to choose
+            if (lines.length > 2 && lines.length <= 18) {
+                sendPhotoAnswer(chatId, imageFactory.createImageWithText(answer, 86, 0), keyboardTop25);
+            } else if (lines.length > 18) {
+                sendPhotoAnswer(chatId, imageFactory.createImageWithText(answer, 72, 1), keyboardTop25);
+            } else {
+                sendTextAnswer(chatId, answer, keyboardTop25);
+            }
+            //log.error("Wrong user input or exchange no have such pair listing: " + pairs);
+        } catch (IOException e) {
+            System.out.println("Got exception while send answer: " + e.getMessage());
+        }
+    }
+
+    private void sendTextAnswer(long chatId, String answer, ReplyKeyboardMarkup keyboardMarkup) {
+        SendMessage message = SendMessage.builder()
+                .chatId(chatId)
+                .text(EmojiParser.parseToUnicode(answer))
+                .build();
+        if (keyboardMarkup != null)
+            message.setReplyMarkup(keyboardMarkup);
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            //log.error("Got some TelegramAPI exception: " + e.getMessage());
+            System.out.println("Got some TelegramAPI exception: " + e.getMessage());
+        }
+    }
+
+    private void sendPhotoAnswer(long chatId, InputFile photo, ReplyKeyboardMarkup keyboardMarkup) {
+        SendPhoto sendPhoto = SendPhoto.builder()
+                .chatId(chatId)
+                .photo(photo)
+                .build();
+        if (keyboardMarkup != null)
+            sendPhoto.setReplyMarkup(keyboardMarkup);
+        try {
+            execute(sendPhoto);
+        } catch (TelegramApiException e) {
+            //log.error("Got some TelegramAPI exception: " + e.getMessage());
+            System.out.println("Got some TelegramAPI exception: " + e.getMessage());
+        }
     }
 }
