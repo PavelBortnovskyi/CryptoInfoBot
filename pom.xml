@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.2</version>
+        <version>3.1.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
+            <version>3.1.0</version>
         </dependency>
     </dependencies>
     <build>
@@ -138,24 +138,15 @@
                         <arg>-H:ReflectionConfigurationFiles=${project.basedir}/src/main/resources/reflection-config.json</arg>
                         <arg>-H:DynamicProxyConfigurationFiles=${project.basedir}/src/main/resources/proxy-config.json</arg>
                         <arg>-H:ResourceConfigurationFiles=${project.basedir}/src/main/resources/resource-config.json</arg>
+                        <arg>-H:Log=registerResource:5</arg>
 <!--                        <arg>-H:IncludeResourceBundles=java.util.ResourceBundle</arg>-->
 <!--                        <arg>-H:-LocalizationOptimizedMode</arg>>-->
-<!--                        <arg>-H:IncludeResources=".*properties$"</arg>-->
 <!--                        <arg>-H:IncludeLocales=ua,en</arg>-->
                         <arg>-R:MaxHeapSize=200m</arg>
-                        <arg>--enable-all-security-services</arg>
                         <arg>--no-fallback</arg>
                         <arg>--allow-incomplete-classpath</arg>
                         <arg>--report-unsupported-elements-at-runtime</arg>
                     </buildArgs>
-                    <environment>
-                        <bot_name>crypto_currencies_pet_bot</bot_name>
-						<bot_token>6486827539:AAGvD6L6p8eadnUW2dx-NMMMbc_INbvRyQU</bot_token>
-						<binance_api_tickerPrice_url>https://api.binance.com/api/v3/ticker/price</binance_api_tickerPrice_url>
-						<binance_api_exchangeInfo_url>https://api.binance.com/api/v3/exchangeInfo</binance_api_exchangeInfo_url>
-						<binance_api_avgPrice_url>https://api.binance.com/api/v3/avgPrice"</binance_api_avgPrice_url>
-						<binance_api_convertible_url>https://api.binance.com/sapi/v1/convert/exchangeInfo</binance_api_convertible_url>
-                    </environment>
                     <metadataRepository>
                         <enabled>true</enabled>
                     </metadataRepository>
@@ -164,7 +155,7 @@
 <!--            <plugin>-->
 <!--                <groupId>org.codehaus.mojo</groupId>-->
 <!--                <artifactId>exec-maven-plugin</artifactId>-->
-<!--                <version>3.0.0</version>-->
+<!--                <version>3.1.0</version>-->
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <id>java-agent</id>-->

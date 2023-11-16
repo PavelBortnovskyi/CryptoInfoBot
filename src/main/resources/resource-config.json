@@ -2,12 +2,14 @@
   "resources": {
     "includes": [
       {
-        "pattern": ".*\\.properties$",
-        "isBundle": true
+        "pattern": ".*\\.properties$"
+      },
+      {
+        "pattern": ".*\\.jpg$"
+      },
+      {
+        "pattern": ".*\\.json$"
       }
     ]
-  },
-  "bundles": [
-    {"name": "com.neo.crypto_bot.service"}
-  ]
+  }
 }
