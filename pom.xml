@@ -126,7 +126,7 @@
 						<defaultMode>standard</defaultMode>
 						<metadataCopy>
 							<disabledStages>
-								<stage>main</stage>
+								<stage>test</stage>
 							</disabledStages>
 							<merge>true</merge>
 							<outputDirectory>/tmp/test-output-dir</outputDirectory>
@@ -134,11 +134,12 @@
 					</agent>
                     <buildArgs>
                         <arg>-H:+ReportExceptionStackTraces</arg>
-                        <arg>--initialize-at-build-time=org.apache.commons.logging.LogFactory</arg>
+<!--                        <arg>&#45;&#45;initialize-at-build-time=sun.java2d.Disposer</arg>-->
                         <arg>-H:ReflectionConfigurationFiles=${project.basedir}/src/main/resources/reflection-config.json</arg>
                         <arg>-H:DynamicProxyConfigurationFiles=${project.basedir}/src/main/resources/proxy-config.json</arg>
                         <arg>-H:ResourceConfigurationFiles=${project.basedir}/src/main/resources/resource-config.json</arg>
-                        <arg>-H:Log=registerResource:5</arg>
+                        <arg>-H:JNIConfigurationFiles=${project.basedir}/src/main/resources/jni-config.json</arg>>
+<!--                        <arg>-H:Log=registerResource:5</arg>-->
 <!--                        <arg>-H:IncludeResourceBundles=java.util.ResourceBundle</arg>-->
 <!--                        <arg>-H:-LocalizationOptimizedMode</arg>>-->
 <!--                        <arg>-H:IncludeLocales=ua,en</arg>-->

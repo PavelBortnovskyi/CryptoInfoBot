@@ -1,6 +1,5 @@
 package com.neo.crypto_bot.service;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
@@ -16,18 +15,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 @Component
 public class ImageFactory {
 
-    private final List<String> backgrounds = List.of(
-            "src\\main\\resources\\Images\\background1.jpg",
-            "src\\main\\resources\\Images\\background2.jpg"
-    );
-
     public InputFile createImageWithText(String text, int fontSize, int backgroundNumber) throws IOException {
+
         String backgroundResource = String.format("/Images/background%d.jpg", backgroundNumber + 1);
+
         try (InputStream resourceStream = getClass().getResourceAsStream(backgroundResource);
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 

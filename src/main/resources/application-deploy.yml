@@ -21,6 +21,5 @@ spring:
   config:
     activate:
       on-profile: deploy
-bot:
-  name: ${bot_name}
-  token: ${bot_token}
+bot_name: ${bot_name}
+bot_token: ${bot_token}
