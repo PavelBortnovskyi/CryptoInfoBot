@@ -13,6 +13,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -56,6 +57,17 @@ public class FavoriteCommandHandler extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         long chatId = chat.getId();
+
+//        SendChatAction chatAction = SendChatAction.builder()
+//                .chatId(chatId)
+//                .action("typing")
+//                .build();
+//        try {
+//            absSender.execute(chatAction);
+//        } catch (TelegramApiException e) {
+//            throw new RuntimeException(e);
+//        }
+
         SendMessage messageToSend = SendMessage.builder().chatId(chatId).text("").build();
         Optional<BotUser> currUser = botUserRepository.getUserWithFavoritePairs(chatId);
 

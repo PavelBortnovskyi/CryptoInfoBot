@@ -19194,6 +19194,13 @@
     "allPublicMethods": true
   },
   {
+    "name": "org.telegram.telegrambots.meta.api.methods.send.SendChatAction",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "org.telegram.telegrambots.meta.api.methods.send.SendPhoto",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
@@ -19832,6 +19839,13 @@
     "allPublicMethods": true
   },
   {
+    "name": "ij.io.Opener",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "ij.process.ColorProcessor",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
@@ -19840,6 +19854,20 @@
   },
   {
     "name": "ij.process.ImageProcessor",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.io.File",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.io.FileOutputStream",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
@@ -19860,7 +19888,42 @@
     "allPublicMethods": true
   },
   {
+    "name": "java.awt.image.ColorModel",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.SampleModel",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.DataBuffer",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "java.awt.Font",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.font.TextAttribute",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.Graphics2D",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
@@ -19881,6 +19944,13 @@
     "allPublicMethods": true
   },
   {
+    "name": "java.awt.color.ColorSpace",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "com.sun.imageio.plugins.jpeg.JPEGImageReader",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
@@ -19888,7 +19958,512 @@
     "allPublicMethods": true
   },
   {
+    "name": "com.sun.imageio.plugins.jpeg.ImageTypeProducer",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEGImageMetadataFormat",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEGStreamMetadataFormat",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.ImageTypeSpecifier",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEG",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.common.SimpleCMYKColorSpace",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "sun.java2d.Disposer",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.StateTrackable.State",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.StateTrackableDelegate",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.image.SunWritableRaster",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.Rectangle",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.Raster",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.GraphicsConfiguration",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.SurfaceType",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.pipe.NullPipe",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.X11FontManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.FontManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.SunFontManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.FontManagerFactory",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.PlatformFontInfo",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.FontConfiguration",
+    "fields": [
+      {
+        "name": "osVersion"
+      },
+      {
+        "name": "osName"
+      },
+      {
+        "name": "encoding"
+      },
+      {
+        "name": "startupLocale"
+      },
+      {
+        "name": "localeMap"
+      },
+      {
+        "name": "fontConfig"
+      },
+      {
+        "name": "logger"
+      },
+      {
+        "name": "isProperties"
+      },
+      {
+        "name": "fontManager"
+      },
+      {
+        "name": "preferLocaleFonts"
+      },
+      {
+        "name": "preferPropFonts"
+      },
+      {
+        "name": "fontConfigFile"
+      },
+      {
+        "name": "foundOsSpecificFile"
+      },
+      {
+        "name": "inited"
+      },
+      {
+        "name": "javaLib"
+      },
+      {
+        "name": "stringIDNum"
+      },
+      {
+        "name": "stringIDs"
+      },
+      {
+        "name": "stringTable"
+      },
+      {
+        "name": "verbose"
+      },
+      {
+        "name": "initELC"
+      },
+      {
+        "name": "initLocale"
+      },
+      {
+        "name": "initEncoding"
+      },
+      {
+        "name": "alphabeticSuffix"
+      },
+      {
+        "name": "compFontNameIDs"
+      },
+      {
+        "name": "compExclusions"
+      },
+      {
+        "name": "compCoreNum"
+      },
+      {
+        "name": "coreFontNameIDs"
+      },
+      {
+        "name": "fallbackFontNameIDs"
+      },
+      {
+        "name": "NUM_FONTS"
+      },
+      {
+        "name": "NUM_STYLES"
+      },
+      {
+        "name": "fontNames"
+      },
+      {
+        "name": "publicFontNames"
+      },
+      {
+        "name": "styleNames"
+      },
+      {
+        "name": "installedFallbackFontFiles"
+      },
+
+      {
+        "name": "reorderMap"
+      },
+      {
+        "name": "charsetRegistry"
+      },
+      {
+        "name": "fontDescriptors"
+      },
+      {
+        "name": "existsMap"
+      },
+      {
+        "name": "numCoreFonts"
+      },
+      {
+        "name": "componentFonts"
+      },
+      {
+        "name": "filenamesMap"
+      },
+      {
+        "name": "coreFontFileNames"
+      },
+      {
+        "name": "fontconfigErrorMessage"
+      },
+      {
+        "name": "HEAD_LENGTH"
+      },
+      {
+        "name": "INDEX_scriptIDs"
+      },
+      {
+        "name": "INDEX_scriptFonts"
+      },
+      {
+        "name": "INDEX_elcIDs"
+      },
+      {
+        "name": "INDEX_sequences"
+      },
+      {
+        "name": "INDEX_fontfileNameIDs"
+      },
+      {
+        "name": "INDEX_componentFontNameIDs"
+      },
+      {
+        "name": "INDEX_filenames"
+      },
+      {
+        "name": "INDEX_awtfontpaths"
+      },
+      {
+        "name": "INDEX_exclusions"
+      },
+      {
+        "name": "INDEX_proportionals"
+      },
+      {
+        "name": "INDEX_scriptFontsMotif"
+      },
+      {
+        "name": "INDEX_alphabeticSuffix"
+      },
+      {
+        "name": "INDEX_stringIDs"
+      },
+      {
+        "name": "INDEX_stringTable"
+      },
+      {
+        "name": "INDEX_TABLEEND"
+      },
+      {
+        "name": "INDEX_fallbackScripts"
+      },
+      {
+        "name": "INDEX_appendedfontpath"
+      },
+      {
+        "name": "INDEX_version"
+      },
+      {
+        "name": "head"
+      },
+      {
+        "name": "table_scriptIDs"
+      },
+      {
+        "name": "table_scriptFonts"
+      },
+      {
+        "name": "table_elcIDs"
+      },
+      {
+        "name": "table_sequences"
+      },
+      {
+        "name": "table_fontfileNameIDs"
+      },
+      {
+        "name": "table_componentFontNameIDs"
+      },
+      {
+        "name": "table_filenames"
+      },
+      {
+        "name": "table_awtfontpaths"
+      },
+      {
+        "name": "table_exclusions"
+      },
+      {
+        "name": "table_proportionals"
+      },
+      {
+        "name": "table_scriptFontsMotif"
+      },
+      {
+        "name": "table_alphabeticSuffix"
+      },
+      {
+        "name": "table_stringIDs"
+      },
+      {
+        "name": "table_stringTable"
+      },
+      {
+        "name": "reorderScripts"
+      },
+      {
+        "name": "stringCache"
+      },
+      {
+        "name": "EMPTY_INT_ARRAY"
+      },
+      {
+        "name": "EMPTY_STRING_ARRAY"
+      },
+      {
+        "name": "EMPTY_SHORT_ARRAY"
+      },
+      {
+        "name": "UNDEFINED_COMPONENT_FONT"
+      },
+      {
+        "name": "scriptIDs"
+      },
+      {
+        "name": "elcIDs"
+      },
+      {
+        "name": "componentFontNameIDs"
+      },
+      {
+        "name": "fontfileNameIDs"
+      },
+      {
+        "name": "logicalFontIDs"
+      },
+      {
+        "name": "fontStyleIDs"
+      },
+      {
+        "name": "filenames"
+      },
+      {
+        "name": "sequences"
+      },
+      {
+        "name": "scriptFonts"
+      },
+      {
+        "name": "scriptAllfonts"
+      },
+      {
+        "name": "exclusions"
+      },
+      {
+        "name": "awtfontpaths"
+      },
+      {
+        "name": "proportionals"
+      },
+      {
+        "name": "scriptAllfontsMotif"
+      },
+      {
+        "name": "scriptFontsMotif"
+      },
+      {
+        "name": "alphabeticSuffix"
+      },
+      {
+        "name": "fallbackScriptIDs"
+      },
+      {
+        "name": "version"
+      },
+      {
+        "name": "appendedfontpath"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.FcFontManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.security.AccessController",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.FontPropertiesLoader",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.lang.annotation.Native",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+
+  {
+    "name": "javax.imageio.plugins.jpeg.JPEGQTable",
+    "fields": [
+      {
+        "name": "qTable"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.plugins.jpeg.JPEGHuffmanTable",
+    "fields": [
+      {
+        "name": "lengths"
+      },
+      {
+        "name": "values"
+      }
+    ],
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
@@ -19924,6 +20499,83 @@
   },
   {
     "name": "java.io.InputStreamReader",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.twelvemonkeys.imageio.stream.ByteArrayImageInputStream",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.twelvemonkeys.imageio.plugins.jpeg.JPEGImageReaderSpi",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.twelvemonkeys.imageio.plugins.jpeg.JPEGImageReader",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.ImageReader",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.ImageReadParam",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.spi.ImageReaderSpi",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.spi.ImageReaderWriterSpi",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.stream.ImageInputStream",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.stream.ImageOutputStream",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.spi.IIORegistry",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.util.Iterator",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,

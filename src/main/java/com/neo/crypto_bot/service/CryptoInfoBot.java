@@ -154,6 +154,7 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
         switch (botStateKeeper.getStateForUser(chatId)) {
             case INPUT_FOR_CURRENCY -> {
                 //Offer second asset to user if he entered only single asset name
+                //this.sendTypingAction(chatId);
                 if (pairs.size() == 1 && pairs.get(0).length() <= 4 && tempAssetName.equals("None")) {
                     tempAssetName = pairs.get(0);
                     ReplyKeyboardMarkup convertibles = replyKeyboardFactory.getKeyboardWithConvertibles(pairs.get(0));
@@ -180,18 +181,21 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
 
                         //log.info("Got currency of pairs: " + pairs);
                     }
-                   this.sendAnswer(exchangeResponse, chatId);
+                    this.sendAnswer(exchangeResponse, chatId);
                 }
             }
             case INPUT_FOR_ADD -> {
+                //this.sendTypingAction(chatId);
                 this.executeCommand(TextCommands.ADD_PAIR, receivedMessage, chat);
                 botStateKeeper.setStateForUser(chatId, BotState.INPUT_FOR_CURRENCY);
             }
             case INPUT_FOR_REMOVE -> {
+                //this.sendTypingAction(chatId);
                 this.executeCommand(TextCommands.REMOVE_PAIR, receivedMessage, chat);
                 botStateKeeper.setStateForUser(chatId, BotState.INPUT_FOR_CURRENCY);
             }
             case INITIALIZATION -> {
+                //this.sendTypingAction(chatId);
                 sendTextAnswer(chatId, "Please press /start command", null);
             }
         }
@@ -318,12 +322,14 @@ public class CryptoInfoBot extends TelegramLongPollingCommandBot {
     }
 
     private void sendAnswer(String answer, long chatId) {
+        int fontSize;
         try {
+            fontSize = answer.contains(LocalizationManager.getString("warning_message")) ? 68 : 86;
             String[] lines = answer.split("\n");
             answer = EmojiParser.parseToUnicode(answer);
             ReplyKeyboardMarkup keyboardTop25 = replyKeyboardFactory.getKeyboardWithTop25Pairs(); //Offer top 25 pairs for user to choose
             if (lines.length > 2 && lines.length <= 18) {
-                sendPhotoAnswer(chatId, imageFactory.createImageWithText(answer, 86, 0), keyboardTop25);
+                sendPhotoAnswer(chatId, imageFactory.createImageWithText(answer, fontSize, 0), keyboardTop25);
             } else if (lines.length > 18) {
                 sendPhotoAnswer(chatId, imageFactory.createImageWithText(answer, 72, 1), keyboardTop25);
             } else {
