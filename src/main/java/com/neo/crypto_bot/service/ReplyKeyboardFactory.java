@@ -29,9 +29,6 @@ public class ReplyKeyboardFactory {
     public ReplyKeyboardMarkup getKeyboardWithConvertibles(String baseAssetName) {
         List<TradingPair> convertiblePairs = tradingPairRepository.getConvertibleAssets(baseAssetName);
         System.out.println("Generating keyBoard with convertibles");
-        ArrayList<String> list = new ArrayList<>();
-        HashSet<String> set = new HashSet<>();
-        list.sort();
         return fillKeyboard(convertiblePairs, 3, Fields.QUOTE_ASSET);
     }
 
