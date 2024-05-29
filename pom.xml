@@ -163,8 +163,6 @@
 						</metadataCopy>
 					</agent>
                     <buildArgs>
-<!--                        <arg>-H:+UnlockExperimentalVMOptions</arg>-->
-<!--                        <arg>-H:+BuildOutputColorful</arg>-->
                         <arg>-H:+ReportExceptionStackTraces</arg>
                         <arg>-H:ReflectionConfigurationFiles=${project.basedir}/src/main/resources/reflection-config.json</arg>
                         <arg>-H:DynamicProxyConfigurationFiles=${project.basedir}/src/main/resources/proxy-config.json</arg>
@@ -172,8 +170,10 @@
                         <arg>-H:JNIConfigurationFiles=${project.basedir}/src/main/resources/jni-config.json</arg>
                         <arg>-R:MaxHeapSize=200m</arg>
                         <arg>--no-fallback</arg>
-<!--                        <arg>&#45;&#45;link-at-build-time</arg>-->
                         <arg>--report-unsupported-elements-at-runtime</arg>
+<!--                        <arg>-H:+UnlockExperimentalVMOptions</arg>-->
+<!--                        <arg>-H:+BuildOutputColorful</arg>-->
+<!--                        <arg>&#45;&#45;link-at-build-time</arg>-->
                     </buildArgs>
                     <metadataRepository>
                         <enabled>true</enabled>

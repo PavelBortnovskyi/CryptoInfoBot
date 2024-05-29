@@ -7,13 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @NoArgsConstructor
 @Getter
 public class BotStateKeeper {
 
-    private Map<Long, BotState> userStates = new HashMap<>(){{put(0L, BotState.INITIALIZATION);}};
+    private Map<Long, BotState> userStates = new ConcurrentHashMap<>(){{put(0L, BotState.INITIALIZATION);}};
 
     public BotState getStateForUser(Long userId) {
         return userStates.getOrDefault(userId, BotState.INPUT_FOR_CURRENCY);
