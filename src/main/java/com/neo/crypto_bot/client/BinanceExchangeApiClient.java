@@ -59,7 +59,8 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
         else {
             int[] index = new int[1];
             index[0] = 1;
-            DecimalFormat df = new DecimalFormat("#.#########");
+            DecimalFormat priceFormat = new DecimalFormat("#.#########");
+            DecimalFormat deviationFormat = new DecimalFormat("#.##");
             ArrayNode arrayNode = objectMapper.createArrayNode();
             if (jsonNode.isArray()) {
                 arrayNode = (ArrayNode) jsonNode;
@@ -70,10 +71,11 @@ public class BinanceExchangeApiClient implements ExchangeApiClient {
             }
             arrayNode.forEach(node -> {
                 String symbol = node.get("symbol").asText().replace("\"", "");
-                String price = df.format(node.get("lastPrice").asDouble());
+                String price = priceFormat.format(node.get("lastPrice").asDouble());
                 Double delta = node.get("priceChangePercent").asDouble();
+                String deviation = delta > 0 ? "+" + deviationFormat.format(delta) : deviationFormat.format(delta);
                 String direction = delta > 20 ? ":rocket:" : (delta > 0 ? ":chart_with_upwards_trend:" : ":chart_with_downwards_trend:");
-                sb.append(String.format("%02d) %-10s:   %-10s  (%.2f%%) %s%n", index[0]++, symbol, price, delta, direction));
+                sb.append(String.format("%02d) %-8s: %-10s (%-6s%%) %s%n", index[0]++, symbol, price, deviation, direction));
             });
         }
         return sb.toString();

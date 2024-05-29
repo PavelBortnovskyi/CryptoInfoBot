@@ -97,16 +97,16 @@ public class RemovePairCommandHandler extends BotCommand {
                     messageToSend.setText(LocalizationManager.getString("input_error_message"));
                 }
                 messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
-                botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
+                botStateKeeper.setStateForUser(currUser.getId(), BotState.INPUT_FOR_CURRENCY);
             } else {
                 messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithFavorites(chat.getId()));
                 messageToSend.setText(LocalizationManager.getString("remove_command_description"));
-                botStateKeeper.changeState(BotState.INPUT_FOR_REMOVE);
+                botStateKeeper.setStateForUser(currUser.getId(), BotState.INPUT_FOR_REMOVE);
             }
         } else {
             messageToSend.setReplyMarkup(replyKeyboardFactory.getKeyboardWithTop25Pairs());
             messageToSend.setText(LocalizationManager.getString("not_registered_message"));
-            botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
+            botStateKeeper.setStateForUser(0L, BotState.INPUT_FOR_CURRENCY);
         }
         try {
             absSender.execute(messageToSend);

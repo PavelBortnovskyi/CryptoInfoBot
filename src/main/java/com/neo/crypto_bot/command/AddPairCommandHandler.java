@@ -91,7 +91,7 @@ public class AddPairCommandHandler extends BotCommand {
                     else messageToSend.setText(MessageFormat.format(LocalizationManager.getString("favorites_add_error_message"), duplicates));
                 } else messageToSend.setText(LocalizationManager.getString("input_error_message"));
             } else {
-                botStateKeeper.changeState(BotState.INPUT_FOR_ADD);
+                botStateKeeper.setStateForUser(currUser.getId(), BotState.INPUT_FOR_ADD);
                 messageToSend.setText(LocalizationManager.getString("add_command_description"));
             }
         } else

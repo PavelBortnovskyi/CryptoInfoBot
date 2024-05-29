@@ -23,20 +23,20 @@ public class ReplyKeyboardFactory {
     public ReplyKeyboardMarkup getKeyboardWithTop25Pairs() {
         List<TradingPair> topPairs = tradingPairRepository.getPopularPairs();
         System.out.println("Generating keyBoard with top 25 pairs");
-        return fillKeyboard(topPairs, 4, Fields.NAME);
+        return fillKeyboard(topPairs, 3, Fields.NAME);
     }
 
     public ReplyKeyboardMarkup getKeyboardWithConvertibles(String baseAssetName) {
         List<TradingPair> convertiblePairs = tradingPairRepository.getConvertibleAssets(baseAssetName);
         System.out.println("Generating keyBoard with convertibles");
-        return fillKeyboard(convertiblePairs, 4, Fields.QUOTE_ASSET);
+        return fillKeyboard(convertiblePairs, 3, Fields.QUOTE_ASSET);
     }
 
     public ReplyKeyboardMarkup getKeyboardWithFavorites(long chatId) {
         Optional<BotUser> maybeUser = botUserRepository.getUserWithFavoritePairs(chatId);
         Set<TradingPair> favorites = maybeUser.isEmpty() ? new HashSet<>() : maybeUser.get().getFavorites();
         System.out.println("Generating keyBoard with favorites");
-        return fillKeyboard(favorites, 4, Fields.NAME);
+        return fillKeyboard(favorites, 3, Fields.NAME);
     }
 
     private ReplyKeyboardMarkup fillKeyboard(Collection<TradingPair> collection, int columnsCount, Fields fields) {

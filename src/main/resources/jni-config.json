@@ -1,0 +1,4237 @@
+[
+  {
+    "name": "java.lang.Boolean",
+    "methods": [
+      {
+        "name": "getBoolean",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.management.VMManagementImpl",
+    "fields": [
+      {
+        "name": "compTimeMonitoringSupport"
+      },
+      {
+        "name": "currentThreadCpuTimeSupport"
+      },
+      {
+        "name": "objectMonitorUsageSupport"
+      },
+      {
+        "name": "otherThreadCpuTimeSupport"
+      },
+      {
+        "name": "remoteDiagnosticCommandsSupport"
+      },
+      {
+        "name": "synchronizerUsageSupport"
+      },
+      {
+        "name": "threadAllocatedMemorySupport"
+      },
+      {
+        "name": "threadContentionMonitoringSupport"
+      }
+    ]
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEGImageReader",
+    "fields": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "structPointer"
+      },
+      {
+        "name": "iis"
+      },
+      {
+        "name": "imagePositions"
+      },
+      {
+        "name": "numImages"
+      },
+      {
+        "name": "currentImage"
+      },
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "colorSpaceCode"
+      },
+      {
+        "name": "outColorSpaceCode"
+      },
+      {
+        "name": "numComponents"
+      },
+      {
+        "name": "iccCS"
+      },
+      {
+        "name": "convert"
+      },
+      {
+        "name": "invertCMYK"
+      },
+      {
+        "name": "readAsRaster"
+      },
+      {
+        "name": "image"
+      },
+      {
+        "name": "raster"
+      },
+      {
+        "name": "target"
+      },
+      {
+        "name": "buffer"
+      },
+      {
+        "name": "destROI"
+      },
+      {
+        "name": "destinationBands"
+      },
+      {
+        "name": "streamMetadata"
+      },
+      {
+        "name": "imageMetadata"
+      },
+      {
+        "name": "imageMetadataIndex"
+      },
+      {
+        "name": "haveSeeked"
+      },
+      {
+        "name": "abbrevQTables"
+      },
+      {
+        "name": "abbrevDCHuffmanTables"
+      },
+      {
+        "name": "abbrevACHuffmanTables"
+      },
+      {
+        "name": "minProgressivePass"
+      },
+      {
+        "name": "maxProgressivePass"
+      },
+      {
+        "name": "knownPassCount"
+      },
+      {
+        "name": "pass"
+      },
+      {
+        "name": "percentToDate"
+      },
+      {
+        "name": "previousPassPercentage"
+      },
+      {
+        "name": "progInterval"
+      },
+      {
+        "name": "tablesOnlyChecked"
+      },
+      {
+        "name": "disposerReferent"
+      },
+      {
+        "name": "disposerRecord"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.Disposer",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.StateTrackable.State",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.StateTrackableDelegate",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.image.SunWritableRaster",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.ImageIO",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.plugins.jpeg.JPEGQTable",
+    "fields": [
+      {
+        "name": "qTable"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.plugins.jpeg.JPEGHuffmanTable",
+    "fields": [
+      {
+        "name": "lengths"
+      },
+      {
+        "name": "values"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.ImageTypeProducer",
+    "fields": [
+      {
+        "name": "type"
+      },
+      {
+        "name": "failed"
+      },
+      {
+        "name": "csCode"
+      },
+      {
+        "name": "defaultTypes"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEG",
+    "fields": [
+      {
+        "name": "TEM"
+      },
+      {
+        "name": "SOF0"
+      },
+      {
+        "name": "SOF1"
+      },
+      {
+        "name": "SOF2"
+      },
+      {
+        "name": "SOF3"
+      },
+      {
+        "name": "DHT"
+      },
+      {
+        "name": "SOF5"
+      },
+      {
+        "name": "SOF6"
+      },
+      {
+        "name": "SOF7"
+      },
+      {
+        "name": "JPG"
+      },
+      {
+        "name": "SOF9"
+      },
+      {
+        "name": "SOF10"
+      },
+      {
+        "name": "SOF11"
+      },
+      {
+        "name": "DAC"
+      },
+      {
+        "name": "SOF13"
+      },
+      {
+        "name": "SOF14"
+      },
+      {
+        "name": "SOF15"
+      },
+      {
+        "name": "RST0"
+      },
+      {
+        "name": "RST1"
+      },
+      {
+        "name": "RST2"
+      },
+      {
+        "name": "RST3"
+      },
+      {
+        "name": "RST4"
+      },
+      {
+        "name": "RST5"
+      },
+      {
+        "name": "RST6"
+      },
+      {
+        "name": "RST7"
+      },
+      {
+        "name": "RESTART_RANGE"
+      },
+      {
+        "name": "SOI"
+      },
+      {
+        "name": "EOI"
+      },
+      {
+        "name": "SOS"
+      },
+      {
+        "name": "DQT"
+      },
+      {
+        "name": "DNL"
+      },
+      {
+        "name": "DRI"
+      },
+      {
+        "name": "DHP"
+      },
+      {
+        "name": "EXP"
+      },
+      {
+        "name": "APP0"
+      },
+      {
+        "name": "APP1"
+      },
+      {
+        "name": "APP2"
+      },
+      {
+        "name": "APP3"
+      },
+      {
+        "name": "APP4"
+      },
+      {
+        "name": "APP5"
+      },
+      {
+        "name": "APP6"
+      },
+      {
+        "name": "APP7"
+      },
+      {
+        "name": "APP8"
+      },
+      {
+        "name": "APP9"
+      },
+      {
+        "name": "APP10"
+      },
+      {
+        "name": "APP11"
+      },
+      {
+        "name": "APP12"
+      },
+      {
+        "name": "APP13"
+      },
+      {
+        "name": "APP14"
+      },
+      {
+        "name": "APP15"
+      },
+      {
+        "name": "COM"
+      },
+      {
+        "name": "DENSITY_UNIT_ASPECT_RATIO"
+      },
+      {
+        "name": "DENSITY_UNIT_DOTS_INCH"
+      },
+      {
+        "name": "DENSITY_UNIT_DOTS_CM"
+      },
+      {
+        "name": "NUM_DENSITY_UNIT"
+      },
+      {
+        "name": "ADOBE_IMPOSSIBLE"
+      },
+      {
+        "name": "ADOBE_UNKNOWN"
+      },
+      {
+        "name": "ADOBE_YCC"
+      },
+      {
+        "name": "ADOBE_YCCK"
+      },
+      {
+        "name": "vendor"
+      },
+      {
+        "name": "version"
+      },
+      {
+        "name": "names"
+      },
+      {
+        "name": "suffixes"
+      },
+      {
+        "name": "MIMETypes"
+      },
+      {
+        "name": "nativeImageMetadataFormatName"
+      },
+      {
+        "name": "nativeImageMetadataFormatClassName"
+      },
+      {
+        "name": "nativeStreamMetadataFormatName"
+      },
+      {
+        "name": "nativeStreamMetadataFormatClassName"
+      },
+      {
+        "name": "JCS_UNKNOWN"
+      },
+      {
+        "name": "JCS_GRAYSCALE"
+      },
+      {
+        "name": "JCS_RGB"
+      },
+      {
+        "name": "JCS_YCbCr"
+      },
+      {
+        "name": "JCS_CMYK"
+      },
+      {
+        "name": "JCS_YCCK"
+      },
+      {
+        "name": "NUM_JCS_CODES"
+      },
+      {
+        "name": "bandOffsets"
+      },
+      {
+        "name": "bOffsRGB"
+      },
+      {
+        "name": "sRGB"
+      },
+      {
+        "name": "DEFAULT_QUALITY"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.common.SimpleCMYKColorSpace",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEGImageMetadataFormat",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.imageio.plugins.jpeg.JPEGStreamMetadataFormat",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.ImageTypeSpecifier",
+    "fields": [
+      {
+        "name": "colorModel"
+      },
+      {
+        "name": "sampleModel"
+      },
+      {
+        "name": "BISpecifier"
+      },
+      {
+        "name": "sRGB"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "javax.imageio.Packed",
+    "fields": [
+      {
+        "name": "colorSpace"
+      },
+      {
+        "name": "redMask"
+      },
+      {
+        "name": "greenMask"
+      },
+      {
+        "name": "blueMask"
+      },
+      {
+        "name": "alphaMask"
+      },
+      {
+        "name": "transferType"
+      },
+      {
+        "name": "isAlphaPremultiplied"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.image.ImageRepresentation",
+    "fields": [
+      {
+        "name": "src"
+      },
+      {
+        "name": "image"
+      },
+      {
+        "name": "tag"
+      },
+      {
+        "name": "pData"
+      },
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "hints"
+      },
+      {
+        "name": "availinfo"
+      },
+      {
+        "name": "newbits"
+      },
+      {
+        "name": "bimage"
+      },
+      {
+        "name": "biRaster"
+      },
+      {
+        "name": "cmodel"
+      },
+      {
+        "name": "srcModel"
+      },
+      {
+        "name": "srcLUT"
+      },
+      {
+        "name": "srcLUTtransIndex"
+      },
+      {
+        "name": "numSrcLUT"
+      },
+      {
+        "name": "forceCMhint"
+      },
+      {
+        "name": "sstride"
+      },
+      {
+        "name": "isDefaultBI"
+      },
+      {
+        "name": "isSameCM"
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.ColorModel",
+    "fields": [
+      {
+        "name": "pData"
+      },
+      {
+        "name": "pixel_bits"
+      },
+      {
+        "name": "nBits"
+      },
+      {
+        "name": "transparency"
+      },
+      {
+        "name": "supportsAlpha"
+      },
+      {
+        "name": "isAlphaPremultiplied"
+      },
+      {
+        "name": "numComponents"
+      },
+      {
+        "name": "numColorComponents"
+      },
+      {
+        "name": "colorSpace"
+      },
+      {
+        "name": "colorSpaceType"
+      },
+      {
+        "name": "maxBits"
+      },
+      {
+        "name": "is_sRGB"
+      },
+      {
+        "name": "transferType"
+      },
+      {
+        "name": "loaded"
+      },
+      {
+        "name": "RGBdefault"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.image.JPEGImageDecoder",
+    "fields": [
+      {
+        "name": "RGBcolormodel"
+      },
+      {
+        "name": "ARGBcolormodel"
+      },
+      {
+        "name": "Graycolormodel"
+      },
+      {
+        "name": "InputStreamClass"
+      },
+      {
+        "name": "props"
+      }
+    ],
+    "methods": [
+      {
+        "name": "initIDs",
+        "parameterTypes": [
+          "java.lang.Class"
+        ]
+      },
+      {
+        "name": "readImage",
+        "parameterTypes": [
+          "java.io.InputStream",
+          "[B"
+        ]
+      },
+      {
+        "name": "sendHeaderInfo",
+        "parameterTypes": [
+          "int",
+          "int",
+          "boolean",
+          "boolean",
+          "boolean"
+        ]
+      },
+      {
+        "name": "sendPixels",
+        "parameterTypes": [
+          "[I",
+          "int"
+        ]
+      },
+      {
+        "name": "sendPixels",
+        "parameterTypes": [
+          "[B",
+          "int"
+        ]
+      },
+      {
+        "name": "produceImage",
+        "throws": [
+          "java.io.IOException",
+          "sun.awt.image.ImageFormatException"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "java.awt.color.ColorSpace",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.Color",
+    "fields": [
+      {
+        "name": "white"
+      },
+      {
+        "name": "WHITE"
+      },
+      {
+        "name": "lightGray"
+      },
+      {
+        "name": "LIGHT_GRAY"
+      },
+      {
+        "name": "gray"
+      },
+      {
+        "name": "GRAY"
+      },
+      {
+        "name": "darkGray"
+      },
+      {
+        "name": "DARK_GRAY"
+      },
+      {
+        "name": "black"
+      },
+      {
+        "name": "BLACK"
+      },
+      {
+        "name": "red"
+      },
+      {
+        "name": "RED"
+      },
+      {
+        "name": "pink"
+      },
+      {
+        "name": "PINK"
+      },
+      {
+        "name": "orange"
+      },
+      {
+        "name": "ORANGE"
+      },
+      {
+        "name": "yellow"
+      },
+      {
+        "name": "YELLOW"
+      },
+      {
+        "name": "green"
+      },
+      {
+        "name": "GREEN"
+      },
+      {
+        "name": "magenta"
+      },
+      {
+        "name": "MAGENTA"
+      },
+      {
+        "name": "cyan"
+      },
+      {
+        "name": "CYAN"
+      },
+      {
+        "name": "blue"
+      },
+      {
+        "name": "BLUE"
+      },
+      {
+        "name": "value"
+      },
+      {
+        "name": "frgbvalue"
+      },
+      {
+        "name": "fvalue"
+      },
+      {
+        "name": "falpha"
+      },
+      {
+        "name": "cs"
+      },
+      {
+        "name": "serialVersionUID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.io.InputStream",
+    "fields": [
+      {
+        "name": "MAX_SKIP_BUFFER_SIZE"
+      },
+      {
+        "name": "DEFAULT_BUFFER_SIZE"
+      },
+      {
+        "name": "MAX_BUFFER_SIZE"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.IndexColorModel",
+    "fields": [
+      {
+        "name": "rgb"
+      },
+      {
+        "name": "map_size"
+      },
+      {
+        "name": "pixel_mask"
+      },
+      {
+        "name": "transparent_index"
+      },
+      {
+        "name": "allgrayopaque"
+      },
+      {
+        "name": "validBits"
+      },
+      {
+        "name": "hashCode"
+      },
+      {
+        "name": "colorData"
+      },
+      {
+        "name": "opaqueBits"
+      },
+      {
+        "name": "alphaBits"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.Raster",
+    "fields": [
+      {
+        "name": "sampleModel"
+      },
+      {
+        "name": "dataBuffer"
+      },
+      {
+        "name": "minX"
+      },
+      {
+        "name": "minY"
+      },
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "sampleModelTranslateX"
+      },
+      {
+        "name": "sampleModelTranslateY"
+      },
+      {
+        "name": "numBands"
+      },
+      {
+        "name": "numDataElements"
+      },
+      {
+        "name": "parent"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.SampleModel",
+    "fields": [
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "numBands"
+      },
+      {
+        "name": "dataType"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.SinglePixelPackedSampleModel",
+    "fields": [
+      {
+        "name": "bitMasks"
+      },
+      {
+        "name": "bitOffsets"
+      },
+      {
+        "name": "bitSizes"
+      },
+      {
+        "name": "maxBitSize"
+      },
+      {
+        "name": "scanlineStride"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.image.IntegerComponentRaster",
+    "fields": [
+      {
+        "name": "TYPE_CUSTOM"
+      },
+      {
+        "name": "TYPE_BYTE_SAMPLES"
+      },
+      {
+        "name": "TYPE_USHORT_SAMPLES"
+      },
+      {
+        "name": "TYPE_INT_SAMPLES"
+      },
+      {
+        "name": "TYPE_BYTE_BANDED_SAMPLES"
+      },
+      {
+        "name": "TYPE_USHORT_BANDED_SAMPLES"
+      },
+      {
+        "name": "TYPE_INT_BANDED_SAMPLES"
+      },
+      {
+        "name": "TYPE_BYTE_PACKED_SAMPLES"
+      },
+      {
+        "name": "TYPE_USHORT_PACKED_SAMPLES"
+      },
+      {
+        "name": "TYPE_INT_PACKED_SAMPLESe"
+      },
+      {
+        "name": "TYPE_INT_8BIT_SAMPLES"
+      },
+      {
+        "name": "TYPE_BYTE_BINARY_SAMPLES"
+      },
+      {
+        "name": "bandOffset"
+      },
+      {
+        "name": "dataOffsets"
+      },
+      {
+        "name": "scanlineStride"
+      },
+      {
+        "name": "pixelStride"
+      },
+      {
+        "name": "data"
+      },
+      {
+        "name": "numDataElems"
+      },
+      {
+        "name": "type"
+      },
+      {
+        "name": "maxX"
+      },
+      {
+        "name": "maxY"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.image.BufferedImage",
+    "fields": [
+      {
+        "name": "imageType"
+      },
+      {
+        "name": "colorModel"
+      },
+      {
+        "name": "raster"
+      },
+      {
+        "name": "maxBitSizeosis"
+      },
+      {
+        "name": "properties"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.SurfaceData",
+    "fields": [
+      {
+        "name": "pData"
+      },
+      {
+        "name": "valid"
+      },
+      {
+        "name": "surfaceLost"
+      },
+      {
+        "name": "surfaceType"
+      },
+      {
+        "name": "colorModel"
+      },
+      {
+        "name": "disposerReferent"
+      },
+      {
+        "name": "blitProxyKey"
+      },
+      {
+        "name": "stateDelegate"
+      },
+      {
+        "name": "colorModel"
+      },
+      {
+        "name": "colorPrimitives"
+      },
+      {
+        "name": "outlineTextRenderer"
+      },
+      {
+        "name": "solidTextRenderer"
+      },
+      {
+        "name": "aaTextRenderer"
+      },
+      {
+        "name": "lcdTextRenderer"
+      },
+      {
+        "name": "colorPipe"
+      },
+      {
+        "name": "colorViaShape"
+      },
+      {
+        "name": "colorViaPgram"
+      },
+      {
+        "name": "colorText"
+      },
+      {
+        "name": "clipColorPipe"
+      },
+      {
+        "name": "clipColorText"
+      },
+      {
+        "name": "AAColorShape"
+      },
+      {
+        "name": "AAColorViaShape"
+      },
+      {
+        "name": "AAColorViaPgram"
+      },
+      {
+        "name": "AAClipColorShape"
+      },
+      {
+        "name": "AAClipColorViaShape"
+      },
+      {
+        "name": "paintPipe"
+      },
+      {
+        "name": "paintShape"
+      },
+      {
+        "name": "paintViaShape"
+      },
+      {
+        "name": "paintText"
+      },
+      {
+        "name": "clipPaintPipe"
+      },
+      {
+        "name": "clipPaintText"
+      },
+      {
+        "name": "AAPaintShape"
+      },
+      {
+        "name": "AAPaintViaShape"
+      },
+      {
+        "name": "AAClipPaintShape"
+      },
+      {
+        "name": "AAClipPaintViaShape"
+      },
+      {
+        "name": "compPipe"
+      },
+      {
+        "name": "compShape"
+      },
+      {
+        "name": "compViaShape"
+      },
+      {
+        "name": "compText"
+      },
+      {
+        "name": "clipCompPipe"
+      },
+      {
+        "name": "clipCompText"
+      },
+      {
+        "name": "AACompShape"
+      },
+      {
+        "name": "AACompViaShape"
+      },
+      {
+        "name": "AAClipCompShape"
+      },
+      {
+        "name": "AAClipCompViaShape"
+      },
+      {
+        "name": "imagepipe"
+      }
+    ],
+    "methods": [
+      {
+        "name": "initIDs",
+        "parameterTypes": []
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.SunGraphicsEnvironment",
+    "fields": [
+      {
+        "name": "defaultFont"
+      },
+      {
+        "name": "uiScaleEnabled"
+      },
+      {
+        "name": "debugScale"
+      },
+      {
+        "name": "screens"
+      },
+      {
+        "name": "displayChanger"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.java2d.HeadlessGraphicsEnvironment",
+    "fields": [
+      {
+        "name": "ge"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.java2d.InvalidPipeException",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.java2d.NullSurfaceData",
+    "fields": [
+      {
+        "name": "theInstance"
+      },
+      {
+        "name": "nullpipe"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.java2d.pipe.Region",
+    "fields": [
+      {
+        "name": "INIT_SIZE"
+      },
+      {
+        "name": "GROW_SIZE"
+      },
+      {
+        "name": "EMPTY_REGION"
+      },
+      {
+        "name": "WHOLE_REGION"
+      },
+      {
+        "name": "lox"
+      },
+      {
+        "name": "loy"
+      },
+      {
+        "name": "hix"
+      },
+      {
+        "name": "hiy"
+      },
+      {
+        "name": "endIndex"
+      },
+      {
+        "name": "bands"
+      },
+      {
+        "name": "hix"
+      },
+      {
+        "name": "hix"
+      },
+      {
+        "name": "hix"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.java2d.pipe.RegionIterator",
+    "fields": [
+      {
+        "name": "region"
+      },
+      {
+        "name": "curIndex"
+      },
+      {
+        "name": "numXbands"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.awt.image.BufImgSurfaceData",
+    "fields": [
+      {
+        "name": "bufImg"
+      },
+      {
+        "name": "graphicsConfig"
+      },
+      {
+        "name": "solidloops"
+      },
+      {
+        "name": "scaleX"
+      },
+      {
+        "name": "scaleY"
+      },
+      {
+        "name": "DCM_RGBX_RED_MASK"
+      },
+      {
+        "name": "DCM_RGBX_GREEN_MASK"
+      },
+      {
+        "name": "DCM_RGBX_BLUE_MASK"
+      },
+      {
+        "name": "DCM_555X_RED_MASK"
+      },
+      {
+        "name": "DCM_555X_GREEN_MASK"
+      },
+      {
+        "name": "DCM_555X_BLUE_MASK"
+      },
+      {
+        "name": "DCM_4444_RED_MASK"
+      },
+      {
+        "name": "DCM_4444_GREEN_MASK"
+      },
+      {
+        "name": "DCM_4444_BLUE_MASK"
+      },
+      {
+        "name": "DCM_4444_ALPHA_MASK"
+      },
+      {
+        "name": "DCM_ARGBBM_ALPHA_MASK"
+      },
+      {
+        "name": "DCM_ARGBBM_RED_MASK"
+      },
+      {
+        "name": "DCM_ARGBBM_GREEN_MASK"
+      },
+      {
+        "name": "DCM_ARGBBM_BLUE_MASK"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.awt.image.BufImgSurfaceData$ICMColorData",
+    "fields": [
+      {
+        "name": "pData"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.Blit",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "blitcache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.BlitBg",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "blitcache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.ScaledBlit",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "blitcache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.FillRect",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.FillSpans",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.FillParallelogram",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.FillPath",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawParallelogram",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawLine",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawPath",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawRect",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawPolygons",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphList",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphListAA",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphListColor",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphListLCD",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.MaskBlit",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "blitcache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.TransformHelper",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "helpercache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.TransformBlit",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "blitcache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.MaskFill",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "primTypeID"
+      },
+      {
+        "name": "blitcache"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.SurfaceType",
+    "fields": [
+      {
+        "name": "unusedUID"
+      },
+      {
+        "name": "surfaceUIDMap"
+      },
+      {
+        "name": "Any"
+      },
+      {
+        "name": "AnyInt"
+      },
+      {
+        "name": "AnyShort"
+      },
+      {
+        "name": "AnyByte"
+      },
+      {
+        "name": "AnyByteBinary"
+      },
+      {
+        "name": "Any3Byte"
+      },
+      {
+        "name": "Any4Byte"
+      },
+      {
+        "name": "AnyDcm"
+      },
+      {
+        "name": "Custom"
+      },
+      {
+        "name": "IntRgb"
+      },
+      {
+        "name": "IntArgb"
+      },
+      {
+        "name": "IntArgbPre"
+      },
+      {
+        "name": "IntBgr"
+      },
+      {
+        "name": "ThreeByteBgr"
+      },
+      {
+        "name": "FourByteAbgr"
+      },
+      {
+        "name": "FourByteAbgrPre"
+      },
+      {
+        "name": "Ushort565Rgb"
+      },
+      {
+        "name": "Ushort555Rgb"
+      },
+      {
+        "name": "Ushort555Rgbx"
+      },
+      {
+        "name": "Ushort4444Argb"
+      },
+      {
+        "name": "UshortIndexed"
+      },
+      {
+        "name": "ByteGray"
+      },
+      {
+        "name": "UshortGray"
+      },
+      {
+        "name": "ByteBinary1Bit"
+      },
+      {
+        "name": "ByteBinary2Bit"
+      },
+      {
+        "name": "ByteBinary4Bit"
+      },
+      {
+        "name": "ByteIndexed"
+      },
+      {
+        "name": "IntRgbx"
+      },
+      {
+        "name": "IntBgrx"
+      },
+      {
+        "name": "ThreeByteRgb"
+      },
+      {
+        "name": "IntArgbBm"
+      },
+      {
+        "name": "ByteIndexedBm"
+      },
+      {
+        "name": "ByteIndexedOpaque"
+      },
+      {
+        "name": "Index8Gray"
+      },
+      {
+        "name": "Index12Gray"
+      },
+      {
+        "name": "AnyPaint"
+      },
+      {
+        "name": "AnyColor"
+      },
+      {
+        "name": "OpaqueColor"
+      },
+      {
+        "name": "GradientPaint"
+      },
+      {
+        "name": "OpaqueGradientPaint"
+      },
+      {
+        "name": "LinearGradientPaint"
+      },
+      {
+        "name": "OpaqueLinearGradientPaint"
+      },
+      {
+        "name": "RadialGradientPaint"
+      },
+      {
+        "name": "OpaqueRadialGradientPaint"
+      },
+      {
+        "name": "TexturePaint"
+      },
+      {
+        "name": "OpaqueTexturePaint"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.CompositeType",
+    "fields": [
+      {
+        "name": "unusedUID"
+      },
+      {
+        "name": "compositeUIDMap"
+      },
+      {
+        "name": "DESC_ANY"
+      },
+      {
+        "name": "DESC_XOR"
+      },
+      {
+        "name": "DESC_CLEAR"
+      },
+      {
+        "name": "DESC_SRC"
+      },
+      {
+        "name": "DESC_DST"
+      },
+      {
+        "name": "DESC_SRC_OVER"
+      },
+      {
+        "name": "DESC_DST_OVER"
+      },
+      {
+        "name": "DESC_SRC_IN"
+      },
+      {
+        "name": "DESC_DST_IN"
+      },
+      {
+        "name": "DESC_SRC_OUT"
+      },
+      {
+        "name": "DESC_DST_OUT"
+      },
+      {
+        "name": "DESC_SRC_ATOP"
+      },
+      {
+        "name": "DESC_DST_ATOP"
+      },
+      {
+        "name": "DESC_ALPHA_XOR"
+      },
+      {
+        "name": "DESC_ANY_ALPHA"
+      },
+      {
+        "name": "DESC_SRC_NO_EA"
+      },
+      {
+        "name": "DESC_SRC_OVER_NO_EA"
+      },
+      {
+        "name": "Any"
+      },
+      {
+        "name": "General"
+      },
+      {
+        "name": "AnyAlpha"
+      },
+      {
+        "name": "Xor"
+      },
+      {
+        "name": "Clear"
+      },
+      {
+        "name": "Src"
+      },
+      {
+        "name": "Dst"
+      },
+      {
+        "name": "SrcOver"
+      },
+      {
+        "name": "DstOver"
+      },
+      {
+        "name": "SrcIn"
+      },
+      {
+        "name": "DstIn"
+      },
+      {
+        "name": "SrcOut"
+      },
+      {
+        "name": "DstOut"
+      },
+      {
+        "name": "SrcAtop"
+      },
+      {
+        "name": "DstAtop"
+      },
+      {
+        "name": "AlphaXor"
+      },
+      {
+        "name": "AnyAlpha"
+      },
+      {
+        "name": "SrcNoEa"
+      },
+      {
+        "name": "SrcOverNoEa"
+      },
+      {
+        "name": "OpaqueSrcOverNoEa"
+      },
+      {
+        "name": "uniqueID"
+      },
+      {
+        "name": "desc"
+      },
+      {
+        "name": "next"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.GraphicsPrimitiveMgr",
+    "fields": [
+      {
+        "name": "debugTrace"
+      },
+      {
+        "name": "primitives"
+      },
+      {
+        "name": "generalPrimitives"
+      },
+      {
+        "name": "needssort"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.GraphicsPrimitive",
+    "fields": [
+      {
+        "name": "methodSignature"
+      },
+      {
+        "name": "uniqueID"
+      },
+      {
+        "name": "unusedPrimID"
+      },
+      {
+        "name": "sourceType"
+      },
+      {
+        "name": "sourceType"
+      },
+      {
+        "name": "compositeType"
+      },
+      {
+        "name": "destType"
+      },
+      {
+        "name": "pNativePrim"
+      },
+      {
+        "name": "traceMap"
+      },
+      {
+        "name": "traceflags"
+      },
+      {
+        "name": "tracefile"
+      },
+      {
+        "name": "traceout"
+      },
+      {
+        "name": "TRACELOG"
+      },
+      {
+        "name": "TRACETIMESTAMP"
+      },
+      {
+        "name": "TRACECOUNTS"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.GraphicsPrimitiveProxy",
+    "fields": [
+      {
+        "name": "owner"
+      },
+      {
+        "name": "relativeClassName"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.SunGraphics2D",
+    "fields": [
+      {
+        "name": "PAINT_CUSTOM"
+      },
+      {
+        "name": "PAINT_TEXTURE"
+      },
+      {
+        "name": "PAINT_RAD_GRADIENT"
+      },
+      {
+        "name": "PAINT_LIN_GRADIENT"
+      },
+      {
+        "name": "PAINT_GRADIENT"
+      },
+      {
+        "name": "PAINT_ALPHACOLOR"
+      },
+      {
+        "name": "PAINT_OPAQUECOLOR"
+      },
+      {
+        "name": "COMP_CUSTOM"
+      },
+      {
+        "name": "COMP_XOR"
+      },
+      {
+        "name": "COMP_ALPHA"
+      },
+      {
+        "name": "COMP_ISCOPY"
+      },
+      {
+        "name": "STROKE_CUSTOM"
+      },
+      {
+        "name": "STROKE_WIDE"
+      },
+      {
+        "name": "STROKE_THINDASHED"
+      },
+      {
+        "name": "STROKE_THIN"
+      },
+      {
+        "name": "TRANSFORM_GENERIC"
+      },
+      {
+        "name": "TRANSFORM_TRANSLATESCALE"
+      },
+      {
+        "name": "TRANSFORM_ANY_TRANSLATE"
+      },
+      {
+        "name": "TRANSFORM_INT_TRANSLATE"
+      },
+      {
+        "name": "TRANSFORM_ISIDENT"
+      },
+      {
+        "name": "CLIP_SHAPE"
+      },
+      {
+        "name": "CLIP_RECTANGULAR"
+      },
+      {
+        "name": "CLIP_DEVICE"
+      },
+      {
+        "name": "eargb"
+      },
+      {
+        "name": "pixel"
+      },
+      {
+        "name": "surfaceData"
+      },
+      {
+        "name": "drawpipe"
+      },
+      {
+        "name": "fillpipe"
+      },
+      {
+        "name": "imagepipe"
+      },
+      {
+        "name": "shapepipe"
+      },
+      {
+        "name": "textpipe"
+      },
+      {
+        "name": "alphafill"
+      },
+      {
+        "name": "loops"
+      },
+      {
+        "name": "imageComp"
+      },
+      {
+        "name": "paintState"
+      },
+      {
+        "name": "compositeState"
+      },
+      {
+        "name": "strokeState"
+      },
+      {
+        "name": "transformState"
+      },
+      {
+        "name": "clipState"
+      },
+      {
+        "name": "foregroundColor"
+      },
+      {
+        "name": "backgroundColor"
+      },
+      {
+        "name": "transform"
+      },
+      {
+        "name": "transX"
+      },
+      {
+        "name": "transY"
+      },
+      {
+        "name": "defaultStroke"
+      },
+      {
+        "name": "defaultComposite"
+      },
+      {
+        "name": "defaultFont"
+      },
+      {
+        "name": "paint"
+      },
+      {
+        "name": "stroke"
+      },
+      {
+        "name": "composite"
+      },
+      {
+        "name": "font"
+      },
+      {
+        "name": "fontMetrics"
+      },
+      {
+        "name": "renderHint"
+      },
+      {
+        "name": "antialiasHint"
+      },
+      {
+        "name": "textAntialiasHint"
+      },
+      {
+        "name": "fractionalMetricsHint"
+      },
+      {
+        "name": "lcdTextContrast"
+      },
+      {
+        "name": "lcdTextContrastDefaultValue"
+      },
+      {
+        "name": "interpolationHint"
+      },
+      {
+        "name": "strokeHint"
+      },
+      {
+        "name": "interpolationType"
+      },
+      {
+        "name": "hints"
+      },
+      {
+        "name": "constrainClip"
+      },
+      {
+        "name": "constrainX"
+      },
+      {
+        "name": "constrainY"
+      },
+      {
+        "name": "clipRegion"
+      },
+      {
+        "name": "usrClip"
+      },
+      {
+        "name": "devClip"
+      },
+      {
+        "name": "resolutionVariantHint"
+      },
+      {
+        "name": "slowTextTransformMask"
+      },
+      {
+        "name": "validFontInfo"
+      },
+      {
+        "name": "fontInfo"
+      },
+      {
+        "name": "glyphVectorFontInfo"
+      },
+      {
+        "name": "glyphVectorFRC"
+      },
+      {
+        "name": "invalidpipe"
+      },
+      {
+        "name": "IDENT_MATRIX"
+      },
+      {
+        "name": "IDENT_ATX"
+      },
+      {
+        "name": "MINALLOCATED"
+      },
+      {
+        "name": "TEXTARRSIZE"
+      },
+      {
+        "name": "textTxArr"
+      },
+      {
+        "name": "textAtArr"
+      },
+      {
+        "name": "NON_UNIFORM_SCALE_MASK"
+      },
+      {
+        "name": "MinPenSizeAA"
+      },
+      {
+        "name": "MinPenSizeAASquared"
+      },
+      {
+        "name": "MinPenSizeSquared"
+      },
+      {
+        "name": "NON_RECTILINEAR_TRANSFORM_MASK"
+      },
+      {
+        "name": "lastCAblit"
+      },
+      {
+        "name": "cachedFRC"
+      },
+      {
+        "name": "lastCAcomp"
+      },
+      {
+        "name": "lastCAcomp"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": false,
+    "allPublicMethods": false
+  },
+  {
+    "name": "sun.java2d.loops.XORComposite",
+    "fields": [
+      {
+        "name": "xorColor"
+      },
+      {
+        "name": "xorPixel"
+      },
+      {
+        "name": "alphaMask"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.GeneralRenderer",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.XorCopyArgbToAny",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.loops.XorDrawGlyphListAAANY",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.AlphaComposite",
+    "fields": [
+      {
+        "name": "CLEAR"
+      },
+      {
+        "name": "SRC"
+      },
+      {
+        "name": "DST"
+      },
+      {
+        "name": "SRC_OVER"
+      },
+      {
+        "name": "DST_OVER"
+      },
+      {
+        "name": "SRC_IN"
+      },
+      {
+        "name": "DST_IN"
+      },
+      {
+        "name": "SRC_OUT"
+      },
+      {
+        "name": "DST_OUT"
+      },
+      {
+        "name": "SRC_ATOP"
+      },
+      {
+        "name": "DST_ATOP"
+      },
+      {
+        "name": "XOR"
+      },
+      {
+        "name": "Clear"
+      },
+      {
+        "name": "Src"
+      },
+      {
+        "name": "Dst"
+      },
+      {
+        "name": "SrcOver"
+      },
+      {
+        "name": "DstOver"
+      },
+      {
+        "name": "SrcIn"
+      },
+      {
+        "name": "DstIn"
+      },
+      {
+        "name": "SrcOut"
+      },
+      {
+        "name": "DstOut"
+      },
+      {
+        "name": "SrcAtop"
+      },
+      {
+        "name": "DstAtop"
+      },
+      {
+        "name": "Xor"
+      },
+      {
+        "name": "MIN_RULE"
+      },
+      {
+        "name": "MAX_RULE"
+      },
+      {
+        "name": "extraAlpha"
+      },
+      {
+        "name": "rule"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.AffineTransform",
+    "fields": [
+      {
+        "name": "TYPE_UNKNOWN"
+      },
+      {
+        "name": "TYPE_IDENTITY"
+      },
+      {
+        "name": "TYPE_TRANSLATION"
+      },
+      {
+        "name": "TYPE_UNIFORM_SCALE"
+      },
+      {
+        "name": "TYPE_GENERAL_SCALE"
+      },
+      {
+        "name": "TYPE_MASK_SCALE"
+      },
+      {
+        "name": "TYPE_FLIP"
+      },
+      {
+        "name": "TYPE_QUADRANT_ROTATION"
+      },
+      {
+        "name": "TYPE_GENERAL_ROTATION"
+      },
+      {
+        "name": "TYPE_MASK_ROTATION"
+      },
+      {
+        "name": "TYPE_GENERAL_TRANSFORM"
+      },
+      {
+        "name": "APPLY_IDENTITY"
+      },
+      {
+        "name": "APPLY_TRANSLATE"
+      },
+      {
+        "name": "APPLY_SCALE"
+      },
+      {
+        "name": "APPLY_SHEAR"
+      },
+      {
+        "name": "HI_SHIFT"
+      },
+      {
+        "name": "HI_IDENTITY"
+      },
+      {
+        "name": "HI_TRANSLATE"
+      },
+      {
+        "name": "HI_SCALE"
+      },
+      {
+        "name": "HI_SHEAR"
+      },
+      {
+        "name": "m00"
+      },
+      {
+        "name": "m10"
+      },
+      {
+        "name": "m01"
+      },
+      {
+        "name": "m11"
+      },
+      {
+        "name": "m02"
+      },
+      {
+        "name": "m12"
+      },
+      {
+        "name": "state"
+      },
+      {
+        "name": "type"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.Path2D",
+    "fields": [
+      {
+        "name": "WIND_EVEN_ODD"
+      },
+      {
+        "name": "WIND_NON_ZERO"
+      },
+      {
+        "name": "SEG_MOVETO"
+      },
+      {
+        "name": "SEG_LINETO"
+      },
+      {
+        "name": "SEG_QUADTO"
+      },
+      {
+        "name": "SEG_CUBICTO"
+      },
+      {
+        "name": "SEG_CLOSE"
+      },
+      {
+        "name": "pointTypes"
+      },
+      {
+        "name": "numTypes"
+      },
+      {
+        "name": "numCoords"
+      },
+      {
+        "name": "windingRule"
+      },
+      {
+        "name": "INIT_SIZE"
+      },
+      {
+        "name": "EXPAND_MAX"
+      },
+      {
+        "name": "EXPAND_MAX_COORDS"
+      },
+      {
+        "name": "EXPAND_MIN"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.Path2D$Float",
+    "fields": [
+      {
+        "name": "floatCoords"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.Path2D$Double",
+    "fields": [
+      {
+        "name": "doubleCoords"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.SunHints",
+    "fields": [
+      {
+        "name": "NUM_KEYS"
+      },
+      {
+        "name": "VALS_PER_KEY"
+      },
+      {
+        "name": "INTKEY_RENDERING"
+      },
+      {
+        "name": "INTVAL_RENDER_DEFAULT"
+      },
+      {
+        "name": "INTVAL_RENDER_SPEED"
+      },
+      {
+        "name": "INTVAL_RENDER_QUALITY"
+      },
+      {
+        "name": "INTKEY_ANTIALIASING"
+      },
+      {
+        "name": "INTVAL_ANTIALIAS_DEFAULT"
+      },
+      {
+        "name": "INTVAL_ANTIALIAS_OFF"
+      },
+      {
+        "name": "INTVAL_ANTIALIAS_ON"
+      },
+      {
+        "name": "INTKEY_TEXT_ANTIALIASING"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_DEFAULT"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_OFF"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_ON"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_GASP"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_LCD_HRGB"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_LCD_HBGR"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_LCD_VRGB"
+      },
+      {
+        "name": "INTVAL_TEXT_ANTIALIAS_LCD_VBGR"
+      },
+      {
+        "name": "INTKEY_FRACTIONALMETRICS"
+      },
+      {
+        "name": "INTVAL_FRACTIONALMETRICS_DEFAULT"
+      },
+      {
+        "name": "INTVAL_FRACTIONALMETRICS_OFF"
+      },
+      {
+        "name": "INTVAL_FRACTIONALMETRICS_ON"
+      },
+      {
+        "name": "INTKEY_DITHERING"
+      },
+      {
+        "name": "INTVAL_DITHER_DEFAULT"
+      },
+      {
+        "name": "INTVAL_DITHER_DISABLE"
+      },
+      {
+        "name": "INTVAL_DITHER_ENABLE"
+      },
+      {
+        "name": "INTKEY_INTERPOLATION"
+      },
+      {
+        "name": "INTVAL_INTERPOLATION_NEAREST_NEIGHBOR"
+      },
+      {
+        "name": "INTVAL_INTERPOLATION_BILINEAR"
+      },
+      {
+        "name": "INTVAL_INTERPOLATION_BICUBIC"
+      },
+      {
+        "name": "INTKEY_ALPHA_INTERPOLATION"
+      },
+      {
+        "name": "INTVAL_ALPHA_INTERPOLATION_DEFAULT"
+      },
+      {
+        "name": "INTVAL_ALPHA_INTERPOLATION_SPEED"
+      },
+      {
+        "name": "INTVAL_ALPHA_INTERPOLATION_QUALITY"
+      },
+      {
+        "name": "INTKEY_COLOR_RENDERING"
+      },
+      {
+        "name": "INTVAL_COLOR_RENDER_DEFAULT"
+      },
+      {
+        "name": "INTVAL_COLOR_RENDER_SPEED"
+      },
+      {
+        "name": "INTVAL_COLOR_RENDER_QUALITY"
+      },
+      {
+        "name": "INTKEY_STROKE_CONTROL"
+      },
+      {
+        "name": "INTVAL_STROKE_DEFAULT"
+      },
+      {
+        "name": "INTVAL_STROKE_NORMALIZE"
+      },
+      {
+        "name": "INTVAL_STROKE_PURE"
+      },
+      {
+        "name": "INTKEY_RESOLUTION_VARIANT"
+      },
+      {
+        "name": "INTVAL_RESOLUTION_VARIANT_DEFAULT"
+      },
+      {
+        "name": "INTVAL_RESOLUTION_VARIANT_BASE"
+      },
+      {
+        "name": "INTVAL_RESOLUTION_VARIANT_SIZE_FIT"
+      },
+      {
+        "name": "INTVAL_RESOLUTION_VARIANT_DPI_FIT"
+      },
+      {
+        "name": "INTKEY_AATEXT_LCD_CONTRAST"
+      },
+      {
+        "name": "KEY_RENDERING"
+      },
+      {
+        "name": "VALUE_RENDER_SPEED"
+      },
+      {
+        "name": "VALUE_RENDER_QUALITY"
+      },
+      {
+        "name": "VALUE_RENDER_DEFAULT"
+      },
+      {
+        "name": "KEY_ANTIALIASING"
+      },
+      {
+        "name": "VALUE_ANTIALIAS_ON"
+      },
+      {
+        "name": "VALUE_ANTIALIAS_OFF"
+      },
+      {
+        "name": "VALUE_ANTIALIAS_DEFAULT"
+      },
+      {
+        "name": "KEY_TEXT_ANTIALIASING"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_ON"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_OFF"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_DEFAULT"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_GASP"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_LCD_HRGB"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_LCD_HBGR"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_LCD_VRGB"
+      },
+      {
+        "name": "VALUE_TEXT_ANTIALIAS_LCD_VBGR"
+      },
+      {
+        "name": "KEY_FRACTIONALMETRICS"
+      },
+      {
+        "name": "VALUE_FRACTIONALMETRICS_ON"
+      },
+      {
+        "name": "VALUE_FRACTIONALMETRICS_OFF"
+      },
+      {
+        "name": "VALUE_FRACTIONALMETRICS_DEFAULT"
+      },
+      {
+        "name": "KEY_DITHERING"
+      },
+      {
+        "name": "VALUE_DITHER_ENABLE"
+      },
+      {
+        "name": "VALUE_DITHER_DISABLE"
+      },
+      {
+        "name": "VALUE_DITHER_DEFAULT"
+      },
+      {
+        "name": "KEY_INTERPOLATION"
+      },
+      {
+        "name": "VALUE_INTERPOLATION_NEAREST_NEIGHBOR"
+      },
+      {
+        "name": "VALUE_INTERPOLATION_BILINEAR"
+      },
+      {
+        "name": "VALUE_INTERPOLATION_BICUBIC"
+      },
+      {
+        "name": "KEY_ALPHA_INTERPOLATION"
+      },
+      {
+        "name": "VALUE_ALPHA_INTERPOLATION_SPEED"
+      },
+      {
+        "name": "VALUE_ALPHA_INTERPOLATION_QUALITY"
+      },
+      {
+        "name": "VALUE_ALPHA_INTERPOLATION_DEFAULT"
+      },
+      {
+        "name": "KEY_COLOR_RENDERING"
+      },
+      {
+        "name": "VALUE_COLOR_RENDER_SPEED"
+      },
+      {
+        "name": "VALUE_COLOR_RENDER_QUALITY"
+      },
+      {
+        "name": "VALUE_COLOR_RENDER_DEFAULT"
+      },
+      {
+        "name": "KEY_STROKE_CONTROL"
+      },
+      {
+        "name": "VALUE_STROKE_DEFAULT"
+      },
+      {
+        "name": "VALUE_STROKE_NORMALIZE"
+      },
+      {
+        "name": "VALUE_STROKE_PURE"
+      },
+      {
+        "name": "KEY_RESOLUTION_VARIANT"
+      },
+      {
+        "name": "VALUE_RESOLUTION_VARIANT_DEFAULT"
+      },
+      {
+        "name": "VALUE_RESOLUTION_VARIANT_BASE"
+      },
+      {
+        "name": "VALUE_RESOLUTION_VARIANT_SIZE_FIT"
+      },
+      {
+        "name": "VALUE_RESOLUTION_VARIANT_DPI_FIT"
+      },
+      {
+        "name": "KEY_TEXT_ANTIALIAS_LCD_CONTRAST"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.TrueTypeFont",
+    "fields": [
+      {
+        "name": "cmapTag"
+      },
+      {
+        "name": "glyfTag"
+      },
+      {
+        "name": "headTag"
+      },
+      {
+        "name": "hheaTag"
+      },
+      {
+        "name": "hmtxTag"
+      },
+      {
+        "name": "locaTag"
+      },
+      {
+        "name": "maxpTag"
+      },
+      {
+        "name": "nameTag"
+      },
+      {
+        "name": "postTag"
+      },
+      {
+        "name": "os_2Tag"
+      },
+      {
+        "name": "GDEFTag"
+      },
+      {
+        "name": "GPOSTag"
+      },
+      {
+        "name": "GSUBTag"
+      },
+      {
+        "name": "mortTag"
+      },
+      {
+        "name": "morxTag"
+      },
+      {
+        "name": "fdscTag"
+      },
+      {
+        "name": "fvarTag"
+      },
+      {
+        "name": "featTag"
+      },
+      {
+        "name": "EBLCTag"
+      },
+      {
+        "name": "gaspTag"
+      },
+      {
+        "name": "ttcfTag"
+      },
+      {
+        "name": "v1ttTag"
+      },
+      {
+        "name": "trueTag"
+      },
+      {
+        "name": "ottoTag"
+      },
+      {
+        "name": "MAC_PLATFORM_ID"
+      },
+      {
+        "name": "MACROMAN_SPECIFIC_ID"
+      },
+      {
+        "name": "MACROMAN_ENGLISH_LANG"
+      },
+      {
+        "name": "MS_PLATFORM_ID"
+      },
+      {
+        "name": "ENGLISH_LOCALE_ID"
+      },
+      {
+        "name": "FAMILY_NAME_ID"
+      },
+      {
+        "name": "FULL_NAME_ID"
+      },
+      {
+        "name": "POSTSCRIPT_NAME_ID"
+      },
+      {
+        "name": "US_LCID"
+      },
+      {
+        "name": "disposerRecord"
+      },
+      {
+        "name": "fontIndex"
+      },
+      {
+        "name": "directoryCount"
+      },
+      {
+        "name": "directoryOffset"
+      },
+      {
+        "name": "numTables"
+      },
+      {
+        "name": "tableDirectory"
+      },
+      {
+        "name": "supportsJA"
+      },
+      {
+        "name": "supportsCJK"
+      },
+      {
+        "name": "nameLocale"
+      },
+      {
+        "name": "localeFamilyName"
+      },
+      {
+        "name": "localeFullName"
+      },
+      {
+        "name": "fontDataSize"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.Type1Font",
+    "fields": [
+      {
+        "name": "bufferRef"
+      },
+      {
+        "name": "psName"
+      },
+      {
+        "name": "styleAbbreviationsMapping"
+      },
+      {
+        "name": "styleNameTokes"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.Point2D$Float",
+    "fields": [
+      {
+        "name": "x"
+      },
+      {
+        "name": "y"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.StrikeMetrics",
+    "fields": [
+      {
+        "name": "ascentX"
+      },
+      {
+        "name": "ascentY"
+      },
+      {
+        "name": "descentX"
+      },
+      {
+        "name": "descentY"
+      },
+      {
+        "name": "baselineX"
+      },
+      {
+        "name": "baselineY"
+      },
+      {
+        "name": "leadingX"
+      },
+      {
+        "name": "leadingY"
+      },
+      {
+        "name": "maxAdvanceX"
+      },
+      {
+        "name": "maxAdvanceY"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.Rectangle2D$Float",
+    "fields": [
+      {
+        "name": "x"
+      },
+      {
+        "name": "y"
+      },
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.geom.GeneralPath",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.Font2D",
+    "fields": [
+      {
+        "name": "FONT_CONFIG_RANK"
+      },
+      {
+        "name": "JRE_RANK"
+      },
+      {
+        "name": "TTF_RANK"
+      },
+      {
+        "name": "TYPE1_RANK"
+      },
+      {
+        "name": "NATIVE_RANK"
+      },
+      {
+        "name": "UNKNOWN_RANK"
+      },
+      {
+        "name": "DEFAULT_RANK"
+      },
+      {
+        "name": "boldNames"
+      },
+      {
+        "name": "italicNames"
+      },
+      {
+        "name": "boldItalicNames"
+      },
+      {
+        "name": "DEFAULT_FRC"
+      },
+      {
+        "name": "handle"
+      },
+      {
+        "name": "familyName"
+      },
+      {
+        "name": "fullName"
+      },
+      {
+        "name": "style"
+      },
+      {
+        "name": "family"
+      },
+      {
+        "name": "fontRank"
+      },
+      {
+        "name": "mapper"
+      },
+      {
+        "name": "strikeCache"
+      },
+      {
+        "name": "lastFontStrike"
+      },
+      {
+        "name": "strikeCacheMax"
+      },
+      {
+        "name": "useWeak"
+      },
+      {
+        "name": "FWIDTH_NORMAL"
+      },
+      {
+        "name": "FWIDTH_NORMAL"
+      },
+      {
+        "name": "FWEIGHT_NORMAL"
+      },
+      {
+        "name": "FWEIGHT_BOLD"
+      },
+      {
+        "name": "FWIDTH_NORMAL"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.CharToGlyphMapper",
+    "fields": [
+      {
+        "name": "HI_SURROGATE_START"
+      },
+      {
+        "name": "HI_SURROGATE_END"
+      },
+      {
+        "name": "LO_SURROGATE_START"
+      },
+      {
+        "name": "LO_SURROGATE_END"
+      },
+      {
+        "name": "VS_START"
+      },
+      {
+        "name": "VS_END"
+      },
+      {
+        "name": "VSS_START"
+      },
+      {
+        "name": "VSS_END"
+      },
+      {
+        "name": "UNINITIALIZED_GLYPH"
+      },
+      {
+        "name": "INVISIBLE_GLYPH_ID"
+      },
+      {
+        "name": "INVISIBLE_GLYPHS"
+      },
+      {
+        "name": "missingGlyph"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.PhysicalStrike",
+    "fields": [
+      {
+        "name": "INTMASK"
+      },
+      {
+        "name": "longAddresses"
+      },
+      {
+        "name": "physicalFont"
+      },
+      {
+        "name": "mapper"
+      },
+      {
+        "name": "pScalerContext"
+      },
+      {
+        "name": "longGlyphImages"
+      },
+      {
+        "name": "intGlyphImages"
+      },
+      {
+        "name": "glyphPointMapCache"
+      },
+      {
+        "name": "getImageWithAdvance"
+      },
+      {
+        "name": "complexTX"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getGlyphMetrics",
+        "parameterTypes": [
+          "java.awt.geom.Point2D$Float"
+        ]
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.FontStrike",
+    "fields": [
+      {
+        "name": "disposer"
+      },
+      {
+        "name": "desc"
+      },
+      {
+        "name": "strikeMetrics"
+      },
+      {
+        "name": "algoStyle"
+      },
+      {
+        "name": "boldness"
+      },
+      {
+        "name": "italic"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.GlyphList",
+    "fields": [
+      {
+        "name": "MINGRAYLENGTH"
+      },
+      {
+        "name": "MAXGRAYLENGTH"
+      },
+      {
+        "name": "DEFAULT_LENGTH"
+      },
+      {
+        "name": "glyphindex"
+      },
+      {
+        "name": "metrics"
+      },
+      {
+        "name": "graybits"
+      },
+      {
+        "name": "strikelist"
+      },
+      {
+        "name": "len"
+      },
+      {
+        "name": "maxLen"
+      },
+      {
+        "name": "maxPosLen"
+      },
+      {
+        "name": "glyphData"
+      },
+      {
+        "name": "chData"
+      },
+      {
+        "name": "images"
+      },
+      {
+        "name": "positions"
+      },
+      {
+        "name": "x"
+      },
+      {
+        "name": "y"
+      },
+      {
+        "name": "gposx"
+      },
+      {
+        "name": "gposy"
+      },
+      {
+        "name": "usePositions"
+      },
+      {
+        "name": "lcdRGBOrder"
+      },
+      {
+        "name": "lcdSubPixPos"
+      },
+      {
+        "name": "reusableGL"
+      },
+      {
+        "name": "inUse"
+      },
+      {
+        "name": "glyphSurfaceData"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.X11FontManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.FontManager",
+    "fields": [
+      {
+        "name": "NO_FALLBACK"
+      },
+      {
+        "name": "PHYSICAL_FALLBACK"
+      },
+      {
+        "name": "LOGICAL_FALLBACK"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.PlatformFontInfo",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.SunFontManager",
+    "fields": [
+      {
+        "name": "FONT_HANDLE_NULL"
+      },
+      {
+        "name": "FONTFORMAT_NONE"
+      },
+      {
+        "name": "FONTFORMAT_TRUETYPE"
+      },
+      {
+        "name": "FONTFORMAT_TYPE1"
+      },
+      {
+        "name": "FONTFORMAT_TTC"
+      },
+      {
+        "name": "FONTFORMAT_COMPOSITE"
+      },
+      {
+        "name": "FONTFORMAT_NATIVE"
+      },
+      {
+        "name": "CHANNELPOOLSIZE"
+      },
+      {
+        "name": "fontFileCache"
+      },
+      {
+        "name": "lastPoolIndex"
+      },
+      {
+        "name": "maxCompFont"
+      },
+      {
+        "name": "compFonts"
+      },
+      {
+        "name": "compositeFonts"
+      },
+      {
+        "name": "physicalFonts"
+      },
+      {
+        "name": "registeredFonts"
+      },
+      {
+        "name": "fullNameToFont"
+      },
+      {
+        "name": "registeredFonts"
+      },
+      {
+        "name": "localeFullNamesToFont"
+      },
+      {
+        "name": "defaultPhysicalFont"
+      },
+      {
+        "name": "longAddresses"
+      },
+      {
+        "name": "loaded1dot0Fonts"
+      },
+      {
+        "name": "loadedAllFonts"
+      },
+      {
+        "name": "loadedAllFontFiles"
+      },
+      {
+        "name": "jreOtherFontFiles"
+      },
+      {
+        "name": "noOtherJREFontFiles"
+      },
+      {
+        "name": "jreLibDirName"
+      },
+      {
+        "name": "jreFontDirName"
+      },
+      {
+        "name": "missingFontFiles"
+      },
+      {
+        "name": "defaultFontName"
+      },
+      {
+        "name": "defaultFontFileName"
+      },
+      {
+        "name": "registeredFontFiles"
+      },
+      {
+        "name": "badFonts"
+      },
+      {
+        "name": "fontPath"
+      },
+      {
+        "name": "fontConfig"
+      },
+      {
+        "name": "discoveredAllFonts"
+      },
+      {
+        "name": "ttFilter"
+      },
+      {
+        "name": "t1Filter"
+      },
+      {
+        "name": "allFonts"
+      },
+      {
+        "name": "allFamilies"
+      },
+      {
+        "name": "lastDefaultLocale"
+      },
+      {
+        "name": "noType1Font"
+      },
+      {
+        "name": "STR_ARRAY"
+      },
+      {
+        "name": "maxSoftRefCnt"
+      },
+      {
+        "name": "deferredFontFiles"
+      },
+      {
+        "name": "initialisedFonts"
+      },
+      {
+        "name": "fontToFileMap"
+      },
+      {
+        "name": "fontToFamilyNameMap"
+      },
+      {
+        "name": "familyToFontListMap"
+      },
+      {
+        "name": "pathDirs"
+      },
+      {
+        "name": "haveCheckedUnreferencedFontFiles"
+      },
+      {
+        "name": "platformFontMap"
+      },
+      {
+        "name": "fontNameCache"
+      },
+      {
+        "name": "fileCloser"
+      },
+      {
+        "name": "tmpFontFiles"
+      },
+      {
+        "name": "createdFontCount"
+      },
+      {
+        "name": "_usingAlternateComposites"
+      },
+      {
+        "name": "gAltJAFont"
+      },
+      {
+        "name": "gLocalePref"
+      },
+      {
+        "name": "gPropPref"
+      },
+      {
+        "name": "installedNames"
+      },
+      {
+        "name": "regFamilyLock"
+      },
+      {
+        "name": "createdByFamilyName"
+      },
+      {
+        "name": "createdByFullName"
+      },
+      {
+        "name": "fontsAreRegistered"
+      },
+      {
+        "name": "systemLocale"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.security.AccessController",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.Win32FontManager",
+    "fields": [
+      {
+        "name": "eudcFont"
+      },
+      {
+        "name": "fontsForPrinting"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.FcFontManager",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.awt.Font",
+    "fields": [
+      {"name": "fRequestedAttributes"},
+      {"name": "DIALOG"},
+      {"name": "DIALOG_INPUT"},
+      {"name": "SANS_SERIF"},
+      {"name": "SERIF"},
+      {"name": "MONOSPACED"},
+      {"name": "PLAIN"},
+      {"name": "BOLD"},
+      {"name": "ITALIC"},
+      {"name": "ROMAN_BASELINE"},
+      {"name": "CENTER_BASELINE"},
+      {"name": "HANGING_BASELINE"},
+      {"name": "TRUETYPE_FONT"},
+      {"name": "TYPE1_FONT"},
+      {"name": "MONOSPACED"},
+      {"name": "MONOSPACED"},
+      {"name": "name"},
+      {"name": "style"},
+      {"name": "size"},
+      {"name": "pointSize"},
+      {"name": "peer"},
+      {"name": "pData"},
+      {"name": "font2DHandle"},
+      {"name": "values"},
+      {"name": "hasLayoutAttributes"},
+      {"name": "createdFont"},
+      {"name": "nonIdentityTx"},
+      {"name": "IdentityTx"},
+      {"name": "serialVersionUID"},
+      {"name": "RECOGNIZED_MASK"},
+      {"name": "PRIMARY_MASK"},
+      {"name": "SECONDARY_MASK"},
+      {"name": "LAYOUT_MASK"},
+      {"name": "EXTRA_MASK"},
+      {"name": "ssinfo"},
+      {"name": "hash"},
+      {"name": "fontSerializedDataVersion"},
+      {"name": "LAYOUT_LEFT_TO_RIGHT"},
+      {"name": "LAYOUT_RIGHT_TO_LEFT"},
+      {"name": "LAYOUT_NO_START_CONTEXT"},
+      {"name": "LAYOUT_NO_LIMIT_CONTEXT"}
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.font.FontManagerFactory",
+    "fields": [
+      {
+        "name": "instance"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.FontConfiguration",
+    "fields": [
+      {
+        "name": "osVersion"
+      },
+      {
+        "name": "osName"
+      },
+      {
+        "name": "encoding"
+      },
+      {
+        "name": "startupLocale"
+      },
+      {
+        "name": "localeMap"
+      },
+      {
+        "name": "fontConfig"
+      },
+      {
+        "name": "logger"
+      },
+      {
+        "name": "isProperties"
+      },
+      {
+        "name": "fontManager"
+      },
+      {
+        "name": "preferLocaleFonts"
+      },
+      {
+        "name": "preferPropFonts"
+      },
+      {
+        "name": "fontConfigFile"
+      },
+      {
+        "name": "foundOsSpecificFile"
+      },
+      {
+        "name": "inited"
+      },
+      {
+        "name": "javaLib"
+      },
+      {
+        "name": "stringIDNum"
+      },
+      {
+        "name": "stringIDs"
+      },
+      {
+        "name": "stringTable"
+      },
+      {
+        "name": "verbose"
+      },
+      {
+        "name": "initELC"
+      },
+      {
+        "name": "initLocale"
+      },
+      {
+        "name": "initEncoding"
+      },
+      {
+        "name": "alphabeticSuffix"
+      },
+      {
+        "name": "compFontNameIDs"
+      },
+      {
+        "name": "compExclusions"
+      },
+      {
+        "name": "compCoreNum"
+      },
+      {
+        "name": "coreFontNameIDs"
+      },
+      {
+        "name": "fallbackFontNameIDs"
+      },
+      {
+        "name": "NUM_FONTS"
+      },
+      {
+        "name": "NUM_STYLES"
+      },
+      {
+        "name": "fontNames"
+      },
+      {
+        "name": "publicFontNames"
+      },
+      {
+        "name": "styleNames"
+      },
+      {
+        "name": "installedFallbackFontFiles"
+      },
+      {
+        "name": "reorderMap"
+      },
+      {
+        "name": "charsetRegistry"
+      },
+      {
+        "name": "fontDescriptors"
+      },
+      {
+        "name": "existsMap"
+      },
+      {
+        "name": "numCoreFonts"
+      },
+      {
+        "name": "componentFonts"
+      },
+      {
+        "name": "filenamesMap"
+      },
+      {
+        "name": "coreFontFileNames"
+      },
+      {
+        "name": "fontconfigErrorMessage"
+      },
+      {
+        "name": "HEAD_LENGTH"
+      },
+      {
+        "name": "INDEX_scriptIDs"
+      },
+      {
+        "name": "INDEX_scriptFonts"
+      },
+      {
+        "name": "INDEX_elcIDs"
+      },
+      {
+        "name": "INDEX_sequences"
+      },
+      {
+        "name": "INDEX_fontfileNameIDs"
+      },
+      {
+        "name": "INDEX_componentFontNameIDs"
+      },
+      {
+        "name": "INDEX_filenames"
+      },
+      {
+        "name": "INDEX_awtfontpaths"
+      },
+      {
+        "name": "INDEX_exclusions"
+      },
+      {
+        "name": "INDEX_proportionals"
+      },
+      {
+        "name": "INDEX_scriptFontsMotif"
+      },
+      {
+        "name": "INDEX_alphabeticSuffix"
+      },
+      {
+        "name": "INDEX_stringIDs"
+      },
+      {
+        "name": "INDEX_stringTable"
+      },
+      {
+        "name": "INDEX_TABLEEND"
+      },
+      {
+        "name": "INDEX_fallbackScripts"
+      },
+      {
+        "name": "INDEX_appendedfontpath"
+      },
+      {
+        "name": "INDEX_version"
+      },
+      {
+        "name": "head"
+      },
+      {
+        "name": "table_scriptIDs"
+      },
+      {
+        "name": "table_scriptFonts"
+      },
+      {
+        "name": "table_elcIDs"
+      },
+      {
+        "name": "table_sequences"
+      },
+      {
+        "name": "table_fontfileNameIDs"
+      },
+      {
+        "name": "table_componentFontNameIDs"
+      },
+      {
+        "name": "table_filenames"
+      },
+      {
+        "name": "table_awtfontpaths"
+      },
+      {
+        "name": "table_exclusions"
+      },
+      {
+        "name": "table_proportionals"
+      },
+      {
+        "name": "table_scriptFontsMotif"
+      },
+      {
+        "name": "table_alphabeticSuffix"
+      },
+      {
+        "name": "table_stringIDs"
+      },
+      {
+        "name": "table_stringTable"
+      },
+      {
+        "name": "reorderScripts"
+      },
+      {
+        "name": "stringCache"
+      },
+      {
+        "name": "EMPTY_INT_ARRAY"
+      },
+      {
+        "name": "EMPTY_STRING_ARRAY"
+      },
+      {
+        "name": "EMPTY_SHORT_ARRAY"
+      },
+      {
+        "name": "UNDEFINED_COMPONENT_FONT"
+      },
+      {
+        "name": "scriptIDs"
+      },
+      {
+        "name": "elcIDs"
+      },
+      {
+        "name": "componentFontNameIDs"
+      },
+      {
+        "name": "fontfileNameIDs"
+      },
+      {
+        "name": "logicalFontIDs"
+      },
+      {
+        "name": "fontStyleIDs"
+      },
+      {
+        "name": "filenames"
+      },
+      {
+        "name": "sequences"
+      },
+      {
+        "name": "scriptFonts"
+      },
+      {
+        "name": "scriptAllfonts"
+      },
+      {
+        "name": "exclusions"
+      },
+      {
+        "name": "awtfontpaths"
+      },
+      {
+        "name": "proportionals"
+      },
+      {
+        "name": "scriptAllfontsMotif"
+      },
+      {
+        "name": "scriptFontsMotif"
+      },
+      {
+        "name": "alphabeticSuffix"
+      },
+      {
+        "name": "fallbackScriptIDs"
+      },
+      {
+        "name": "version"
+      },
+      {
+        "name": "appendedfontpath"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.awt.FontPropertiesLoader",
+    "fields": [
+      {
+        "name": "IS_SUPPORTED"
+      },
+      {
+        "name": "PROPERTIES"
+      }
+    ],
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "sun.java2d.pipe.NullPipe",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  }
+]

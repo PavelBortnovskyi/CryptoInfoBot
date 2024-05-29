@@ -5,14 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Component
 @NoArgsConstructor
 @Getter
 public class BotStateKeeper {
 
-    private BotState botState = BotState.INITIALIZATION;
+    private Map<Long, BotState> userStates = new ConcurrentHashMap<>(){{put(0L, BotState.INITIALIZATION);}};
 
-    public void changeState(BotState botState) {
-        this.botState = botState;
+    public BotState getStateForUser(Long userId) {
+        return userStates.getOrDefault(userId, BotState.INPUT_FOR_CURRENCY);
+    }
+
+    public void setStateForUser(Long userId, BotState botState) {
+        userStates.put(userId, botState);
     }
 }

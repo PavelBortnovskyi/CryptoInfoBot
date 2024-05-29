@@ -41,8 +41,6 @@ public class StartCommandHandler extends BotCommand {
 
     private final BotUserRepository botUserRepository;
 
-    private final ReplyKeyboardFactory replyKeyboardFactory;
-
     private final BotStateKeeper botStateKeeper;
 
     private final ListInitializer listInitializer;
@@ -59,7 +57,6 @@ public class StartCommandHandler extends BotCommand {
         this.exchangeClient = exchangeClient;
         this.tradingPairRepository = tradingPairRepository;
         this.botUserRepository = botUserRepository;
-        this.replyKeyboardFactory = replyKeyboardFactory;
         this.botStateKeeper = botStateKeeper;
         this.listInitializer = listInitializer;
     }
@@ -67,9 +64,9 @@ public class StartCommandHandler extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String greeting = MessageFormat.format(LocalizationManager.getString("choose_language_message"), chat.getFirstName());
-        if (botStateKeeper.getBotState().equals(BotState.INITIALIZATION) && tradingPairRepository.count() == 0)
+        if (botStateKeeper.getUserStates().keySet().size() == 1 && tradingPairRepository.count() == 0)
             listInitializer.saveEntitiesInBatch(exchangeClient.getListing());
-        botStateKeeper.changeState(BotState.INPUT_FOR_CURRENCY);
+
         InlineKeyboardMarkup langOptions = InlineKeyboardMarkup.builder()
                 .keyboardRow(List.of(
                         InlineKeyboardButton.builder()
@@ -88,6 +85,8 @@ public class StartCommandHandler extends BotCommand {
                 .replyMarkup(langOptions)
                 .build();
         registerUser(user, chat.getId());
+
+        botStateKeeper.setStateForUser(user.getId(), BotState.INPUT_FOR_CURRENCY);
         try {
             absSender.execute(messageToSend);
         } catch (TelegramApiException e) {

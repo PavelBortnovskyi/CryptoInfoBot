@@ -12,8 +12,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.1.4</version>
+        <relativePath/>
     </parent>
 
     <properties>
@@ -57,6 +57,21 @@
             <artifactId>emoji-java</artifactId>
             <version>5.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>net.imagej</groupId>
+            <artifactId>ij</artifactId>
+            <version>1.54c</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.twelvemonkeys.imageio</groupId>-->
+<!--            <artifactId>imageio-core</artifactId>-->
+<!--            <version>3.9.3</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.twelvemonkeys.imageio</groupId>-->
+<!--            <artifactId>imageio-jpeg</artifactId>-->
+<!--            <version>3.9.3</version>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -89,7 +104,12 @@
         <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>nativeimage</artifactId>
+            <version>23.1.0</version>
         </dependency>
     </dependencies>
     <build>
@@ -110,75 +130,78 @@
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
                 <version>${native.maven.plugin.version}</version>
+                <extensions>true</extensions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>build-native</id>-->
+<!--                        <goals>-->
+<!--                            <goal>compile-no-fork</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>package</phase>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>test-native</id>-->
+<!--                        <goals>-->
+<!--                            <goal>test</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>test</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
                 <configuration>
                     <imageName>native-crypto-bot-image</imageName>
                     <mainClass>com.neo.crypto_bot.CryptoBotApplication</mainClass>
                     <fallback>false</fallback>
                     <verbose>true</verbose>
                     <quickBuild>true</quickBuild>
-					<agent>
+                    <skipNativeTests>true</skipNativeTests>
+                    <agent>
 						<enabled>false</enabled>
 						<defaultMode>standard</defaultMode>
 						<metadataCopy>
-							<disabledStages>
-								<stage>main</stage>
-							</disabledStages>
 							<merge>true</merge>
-							<outputDirectory>/tmp/test-output-dir</outputDirectory>
+							<outputDirectory>custom-out</outputDirectory>
 						</metadataCopy>
 					</agent>
                     <buildArgs>
                         <arg>-H:+ReportExceptionStackTraces</arg>
-                        <arg>--initialize-at-build-time=org.apache.commons.logging.LogFactory</arg>
                         <arg>-H:ReflectionConfigurationFiles=${project.basedir}/src/main/resources/reflection-config.json</arg>
                         <arg>-H:DynamicProxyConfigurationFiles=${project.basedir}/src/main/resources/proxy-config.json</arg>
                         <arg>-H:ResourceConfigurationFiles=${project.basedir}/src/main/resources/resource-config.json</arg>
-<!--                        <arg>-H:IncludeResourceBundles=java.util.ResourceBundle</arg>-->
-<!--                        <arg>-H:-LocalizationOptimizedMode</arg>>-->
-<!--                        <arg>-H:IncludeResources=".*properties$"</arg>-->
-<!--                        <arg>-H:IncludeLocales=ua,en</arg>-->
+                        <arg>-H:JNIConfigurationFiles=${project.basedir}/src/main/resources/jni-config.json</arg>
                         <arg>-R:MaxHeapSize=200m</arg>
-                        <arg>--enable-all-security-services</arg>
                         <arg>--no-fallback</arg>
-                        <arg>--allow-incomplete-classpath</arg>
                         <arg>--report-unsupported-elements-at-runtime</arg>
+<!--                        <arg>-H:+UnlockExperimentalVMOptions</arg>-->
+<!--                        <arg>-H:+BuildOutputColorful</arg>-->
+<!--                        <arg>&#45;&#45;link-at-build-time</arg>-->
                     </buildArgs>
-                    <environment>
-                        <bot_name>crypto_currencies_pet_bot</bot_name>
-						<bot_token>6486827539:AAGvD6L6p8eadnUW2dx-NMMMbc_INbvRyQU</bot_token>
-						<binance_api_tickerPrice_url>https://api.binance.com/api/v3/ticker/price</binance_api_tickerPrice_url>
-						<binance_api_exchangeInfo_url>https://api.binance.com/api/v3/exchangeInfo</binance_api_exchangeInfo_url>
-						<binance_api_avgPrice_url>https://api.binance.com/api/v3/avgPrice"</binance_api_avgPrice_url>
-						<binance_api_convertible_url>https://api.binance.com/sapi/v1/convert/exchangeInfo</binance_api_convertible_url>
-                    </environment>
                     <metadataRepository>
                         <enabled>true</enabled>
                     </metadataRepository>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>exec-maven-plugin</artifactId>-->
-<!--                <version>3.0.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>java-agent</id>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>test</phase>-->
-<!--                        <configuration>-->
-<!--                            <executable>java</executable>-->
-<!--                            <workingDirectory>${project.build.directory}</workingDirectory>-->
-<!--                            <arguments>-->
-<!--                                <argument>-classpath</argument>-->
-<!--                                <classpath/>-->
-<!--                                <argument>${mainClass}</argument>-->
-<!--                            </arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>java-agent</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>${mainClass}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
